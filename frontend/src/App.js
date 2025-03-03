@@ -9,6 +9,8 @@ function App() {
       heshan jayasekara
 
       This is development branch commit
+
+      This is Thinuri branch
     </div>
   );
 }
