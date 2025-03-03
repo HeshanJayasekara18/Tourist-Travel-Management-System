@@ -9,8 +9,7 @@ function App() {
       heshan jayasekara
 
       This is development branch commit
-
-      This is heshan's text
+      this is global commit
     </div>
   );
 }
