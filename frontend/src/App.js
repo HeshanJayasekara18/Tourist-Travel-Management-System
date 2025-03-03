@@ -7,6 +7,8 @@ function App() {
       Hello World
 
       heshan jayasekara
+
+      This is development branch commit
     </div>
   );
 }
