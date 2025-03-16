@@ -3,13 +3,8 @@ import './App.css';
 
 function App() {
   return (
-    <div>
-      Hello World
-
-      heshan jayasekara
-
-      This is development branch commit
-      this is global commit
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <h1 className="text-4xl font-bold text-blue-500">Hello, Tailwind!</h1>
     </div>
   );
 }
