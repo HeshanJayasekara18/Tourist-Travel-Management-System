@@ -12,7 +12,10 @@ function PropertySignup() {
             {/* This is Form Div */}
            <div className="mainForm">
 
+            <div class="bussinessDetails">
+                <h4>Bussness Details</h4>
             <div className="mainInput">
+                
                 <div className="inputFeild">
                     <label>Bussiness Name</label>
                     <input class="input"/>
@@ -23,36 +26,16 @@ function PropertySignup() {
                 </div>
             </div>
                 
-
             <div className="mainInput">
             <div className="inputFeild">
-                    <label>Registration Number</label>
+                    <label>Address/City</label>
                     <input class="input"/>
                 </div>
                 <div className="inputFeild">
-                    <label>Address</label>
-                    <input class="input"/>
+                    <label>Bussness File</label>
+                    <input type="file" class="input"/>
                 </div>
                 
-            </div>
-
-            <div className="mainInput">
-            <div className="inputFeild">
-                    <label>City</label>
-                    <input class="input"/>
-                </div>
-                <div className="inputFeild">
-                    <label>Phone Number</label>
-                    <input class="input"/>
-                </div>
-                
-            </div>
-
-            <div className="mainInput">
-            <div className="inputFeild">
-                    <label>Email</label>
-                    <input class="email"/>
-                </div>               
             </div>
 
             <div className="mainInput">
@@ -61,18 +44,54 @@ function PropertySignup() {
                     <input class="des"/>
                 </div>               
             </div>
+            </div>
 
-               <div className="mainInput">
-            <div className="inputFeild">
-                    <label>File Upload</label>
-                    <input type="file" class="input"/>
+            <div class="UserDetails">
+                <h4>User Details</h4>
+            <div className="mainInput">
+                <div className="inputFeild">
+                    <label>Full Name</label>
+                    <input class="input"/>
                 </div>
                 <div className="inputFeild">
-                    <label>File Upload</label>
-                    <input type="file" class="input"/>
+                    <label>Address</label>
+                    <input class="input"/>
                 </div>
-             </div>
 
+            
+            </div>
+                
+            <div className="mainInput">
+            <div className="inputFeild">
+                    <label>Contact</label>
+                    <input class="input"/>
+                </div>
+                <div className="inputFeild">
+                    <label>Email</label>
+                    <input type="input" class="input"/>
+                </div>
+                
+            </div>
+
+            <div className="mainInput">
+            <div className="inputFeild">
+                    <label>Password</label>
+                    <input type="password" class="input"/>
+                </div>
+                <div className="inputFeild">
+                    <label>Re Password</label>
+                    <input type="password"  class="input"/>
+                </div>
+                
+            </div>
+
+            </div>
+
+
+
+          
+
+        
                         
             <div>
                 <button class="submitBtn" >Submit</button>

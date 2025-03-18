@@ -30,7 +30,7 @@
 
 .input {
     width: 300px; 
-    height: 20px; 
+    height: 35px; 
     border-radius: 8px; 
     border: 2px solid #ccc; 
     padding: 5px 10px; 
@@ -39,7 +39,7 @@
 
 .email{
     width: 660px;
-    height: 20px; 
+    height: 35px; 
     border-radius: 8px; 
     border: 2px solid #ccc; 
     padding: 5px 10px; 
@@ -47,12 +47,12 @@
 }
 
 .des{
-    width: 660px;
+    width: 635px;
     height: 60px; 
     border-radius: 8px; 
     border: 2px solid #ccc; 
     padding: 5px 10px; 
-    font-size: 16px; 
+    font-size: 14px; 
 }
 
 .submitBtn{
@@ -65,4 +65,8 @@
     background-color: #3B41B6;
     color: white;
     margin-top: 10px;
+}
+
+label{
+    font-size: 14px;
 }
