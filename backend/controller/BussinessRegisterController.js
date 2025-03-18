@@ -2,9 +2,6 @@ const User = require ('../model/User');
 const Bussiness = require ('../model/Bussiness'); 
 const BussinessAgent = require ('../model/BussinessAgent');
 
-const User = require('../model/User');
-const Bussiness = require('../model/Bussiness');
-const BussinessAgent = require('../model/BussinessAgent');
 
 const register = async (req, res) => {
     try {
