@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 *{
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-=======
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
->>>>>>> 9e5f165d35c4fd1ffda8f215801e7d75fe754a17
+
