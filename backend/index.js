@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT ;
+
 
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -12,6 +12,8 @@ const hotelRoomRoute = require('./route/HotelRoomRoute');
 const bussinessRegisterRoute = require('./route/BussinessRegisterRoute');
 
 dotenv.config();
+
+const PORT = process.env.PORT ;
 
 // Connect to MongoDB
 connectDB();
