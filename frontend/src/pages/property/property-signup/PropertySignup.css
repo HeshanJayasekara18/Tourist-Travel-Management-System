@@ -22,10 +22,10 @@
     gap: 30px;
 }
 
-.inputFeild{
+.inputField{
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 1px;
 }
 
 .input {
@@ -68,5 +68,5 @@
 }
 
 label{
-    font-size: 14px;
+    font-size: 14px;; 
 }
