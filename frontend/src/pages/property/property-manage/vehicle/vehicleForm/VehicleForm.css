@@ -1,4 +1,4 @@
-.vehicleForm {
+.MainVehicleForm {
   width: 80%;
   max-width: 800px;
   margin: 20px auto;
@@ -8,7 +8,7 @@
   overflow: hidden;
 }
 
-.vehicleFormHeader {
+.VehicleFormHeader {
   background-color: #4a90e2;
   color: white;
   padding: 15px 20px;
@@ -16,64 +16,57 @@
   border-top-right-radius: 8px;
 }
 
-.vehicleFormHeader h4 {
+.VehicleFormHeader h4 {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
 }
 
-.vehicleFormMain {
+.VformBody {
   padding: 20px;
 }
 
-.MainVehicleInput1 {
+.formInputSet {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 15px;
   align-items: center;
 }
 
-.MainVehicleInput1 > div {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  margin-right: 15px;
-}
-
-.MainVehicleInput1 lable {
+.formInputSet label {
   width: 120px;
   font-size: 14px;
   margin-right: 10px;
   color: #333;
 }
 
-.Vinput {
+.VInput {
   flex: 1;
   min-width: 150px;
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  margin-right: 10px;
+  margin-right: 15px;
   font-size: 14px;
 }
 
-.Vinput[type="file"] {
+.VInput[type="file"] {
   padding: 6px;
 }
 
-.Vinput:focus {
+.VInput:focus {
   outline: none;
   border-color: #4a90e2;
   box-shadow: 0 0 3px rgba(74, 144, 226, 0.3);
 }
 
-.vbtn {
+.Vbtn {
   display: flex;
   justify-content: center;
   padding: 10px 20px 20px;
 }
 
-.vbtn button {
+.Vbtn button {
   background-color: #4a90e2;
   color: white;
   border: none;
@@ -85,34 +78,29 @@
   transition: background-color 0.3s;
 }
 
-.vbtn button:hover {
+.Vbtn button:hover {
   background-color: #3672b9;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .vehicleForm {
+  .MainVehicleForm {
       width: 95%;
   }
   
-  .MainVehicleInput1 {
+  .formInputSet {
       flex-direction: column;
       align-items: flex-start;
   }
   
-  .MainVehicleInput1 > div {
+  .formInputSet label {
       width: 100%;
-      margin-right: 0;
-      margin-bottom: 10px;
-  }
-  
-  .MainVehicleInput1 lable {
-      width: 120px;
       margin-bottom: 5px;
   }
   
-  .Vinput {
+  .VInput {
       width: 100%;
       margin-right: 0;
+      margin-bottom: 10px;
   }
 }

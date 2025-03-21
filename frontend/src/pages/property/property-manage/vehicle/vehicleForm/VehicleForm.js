@@ -1,140 +1,138 @@
-import react from "react";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import "./VehicleForm.css";
+import axios from 'axios';
 
-
-function VehicleForm(){
-    const [formData,setFormData] =useState({
-        modelName:"",
-        seats:0,
-        doors:0,
-        fuelType:"",
-        transmission:"",
-        priceDay:0,
-        priceMonth:0,
-        status:"",
-        image:null
-
+function VehicleForm() {
+    const [formData, setFormData] = useState({
+        B_Id:"B001",
+        modelName: "",
+        seats: 0,
+        doors: 0,
+        fuelType: "",
+        transmission: "",
+        priceDay: 0,
+        priceMonth: 0,
+        status: "",
+        image: null
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-    }
+    };
 
-    const handleFileChange =(e)=>{
-        const {name,files } = e.target;
-        setFormData({...formData, [name]:files[0]});
-    }
+    const handleFileChange = (e) => {
+        const { name, files } = e.target;
+        setFormData({ ...formData, [name]: files[0] });
+    };
 
     const onSubmit = () => {
         console.log("My Form Data", formData);
+        createVehicle();
     };
 
+    const createVehicle = () => {
+        axios.post("http://localhost:4000/api/vehicle", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        })
+        .then(response => {
+            alert("Vehicle added successfully!");
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error("Error adding vehicle:", error);
+        });
+    };
+    
+
+
     return (
-        <div class="vehicleForm">
-            <div class="vehicleFormHeader">
+        <div className="MainVehicleForm">
+            <div className="VehicleFormHeader">
                 <h4>Vehicle Form</h4>
             </div>
-            <div class="vehicleFormMain">
-                <div class="MainVehicleInput1">
-                    <lable>Model/Name</lable>
-                    <input class="Vinput"
+            <div className="VformBody">
+                <div className="formInputSet">
+                    <label>Model Name</label>
+                    <input className="VInput" 
                            type="text" 
                            name="modelName"
                            value={formData.modelName}
                            onChange={handleChange}
                            />
                 </div>
-                <div class="MainVehicleInput1">
-                    <div>
-                        <lable>seats</lable>
-                        <input class="Vinput" 
-                               type="text" 
-                               name="seats"
-                               value={formData.seats}
-                               onChange={handleChange}
-                               />
-                    </div>
-                    <div>
-                        <lable>Doors</lable>
-                        <input class="Vinput" 
-                               type="text" 
-                               name="doors"
-                               value={formData.doors}
-                               onChange={handleChange}
-                               />
-                    </div>
+                <div className="formInputSet">
+                    <label>Seats</label>
+                    <input className="VInput" 
+                           type="number" 
+                           name="seats"
+                           value={formData.seats}
+                           onChange={handleChange}
+                           />
+                    <label>Doors</label>
+                    <input className="VInput" 
+                           type="number" 
+                           name="doors"
+                           value={formData.doors}
+                           onChange={handleChange}
+                           />
                 </div>
-                <div class="MainVehicleInput1">
-                    <div>
-                        <lable>Fuel Type</lable>
-                        <input class="Vinput" 
-                               type="text" 
-                               name="fuelType"
-                               value={formData.fuelType}
-                               onChange={handleChange}
-                               />
-                    </div>
-                    <div>
-                        <lable>Transmission</lable>
-                        <input  class="Vinput" 
-                                type="text" 
-                                name="transmission"
-                                value={formData.transmission}
-                                onChange={handleChange}
-                                />
-                    </div>
+                <div className="formInputSet">
+                    <label>Fuel Type</label>
+                    <input className="VInput" 
+                           type="text" 
+                           name="fuelType"
+                           value={formData.fuelType}
+                           onChange={handleChange}
+                           />
+                    <label>Transmission</label>
+                    <input className="VInput" 
+                           type="text" 
+                           name="transmission"
+                           value={formData.transmission}
+                           onChange={handleChange}
+                           />
                 </div>
-                <div class="MainVehicleInput1">
-                    <div>
-                        <lable>price/Day</lable>
-                        <input class="Vinput" 
-                               type="number" 
-                               name="priceDay"
-                               value={formData.priceDay}
-                               onChange={handleChange}
-                               
-                               />
-                    </div>
-                    <div>
-                        <lable>price/Month</lable>
-                        <input class="Vinput" 
-                               type="number" 
-                               name="priceMonth"
-                               value={formData.priceMonth}
-                               onChange={handleChange}
-                               />
-                    </div>                        
+                <div className="formInputSet">
+                    <label>Price/Day</label>
+                    <input className="VInput" 
+                           type="number" 
+                           name="priceDay"
+                           value={formData.priceDay}
+                           onChange={handleChange}
+                           />
+                    <label>Price/Month</label>
+                    <input className="VInput" 
+                           type="number" 
+                           name="priceMonth"
+                           value={formData.priceMonth}
+                           onChange={handleChange}
+                           />                    
+                </div> 
+                <div className="formInputSet">
+                    <label>Status</label>
+                    <input className="VInput" 
+                           type="text" 
+                           name="status"
+                           value={formData.status}
+                           onChange={handleChange}                           
+                           />
                 </div>
-                <div>
-                <div class="MainVehicleInput1">
-                        <lable>Status</lable>
-                        <input  class="Vinput" 
-                                type="text" 
-                                name="status"
-                                value={formData.status}
-                                onChange={handleChange}
-                                />
-                    </div>
-                    <div>
-                        <lable>Image</lable>
-                        <input  class="Vinput" 
-                                type="file" 
-                                name="image"
-                                onChange={handleFileChange}
-                                />
-                    </div>
+                <div className="formInputSet">
+                    <label>Image</label>
+                    <input className="VInput" 
+                           type="file" 
+                           name="image"
+                           accept="image/*"
+                           onChange={handleFileChange}
+                           />
                 </div>
             </div>
-            <div class="vbtn">
-                <button  type="button" onClick={onSubmit}>Submit</button>
+            <div className="Vbtn">
+                <button type="button" onClick={onSubmit}>Submit</button>
             </div>
-
         </div>
-
-
-
     );
 }
+
 export default VehicleForm;

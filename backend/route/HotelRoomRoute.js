@@ -8,9 +8,11 @@ const {
     deleteHotelRoom
   } = require('../controller/HotelRoomController');
 
+ const upload = require("../middleware/upload");
+
 router.get('/', getAllHotelRoom);
 router.get('/:id', getHotelRoom);    
-router.post('/', addHotelRoom);      
+router.post('/', upload.single("image") ,addHotelRoom);      
 router.put('/:id', updateHotelRoom); 
 router.delete('/:id', deleteHotelRoom); 
 

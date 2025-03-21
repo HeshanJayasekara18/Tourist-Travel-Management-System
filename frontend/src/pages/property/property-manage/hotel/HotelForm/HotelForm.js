@@ -1,17 +1,19 @@
 import react from "react";
 import React,{useState} from "react";
 import "./HotelForm.css";
+import axios from 'axios';
 
 
 function HotelForm(){
     const [formData,setFormData] = useState({
-        hotelName:"",
-        beds:0,
-        maxOccupancy:0,
-        priceDay:0,
-        priceMonth:0,
+        B_Id:"B001",
+        name:"",
+        bed:0,
+        max_occupancy:0,
+        price_day:0,
+        price_month:0,
         quantity:0,
-        status:"",
+        availability:"",
         description:"",
         image:null
     });
@@ -28,8 +30,22 @@ function HotelForm(){
 
     const onSubmit = () => {
         console.log("My Form Data", formData);
+        createHotelRoom();
     };
 
+    const createHotelRoom=() =>{
+        axios.post("http://localhost:4000/api/hotelRoom",formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        })
+       .then(response => {
+           alert("Hotel Room added success");
+           console.log(response.data);          
+       })
+       .catch(error => {
+         console.error(error);
+       });
+
+   }
 
 
     return (
@@ -42,8 +58,8 @@ function HotelForm(){
                     <label>Hotel Name</label>
                     <input class="HInput" 
                            type="text" 
-                           name="hotelName"
-                           value={formData.hotelName}
+                           name="name"
+                           value={formData.name}
                            onChange={handleChange}
                            />
                 </div>
@@ -51,15 +67,15 @@ function HotelForm(){
                     <label>Beds</label>
                     <input  class="HInput" 
                             type="text" 
-                            name="beds"
-                            value={formData.beds}
+                            name="bed"
+                            value={formData.bed}
                             onChange={handleChange}
                             />
                     <label>Max Occupancy</label>
                     <input class="HInput" 
                            type="text" 
-                           name="maxOccupancy"
-                           value={formData.maxOccupancy}
+                           name="max_occupancy"
+                           value={formData.max_occupancy}
                            onChange={handleChange}
                            />
                 </div>
@@ -67,15 +83,15 @@ function HotelForm(){
                     <label>Price/Day</label>
                     <input class="HInput" 
                            type="number" 
-                           name="priceDay"
-                           value={formData.priceDay}
+                           name="price_day"
+                           value={formData.price_day}
                            onChange={handleChange}
                            />
                     <label>Price/Month</label>
                     <input class="HInput" 
                            type="number" 
-                           name="priceMonth"
-                           value={formData.priceMonth}
+                           name="price_month"
+                           value={formData.price_month}
                            onChange={handleChange}
                            />                   
                 </div> 
@@ -90,8 +106,8 @@ function HotelForm(){
                     <lablel>Status</lablel>
                     <input class="HInput" 
                            type="text" 
-                           name="status"
-                           value={formData.status}
+                           name="availability"
+                           value={formData.availability}
                            onChange={handleChange}                          
                            />
                 </div>
@@ -109,6 +125,7 @@ function HotelForm(){
                     <input class="HInput" 
                            type="file" 
                            name="image"
+                            accept="image/*"
                             onChange={handleFileChange}
                            />
                 </div>

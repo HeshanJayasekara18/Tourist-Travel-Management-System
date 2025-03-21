@@ -1,57 +1,67 @@
-import React, { useState } from "react";
-import "./PropertySignup.css";
+import react from 'react';
+import "./BussinessProfile.css"
+import React,{useState}from "react";
+import {useEffect} from 'react';
 import axios from 'axios';
 
-function PropertySignup() {
-    const [formData, setFormData] = useState({
-        businessName: "",
-        businessType: "",
-        businessAddress: "",
-        businessFile: null, // Set the initial state as null for the file
-        description: "",
-        fullName: "",
-        userAddress: "", // Renamed to avoid duplicate field
-        contact: "",
-        email: "",
-        password: "",
-        rePassword: "",
-        role:"Bussiness"
+function BussinessProfile (){
+
+    //bussnessDetails ==use State []
+    const [bussinessDetails, setBussinessDetails] = useState({
+        user: { username: "", email: "", role: "" },
+        businessAgent: { fullname: "", userAddress: "", contact: "" },
+        business: { businessName: "", businessAddress: "", description: "", bussinessType: "" }
+    });
+
+
+
+    const [formData,setFormData] = useState({
+        bussinessName :"",
+        address:"",
+        description:"",
+        fullName:"",
+        userAddress:"",
+        contact:"",
+        email:"",
+        password:"",
+        rePassword:""
+
     });
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name,value} = e.target;
+        setFormData({...formData,[name]: value});
     };
 
-    const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        setFormData({ ...formData, [name]: files[0] }); // Save the first file in the state
-    };
-
-    const onSubmit = () => {
+    const onUpdate = () => {
         console.log("My Form Data", formData);
-        createBussinessUser();
     };
 
-    const createBussinessUser=() =>{
-        axios.post("http://localhost:4000/api/bussinessRegister",formData)
-       .then(response => {
-           alert("Bussiness User Added");
-           console.log(response.data);          
-       })
-       .catch(error => {
-         console.error(error);
-       });
+    //call thst getAllBussness() in use effect like vehicle getAll()
+    useEffect(() => {
+        getBussinessDetails();
+          }, []);
+    
 
-   }
+    // getAllBussnessDetails===>Axios get
+    const getBussinessDetails = () => {
+        axios.get("http://localhost:4000/api/bussinessRegister?B_Id=84275498-f70d-44d0-8731-320f36144a1a")
+        .then(response => {
+            console.log(response.data);
+            setBussinessDetails(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching business details:", error);
+        });
+    };
+    
 
     return (
-        <div className="mainDiv">
-            <div>
-                <h1>Business Registration Form</h1>
-            </div>
-
-            <div className="mainForm">
+        <div className="profileMainDiv">
+            <div className="profileMainForm">
+                <div>
+                    <h3>Business Profile Detail</h3>
+                </div>
                 <div className="businessDetails">
                     <h4>Business Details</h4>
                     <div className="mainInput">
@@ -61,40 +71,18 @@ function PropertySignup() {
                                 className="input"
                                 type="text"
                                 name="businessName"
-                                value={formData.businessName}
-                                onChange={handleChange}
+                                value={bussinessDetails.business.businessName}
+                                onChange={handleChange}                             
                             />
                         </div>
-                        <div className="inputField">
-                            <label>Business Type</label>
-                            <input
-                                className="input"
-                                type="text"
-                                name="businessType"
-                                value={formData.businessType}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mainInput">
                         <div className="inputField">
                             <label>Address/City</label>
                             <input
                                 className="input"
                                 type="text"
-                                name="businessAddress"
-                                value={formData.businessAddress}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="inputField">
-                            <label>Business File</label>
-                            <input
-                                type="file"
-                                className="input"
-                                name="businessFile"
-                                onChange={handleFileChange}
+                                name="address"
+                                value={bussinessDetails.business.businessAddress}
+                                onChange={handleChange}                               
                             />
                         </div>
                     </div>
@@ -106,8 +94,8 @@ function PropertySignup() {
                                 className="des"
                                 type="text"
                                 name="description"
-                                value={formData.description}
-                                onChange={handleChange}
+                                value={bussinessDetails.business.description}
+                                onChange={handleChange}                             
                             />
                         </div>
                     </div>
@@ -122,8 +110,8 @@ function PropertySignup() {
                                 className="input"
                                 type="text"
                                 name="fullName"
-                                value={formData.fullName}
-                                onChange={handleChange}
+                                value={bussinessDetails.businessAgent.fullname}
+                                onChange={handleChange}                              
                             />
                         </div>
                         <div className="inputField">
@@ -132,8 +120,8 @@ function PropertySignup() {
                                 className="input"
                                 type="text"
                                 name="userAddress"
-                                value={formData.userAddress}
-                                onChange={handleChange}
+                                value={bussinessDetails.businessAgent.userAddress}
+                                onChange={handleChange}                              
                             />
                         </div>
                     </div>
@@ -145,8 +133,8 @@ function PropertySignup() {
                                 className="input"
                                 type="text"
                                 name="contact"
-                                value={formData.contact}
-                                onChange={handleChange}
+                                value={bussinessDetails.businessAgent.contact}
+                                onChange={handleChange}                             
                             />
                         </div>
                         <div className="inputField">
@@ -155,8 +143,8 @@ function PropertySignup() {
                                 type="text"
                                 className="input"
                                 name="email"
-                                value={formData.email}
-                                onChange={handleChange}
+                                value={bussinessDetails.user.email}
+                                onChange={handleChange}               
                             />
                         </div>
                     </div>
@@ -168,8 +156,8 @@ function PropertySignup() {
                                 type="password"
                                 className="input"
                                 name="password"
-                                value={formData.password}
-                                onChange={handleChange}
+                               
+                                onChange={handleChange}                             
                             />
                         </div>
                         <div className="inputField">
@@ -178,21 +166,23 @@ function PropertySignup() {
                                 type="password"
                                 className="input"
                                 name="rePassword"
-                                value={formData.rePassword}
-                                onChange={handleChange}
+                               
+                                onChange={handleChange}                             
                             />
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <button className="submitBtn" type="button" onClick={onSubmit}>
-                        Submit
+                    <button className="updateBtn" type="button" onClick={onUpdate} >
+                        Update
                     </button>
                 </div>
             </div>
         </div>
+
     );
 }
 
-export default PropertySignup;
+
+export default BussinessProfile;

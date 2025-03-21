@@ -12,7 +12,10 @@ const HotelRoomSchema = mongoose.Schema({
     price_month: { type: Number, required: true },
     bed: { type: Number, required: true },
     max_occupancy: { type: Number, required: true },
-    image: { type: String, required: true },
+    image: { 
+        data: Buffer, 
+        contentType: String 
+    } 
 });
 
 const HotelRoom = mongoose.model("HotelRoom",HotelRoomSchema);

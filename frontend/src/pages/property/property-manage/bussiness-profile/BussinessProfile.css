@@ -1,19 +1,17 @@
-.mainDiv{
+.profileMainDiv{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
     width: 100vw;
     height: 100vh;
     gap: 20px;
-    background: linear-gradient(135deg, #e4ecf3, #f6f6f7, #e9edf0);
 }
 
-.mainForm{
+.profileMainForm{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  
     padding: 25px;
 }
 
@@ -56,9 +54,9 @@
     font-size: 14px; 
 }
 
-.submitBtn{
-    width: 660px;
-    height: 40px; 
+.updateBtn{
+    width: 610px;
+    height: 30px; 
     border-radius: 8px; 
     border: 2px solid #ccc; 
     padding: 5px 10px; 
