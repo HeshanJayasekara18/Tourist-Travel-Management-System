@@ -1,22 +1,38 @@
 import react from "react";
 import "./package-Navbar.css"
-import logo from '../../../images/logo.png';
-import v1 from '../../../images/v1.png';
-import v2 from '../../../images/v2.png';
-import v3 from '../../../images/v3.png';
-import v4 from '../../../images/v4.png';
-import v5 from '../../../images/v5.png';
-import v6 from '../../../images/v6.png';
-import v7 from '../../../images/v7.png';
-import j1 from '../../../images/j1.png';
-import j2 from '../../../images/j2.png';
-import j3 from '../../../images/j3.png';    
+import logo from '../../../../images/logo.png';
+import v1 from '../../../../images/v1.png';
 
-
-
-
+import v6 from '../../../../images/v6.png';
+import v7 from '../../../../images/v7.png';
+import j1 from '../../../../images/j1.png';
+import j2 from '../../../../images/j2.png';
+import j3 from '../../../../images/j3.png';    
+import { useNavigate } from "react-router-dom";
 
 function PackageSideNav() {
+
+        const navigate=useNavigate();
+    
+        const onClickDashboard=()=>{
+            navigate('/admin/');
+        }
+    
+        const onClickUserManage=()=>{
+            navigate('/admin/user-manage');
+        }
+    
+        const onClickPacakgeManage=()=>{
+            navigate('/admin/tour-manage');
+        }
+        // const onClickEvenatManage=()=>{
+        //     navigate('');
+        // }
+    
+        const onClickPaymentManage=()=>{
+            navigate('/admin/payment');
+        }
+
     return (
         <div class="mainSideNav">
 
@@ -30,15 +46,15 @@ function PackageSideNav() {
 
                     <div class="sideNavbtn">
                         <img src={v1} className="icons" />
-                        <button>Dashboard</button>
+                        <button onClick={onClickDashboard}>Dashboard</button>
                     </div>
                     <div class="sideNavbtn">
                         <img src={j1} className="icons" />
-                        <button>User Manage</button>
+                        <button onClick={onClickUserManage}>User Manage</button>
                     </div>
                     <div class="sideNavbtn">
                         <img src={j2} className="icons" />
-                        <button>Tour Manage</button>
+                        <button onClick={onClickPacakgeManage}>Tour Manage</button>
                     </div>
                     <div class="sideNavbtn">
                         <img src={j3} className="icons" />
@@ -46,7 +62,7 @@ function PackageSideNav() {
                     </div>
                     <div class="sideNavbtn">
                         <img src={j3} className="icons" />
-                        <button>payment manage</button>
+                        <button onClick={onClickPaymentManage}>payment manage</button>
                     </div>
                     
 

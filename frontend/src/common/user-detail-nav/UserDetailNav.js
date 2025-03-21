@@ -1,9 +1,6 @@
 import react from "react";
 import "./UserDetailNav.css"
-import v8 from '../../images/v8.png'; 
-import v9 from '../../images/v9.png'; 
-import v8 from '../../../images/v8.png'; 
-import v9 from '../../../images/v9.png'; 
+
 import h8 from '../../images/h8.png'; 
 import h9 from '../../images/h9.png'; 
 

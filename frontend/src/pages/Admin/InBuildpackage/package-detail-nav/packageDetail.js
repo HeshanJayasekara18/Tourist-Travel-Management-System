@@ -1,7 +1,7 @@
 import react from "react";
 import './Package-Detail.css';
-import v8 from '../../../images/v8.png'; 
-import v9 from '../../../images/v9.png'; 
+import v8 from '../../../../images/v8.png'; 
+import v9 from '../../../../images/v9.png'; 
 
 function PackageDetail(){
     return (
