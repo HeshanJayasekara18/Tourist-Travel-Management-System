@@ -11,6 +11,6 @@ const BussinessSchema = mongoose.Schema({
     fileUpload1: { type: String, required: true },
 });
 
-const Bussiness = mongoose.model("Bussiness",BussinessSchema);
+const Bussiness = mongoose.model("Bussiness",BussinessSchema);//table name
 
 module.exports = Bussiness; 

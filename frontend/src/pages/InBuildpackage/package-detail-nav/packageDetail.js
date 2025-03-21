@@ -1,9 +1,9 @@
 import react from "react";
-import "./UserDetailNav.css"
+import './Package-Detail.css';
 import v8 from '../../../images/v8.png'; 
 import v9 from '../../../images/v9.png'; 
 
-function UserDetailNav(){
+function PackageDetail(){
     return (
         <div class="mainUserDetailNav">
             <div class="userDetailsub1">
@@ -19,4 +19,4 @@ function UserDetailNav(){
 
     );
 }
-export default UserDetailNav;
+export default PackageDetail;
