@@ -24,5 +24,9 @@ require("../model/Bussiness");
 require("../model/BussinessAgent");
 require("../model/Vehicle");
 require("../model/hotelRoom");
+require("../model/TourPackage");
+require("../model/Payment");
+
+
 
 module.exports = connectDB;
