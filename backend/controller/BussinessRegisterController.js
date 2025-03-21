@@ -1,6 +1,11 @@
 const User = require('../model/User');
 const Bussiness = require('../model/Bussiness'); 
 const BussinessAgent = require('../model/BussinessAgent');
+const User = require ('../model/User');
+const Tourist = require ('../model/Tourist'); 
+const Tour = require ('../model/Tour');
+const Booking = require ('../model/Booking');
+
 
 const register = async (req, res) => {
     try {
