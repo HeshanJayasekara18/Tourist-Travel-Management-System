@@ -2,18 +2,39 @@ import react from "react";
 import "./PropertySideNav.css"
 import logo from '../../../images/logo.png'; 
 import v1 from '../../../images/v1.png'; 
-import v2 from '../../../images/v2.png'; 
 import v3 from '../../../images/v3.png'; 
 import v4 from '../../../images/v4.png'; 
 import v5 from '../../../images/v5.png';
 import v6 from '../../../images/v6.png';
 import v7 from '../../../images/v7.png';
-
-
-
-
+import v21 from '../../../images/v21.png';
+import v22 from '../../../images/v22.png';
+import v23 from '../../../images/v23.png';
+import { useNavigate } from "react-router-dom";
 
 function PropertySideNav(){
+
+    const navigate=useNavigate();
+
+    const onClickDashboard=()=>{
+        navigate('/property/');
+    }
+
+    const onClickVehicleManage=()=>{
+        navigate('/property/vehicle');
+    }
+
+    const onClickHotelManage=()=>{
+        navigate('/property/hotel');
+    }
+    const onClickTransactionManage=()=>{
+        navigate('/property/transaction');
+    }
+
+    const onClickProfileDetail=()=>{
+        navigate('/property/profile');
+    }
+
     return(
         <div class="mainSideNav">
 
@@ -27,19 +48,19 @@ function PropertySideNav(){
 
                     <div class="sideNavbtn">
                         <img src={v1} className="icons" />   
-                        <button>Dashboard</button>
+                        <button onClick={onClickDashboard}>Dashboard</button>
                     </div>
                     <div class="sideNavbtn">
-                        <img src={v2} className="icons" /> 
-                        <button>Vehicle Dashboard</button>
+                        <img src={v21} className="icons" /> 
+                        <button onClick={onClickVehicleManage}>Vehicle Manage</button>
                     </div>
                     <div class="sideNavbtn">
-                        <img src={v3} className="icons" /> 
-                        <button>Booking Manage</button>
+                        <img src={v22} className="icons" /> 
+                        <button onClick={onClickHotelManage}>Hotel Manage</button>
                     </div>
                     <div class="sideNavbtn">
-                        <img src={v4} className="icons" />
-                        <button>Transaction Manage</button>
+                        <img src={v23} className="icons" />
+                        <button onClick={onClickTransactionManage}>Transaction Manage</button>
                     </div>
                     <div class="sideNavbtn">
                         <img src={v5} className="icons" />
@@ -53,7 +74,7 @@ function PropertySideNav(){
                      </div>
                       <div class="sideNavbtn">
                             <img src={v6} className="icons" />
-                            <button>Setting</button>
+                            <button onClick={onClickProfileDetail}>Setting</button>
                       </div>
                       <div class="sideNavbtn">
                             <img src={v7} className="icons" />

@@ -8,9 +8,11 @@ const {
     deleteVehicle
   } = require('../controller/VehicleController');
 
-router.get('/', getAllVehicle);
-router.get('/:id', getVehicle);    
-router.post('/', addVehicle);      
+  const upload = require("../middleware/upload");
+
+router.get('/', getAllVehicle); 
+router.get('/:id', getVehicle);  
+router.post("/", upload.single("image"), addVehicle);
 router.put('/:id', updateVehicle); 
 router.delete('/:id', deleteVehicle); 
 
