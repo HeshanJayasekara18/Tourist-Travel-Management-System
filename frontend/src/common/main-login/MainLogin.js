@@ -1,7 +1,7 @@
 import React from "react";
 import "./MainLogin.css";
-import logo from '../../images/logo.png'; 
-import loginimg from '../../images/Login-img.jpeg'; 
+import hlogo from '../../images/h-Logo.png'; 
+import hloginimg from '../../images/h-Login-img.jpeg'; 
 
 const MainLogin = () => {
   return (
@@ -10,10 +10,10 @@ const MainLogin = () => {
       <div className="left-panel">
         {/* Logo */}
         <div>
-          <img src={logo} alt="CeylonGO" className="logo" />
+          <img src={hlogo} alt="CeylonGO" className="logo" />
         </div>
         <h2 className="title">Sign in</h2>
-        <p className="subtitle">Please login to continue to your account.</p>
+        <p className="subtitle">Please login to continue to your account</p>
 
         {/* Login Form */}
         <div className="form">
@@ -40,7 +40,7 @@ const MainLogin = () => {
 
       {/* Right Side - Image */}
       <div className="right-panel">
-        <img src={loginimg} alt="Background" />
+        <img src={hloginimg} alt="Background" />
       </div>
     </div>
   );
