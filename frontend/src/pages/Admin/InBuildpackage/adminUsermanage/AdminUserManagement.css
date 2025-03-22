@@ -160,16 +160,16 @@
 
 .user-table-container {
   overflow-x: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;  /* Further reduced */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
   border: 1px solid #e1e5eb;
 }
 
 .table-stats {
-  padding: 12px 16px;
+  padding: 8px 12px;  /* Further reduced */
   background-color: #f8f9fa;
   border-bottom: 1px solid #e1e5eb;
-  font-size: 14px;
+  font-size: 12px;  /* Further reduced */
   color: #6c757d;
 }
 
@@ -181,11 +181,11 @@
 
 .user-table th {
   background-color: #f8f9fa;
-  padding: 14px 16px;
+  padding: 10px 12px;  /* Further reduced */
   border-bottom: 1px solid #e1e5eb;
   font-weight: 500;
   color: #495057;
-  font-size: 14px;
+  font-size: 12px;  /* Further reduced */
 }
 
 .sortable-header {
@@ -201,14 +201,14 @@
 .header-content {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;  /* Further reduced */
 }
 
 .user-table td {
-  padding: 14px 16px;
+  padding: 10px 12px;  /* Further reduced */
   border-bottom: 1px solid #e1e5eb;
   color: #495057;
-  font-size: 14px;
+  font-size: 12px;  /* Further reduced */
 }
 
 .user-row {
@@ -218,13 +218,13 @@
 .user-row:hover {
   background-color: #f8f9fa;
   transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .cell-with-icon {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;  /* Further reduced */
 }
 
 .cell-icon {
@@ -233,14 +233,14 @@
 
 .action-buttons {
   display: flex;
-  gap: 8px;
+  gap: 5px;  /* Further reduced */
 }
 
 .edit-btn, .delete-btn {
   border: none;
-  width: 34px;
-  height: 34px;
-  border-radius: 6px;
+  width: 26px;  /* Further reduced */
+  height: 26px;  /* Further reduced */
+  border-radius: 4px;  /* Further reduced */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,21 +269,21 @@
 }
 
 .loading {
-  padding: 40px;
+  padding: 25px;  /* Further reduced */
   text-align: center;
   color: #6c757d;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 10px;  /* Further reduced */
 }
 
 .spinner {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #4361ee;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #4361ee;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 20px;  /* Further reduced */
+  height: 20px;  /* Further reduced */
   animation: spin 1s linear infinite;
 }
 
@@ -293,7 +293,7 @@
 }
 
 .no-results {
-  padding: 40px 0;
+  padding: 25px 0;  /* Further reduced */
   text-align: center;
 }
 
@@ -301,7 +301,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;  /* Further reduced */
   color: #6c757d;
 }
 

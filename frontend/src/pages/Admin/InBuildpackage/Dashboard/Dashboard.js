@@ -4,14 +4,14 @@ import './Dashboard.css';
 
 const SimpleDashboard = () => {
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     // Simulate data loading
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
-  
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -19,7 +19,7 @@ const SimpleDashboard = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="dashboard-container">
       {/* Header */}
@@ -29,7 +29,7 @@ const SimpleDashboard = () => {
           {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
-      
+
       {/* Stats Cards */}
       <div className="stats-grid">
         <div className="stat-card stat-card-green">
@@ -43,7 +43,7 @@ const SimpleDashboard = () => {
             <p className="stat-value">12k</p>
           </div>
         </div>
-        
+
         <div className="stat-card stat-card-red">
           <div className="stat-icon-container">
             <div className="stat-icon stat-icon-red">
@@ -55,7 +55,7 @@ const SimpleDashboard = () => {
             <p className="stat-value">150</p>
           </div>
         </div>
-        
+
         <div className="stat-card stat-card-blue">
           <div className="stat-icon-container">
             <div className="stat-icon stat-icon-blue">
@@ -67,7 +67,7 @@ const SimpleDashboard = () => {
             <p className="stat-value">100</p>
           </div>
         </div>
-        
+
         <div className="stat-card stat-card-purple">
           <div className="stat-icon-container">
             <div className="stat-icon stat-icon-purple">
@@ -80,7 +80,7 @@ const SimpleDashboard = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Additional Stat Row */}
       <div className="stats-grid-secondary">
         <div className="stat-card stat-card-indigo">
@@ -95,7 +95,7 @@ const SimpleDashboard = () => {
             <p className="stat-change stat-change-indigo">Next event in 2 days</p>
           </div>
         </div>
-        
+
         <div className="stat-card stat-card-amber">
           <div className="stat-icon-container">
             <div className="stat-icon stat-icon-amber">
@@ -108,7 +108,7 @@ const SimpleDashboard = () => {
             <p className="stat-change stat-change-amber">5 require immediate action</p>
           </div>
         </div>
-        
+
         <div className="stat-card stat-card-emerald">
           <div className="stat-icon-container">
             <div className="stat-icon stat-icon-emerald">
@@ -121,11 +121,11 @@ const SimpleDashboard = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Business Agents Section */}
       <div className="section-card">
         <h2 className="section-title">Business Agents</h2>
-        
+
         <div className="agents-list">
           <div className="agent-item">
             <div className="agent-status agent-status-active"></div>
@@ -138,7 +138,7 @@ const SimpleDashboard = () => {
             </div>
             <div className="agent-badge">Premium</div>
           </div>
-          
+
           <div className="agent-item">
             <div className="agent-status agent-status-active"></div>
             <div className="agent-avatar">
@@ -150,7 +150,7 @@ const SimpleDashboard = () => {
             </div>
             <div className="agent-badge">Premium</div>
           </div>
-          
+
           <div className="agent-item">
             <div className="agent-status agent-status-active"></div>
             <div className="agent-avatar">
@@ -161,7 +161,7 @@ const SimpleDashboard = () => {
               <p className="agent-type">Hotel and Restaurant</p>
             </div>
           </div>
-          
+
           <div className="agent-item">
             <div className="agent-status agent-status-active"></div>
             <div className="agent-avatar">
@@ -172,7 +172,7 @@ const SimpleDashboard = () => {
               <p className="agent-type">Rent and Taxi Services</p>
             </div>
           </div>
-          
+
           <div className="agent-item">
             <div className="agent-status agent-status-active"></div>
             <div className="agent-avatar">
@@ -184,14 +184,14 @@ const SimpleDashboard = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="button-container">
           <button className="button button-blue">
             View All Partners
           </button>
         </div>
       </div>
-      
+
       {/* Quick Actions Section */}
       <div className="section-card">
         <h2 className="section-title">Quick Actions</h2>
