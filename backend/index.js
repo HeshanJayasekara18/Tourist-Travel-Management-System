@@ -10,6 +10,8 @@ const testRoute = require('./route/testRoute');
 const vehicleRoute = require('./route/VehicleRoute');
 const hotelRoomRoute = require('./route/HotelRoomRoute');
 const bussinessRegisterRoute = require('./route/BussinessRegisterRoute');
+const feedbackRoute = require('./route/feedbackRoute');
+const TourGuideRoute = require('./route/TourGuideRoute');
 
 dotenv.config();
 
@@ -26,8 +28,14 @@ app.use('/api',testRoute);
 app.use('/api/vehicle',vehicleRoute);
 app.use('/api/hotelRoom',hotelRoomRoute);
 app.use('/api/bussinessRegister',bussinessRegisterRoute);
+app.use('/api/feedback',feedbackRoute);
+app.use('/api/tourGuide', TourGuideRoute);
 
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+app.get("/", (req, res) => {
+    res.send("Hello World");
+  });
