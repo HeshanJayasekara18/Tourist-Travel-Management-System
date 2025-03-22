@@ -5,7 +5,7 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 150px;
+  margin-top: 50px;
 }
 
 .header {
@@ -21,8 +21,8 @@
 }
 
 .add-button {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #72c4df;
+  color: rgb(9, 9, 9);
   border: none;
   padding: 10px 15px;
   border-radius: 4px;
@@ -35,7 +35,7 @@
 }
 
 .add-button:hover {
-  background-color: #3e8e41;
+  background-color: #a1dfdc;
 }
 
 /* Grid Layout for Tour Packages */

@@ -1,0 +1,97 @@
+.guide-container-h {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Increased from 30px to 40px for better spacing */
+    justify-content: space-between; /* Changed from flex-start to space-between for even distribution */
+    padding: 10px 24px; /* Slightly increased padding */
+    margin-top: 20px; /* Added top margin for better vertical spacing */
+    max-width: 1200px; /* Optional: limits maximum width for larger screens */
+    margin-left: 250px;
+    margin-right: auto;
+    margin-top: 180px;
+}
+
+.card-h:last-child {
+    margin-right: auto; /* Pushes the last card to the right */
+}
+
+.card-h {
+    width: 250px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+}
+
+.card-image-h {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    background: #f0f0f0; /* Placeholder for missing images */
+}
+
+.card-content-h {
+    padding: 0px 0;
+}
+
+.rating-h {
+    font-size: 14px;
+    color: #ffa500;
+    margin-bottom: 5px;
+}
+
+.name-h {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.price-h {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(3, 132, 3);
+}
+
+.line-h {
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    margin: 10px 0;
+}
+
+.car-features-h {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 5px 0;
+}
+
+.feature-h {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    gap: 5px;
+}
+
+.feature-h svg {
+    color: #555;
+}
+
+.book-button-h {
+    width: 100%;
+    background: #117d2a;
+    color: white;
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.book-button-h:hover {
+    background: #14a8c2;
+}

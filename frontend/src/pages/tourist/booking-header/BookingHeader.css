@@ -1,0 +1,65 @@
+.booking-header-h {
+    position: fixed;
+    top: 70px;
+    left: 260px;
+    width: 80%;
+    height: 70px; /* Adjust height as needed */
+    background-color: #FDFDFD; /* Light background */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    border-radius: 15px; /* Rounded corners */
+    border: 1px solid #E0E0E0; /* Light border */
+    z-index: 1000;
+}
+
+/* Left Section */
+.header-left .date-section-h {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Title */
+.header-title-h {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    margin-right: 80vb;
+}
+
+/* Right Section */
+.header-right-h {
+    display: flex;
+    align-items: center;
+}
+
+/* Search Box */
+.search-container-h {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-box-h {
+    border: none;
+    outline: none;
+    padding: 8px;
+    width: 150px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+.filter-button-h {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 10px;
+}
