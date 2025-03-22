@@ -37,7 +37,7 @@ function HotelRoomCard({hotel,getAllHotelRoom,HR_Id}) {
           console.error(error);
         });
 
-      }
+    }
 
 
     return (
@@ -94,7 +94,7 @@ function HotelRoomCard({hotel,getAllHotelRoom,HR_Id}) {
             {/* Material UI Dialog Popup */}
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
                 <DialogContent md={{ width: "500px"}}>
-                  <HotelForm HR_Id={hotel.HR_Id} type="Update" getAllHotelRoom={getAllHotelRoom}/>               
+                  <HotelForm hotelRoom={hotel} type="Update" getAllHotelRoom={getAllHotelRoom}/>               
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={handleClose} color="secondary">

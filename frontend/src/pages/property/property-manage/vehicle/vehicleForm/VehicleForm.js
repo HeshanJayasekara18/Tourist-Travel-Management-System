@@ -1,8 +1,27 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./VehicleForm.css";
 import axios from 'axios';
 
-function VehicleForm({ V_Id , type , getAllVehicle}) {
+function VehicleForm({ vehicle , type , getAllVehicle}) {
+
+    //set data to textfeild when click update button
+    useEffect(() => {
+        if (type === "Update" && vehicle) {
+            setFormData({
+                B_Id: vehicle.B_Id || "B001",
+                modelName: vehicle.modelName || "",
+                seats: vehicle.seats || 0,
+                doors: vehicle.doors || 0,
+                fuelType: vehicle.fuelType || "",
+                transmission: vehicle.transmission || "",
+                priceDay: vehicle.priceDay || 0,
+                priceMonth: vehicle.priceMonth || 0,
+                status: vehicle.status || "",
+                image: null // Image should not be pre-filled for security reasons
+            });
+        }
+    }, [vehicle, type]);
+
     const [formData, setFormData] = useState({
         B_Id:"B001",
         modelName: "",
@@ -54,7 +73,7 @@ function VehicleForm({ V_Id , type , getAllVehicle}) {
     };
 
     const updateVehicle = () => {
-        axios.put(`http://localhost:4000/api/vehicle/${V_Id}`, formData, {
+        axios.put(`http://localhost:4000/api/vehicle/${vehicle.V_Id}`, formData, {
             headers: { "Content-Type": "multipart/form-data" }
         })
         .then(response => {

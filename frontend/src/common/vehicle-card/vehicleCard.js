@@ -79,7 +79,7 @@ function VehicleCard({ vehicle , getAllVehicle,V_Id }) {
           {/* Material UI Dialog Popup */}
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" >
          <DialogContent md={{ width: "800px"}}>
-            <VehicleForm V_Id={vehicle.V_Id} type="Update" getAllVehicle ={getAllVehicle}/>
+            <VehicleForm vehicle={vehicle} type="Update" getAllVehicle ={getAllVehicle}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
