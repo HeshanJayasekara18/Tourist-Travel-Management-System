@@ -1,7 +1,7 @@
 import React from "react";
 import "./BookingHeader.css";
 
-function BookingHeader() {
+function BookingHeaderTour() {
     return (
         <div className="booking-header">
             <div className="header-left">
@@ -11,7 +11,7 @@ function BookingHeader() {
                 </div>
             </div>
             
-            <h2 className="header-title">| Book Your Hotel</h2>
+            <h2 className="header-title">| Plan Your Tour</h2>
 
             <div className="header-right">
                 
@@ -25,4 +25,4 @@ function BookingHeader() {
     );
 }
 
-export default BookingHeader;
+export default BookingHeaderTour;

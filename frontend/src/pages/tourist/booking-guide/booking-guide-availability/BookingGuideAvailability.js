@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import './BookingGuideAvailability.css'; // We'll define this CSS below
+import './BookingGuideAvailability.css'; 
+
+
 
 const BookingGuideAvailability = () => {
   const [selectedDate, setSelectedDate] = useState(18);
