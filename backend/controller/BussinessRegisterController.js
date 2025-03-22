@@ -1,37 +1,93 @@
+const User = require('../model/User');
+const Bussiness = require('../model/Bussiness'); 
+const BussinessAgent = require('../model/BussinessAgent');
 const User = require ('../model/User');
-const Bussiness = require ('../model/Bussiness'); 
-const BussinessAgent = require ('../model/BussinessAgent');
+const Tourist = require ('../model/Tourist'); 
+const Tour = require ('../model/Tour');
+const Booking = require ('../model/Booking');
 
 
 const register = async (req, res) => {
     try {
+        // Check if the user already exists
+        const existingUser = await User.findOne({ email: req.body.email });
+
+        if (existingUser) {
+            return res.status(400).json({ message: "Email is already registered. Please use a different email." });
+        }
+
+        // Create User
         const user = await User.create({          
-            username: req.body.username,
-            password: req.body.password, // Hash the password before saving
+            username: req.body.email,
+            password: req.body.password, 
             role: req.body.role,
             email: req.body.email
         });
 
-        const bussinessAgent = await BussinessAgent.create({
-            fullname: req.body.fullname,
-            address: req.body.agentAddress,
+        // Create Business Agent
+        const businessAgent = await BussinessAgent.create({
+            fullname: req.body.fullName, // Corrected property name
+            userAddress: req.body.userAddress, // Mapped correctly from frontend
             contact: req.body.contact,
-            userID: user.userID
+            userID: user.userID // Use MongoDB's default _id
         });
 
-        const bussiness = await Bussiness.create({
-            BA_Id: bussinessAgent.BA_Id,
-            name: req.body.businessName,
-            address: req.body.businessAddress,
+        // Create Business
+        const business = await Bussiness.create({
+            BA_Id: businessAgent.BA_Id, // Corrected reference
+            businessName: req.body.businessName,
+            businessAddress: req.body.businessAddress,
             description: req.body.description,
-            bussinessType: req.body.bussinessType,
-            fileUpload1: req.body.fileUpload1
+            bussinessType: req.body.businessType, // Fixed spelling
+            businessFile: req.body.businessFile // Ensure file upload handling
         });
 
-        res.status(201).json({ message: "User, Business Agent, and Business created successfully", user, bussinessAgent, bussiness });
+        res.status(201).json({ 
+            message: "User, Business Agent, and Business created successfully", 
+            user, 
+            businessAgent, 
+            business 
+        });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-module.exports = { register };
+
+const getBussinessDetails = async (req, res) => {
+    try {
+        const { B_Id } = req.query;      
+
+        const business = await Bussiness.findOne({ B_Id: B_Id });
+
+        if (!business) {
+            return res.status(404).json({ message: "Business not found" });
+        }
+
+        const businessAgent = await BussinessAgent.findOne({ BA_Id: business.BA_Id });
+
+        if (!businessAgent) {
+            return res.status(404).json({ message: "Business Agent not found" });
+        }
+
+        const user = await User.findOne({ userID : businessAgent.userID });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "Business details retrieved successfully",
+            user,
+            businessAgent,
+            business
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { register, getBussinessDetails };
+
