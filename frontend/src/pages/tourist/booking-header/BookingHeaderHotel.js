@@ -1,7 +1,7 @@
 import React from "react";
-import "./BookingHotelHeadbar.css";
+import "./BookingHeader.css";
 
-function BookingHotelHeadbar() {
+function BookingHeaderHotel() {
     return (
         <div className="booking-header">
             <div className="header-left">
@@ -25,4 +25,4 @@ function BookingHotelHeadbar() {
     );
 }
 
-export default BookingHotelHeadbar;
+export default BookingHeaderHotel;

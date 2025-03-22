@@ -1,9 +1,10 @@
 import React from "react";
 import "./BookingHotel.css";
-
+import BookingHeaderHotel from "../booking-header/BookingHeaderHotel";
 
 function BookingHotel() {
     return (
+        <><BookingHeaderHotel />
         <div className="hotel-booking-container">
             <div className="hotel-list">
                 <div className="hotel-card">
@@ -91,7 +92,7 @@ function BookingHotel() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></>
     );
 }
 

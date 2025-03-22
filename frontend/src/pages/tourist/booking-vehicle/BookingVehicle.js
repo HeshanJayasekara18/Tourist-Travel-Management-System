@@ -2,6 +2,7 @@ import React from "react";
 import "./BookingVehicle.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faGasPump, faCarSide, faCogs } from "@fortawesome/free-solid-svg-icons";
+import BookingHeaderVehicle from "../booking-header/BookingHeaderVehicle";
 
 
 const guides = [
@@ -50,6 +51,7 @@ const guides = [
 
 function BookingVehicle() {
     return (
+        <><BookingHeaderVehicle />
         <div className="guide-container rtl">
             {guides.map((guide) => (
                 <div className="card" key={guide.id}>
@@ -61,7 +63,7 @@ function BookingVehicle() {
                             <span className="price-value">{guide.price}</span> / Day
                         </p>
                         <div className="line"></div>
-                        
+
 
                         <div className="car-features">
                             <div className="feature">
@@ -80,12 +82,12 @@ function BookingVehicle() {
                                 <FontAwesomeIcon icon={faCogs} />
                                 <span>Automatic</span>
                             </div>
-                            </div>
+                        </div>
                         <button className="book-button">Book</button>
                     </div>
                 </div>
             ))}
-        </div>
+        </div></>
     );
 }
 

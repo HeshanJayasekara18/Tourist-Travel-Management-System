@@ -8,12 +8,33 @@ import h4 from '../../../images/h4.png';
 import h5 from '../../../images/h5.png';
 import h6 from '../../../images/h6.png';
 import h7 from '../../../images/h7.png';
+import { useNavigate } from "react-router-dom";
 
 
 
 
 
 function BookingNavbar(){
+    const navigate=useNavigate();
+
+    const onClickTourPlan=()=>{
+        navigate('/tourist/');
+    }
+
+    const onClickHotelBook=()=>{
+        navigate('/tourist/hotel-book');
+    }
+
+    const onClickVehicleBook=()=>{
+        navigate('/tourist/vehicle-book');
+    }
+    const onClickGuideBook=()=>{
+        navigate('/tourist/guide-book');
+    }
+
+    const onClickTouristProfile=()=>{
+        navigate('/tourist/profile');
+    }
     return(
         <div class="mainSideNav">
 
@@ -24,26 +45,26 @@ function BookingNavbar(){
             <div class="sideNavBody">
                   <div class="sub1">
                     
-
-                    <div class="sideNavbtn">
-                        <img src={h1} className="icons" />   
-                        <button>Dashboard</button>
-                    </div>
                     <div class="sideNavbtn">
                         <img src={h2} className="icons" /> 
-                        <button>Tour Manage</button>
+                        <button onClick={onClickTourPlan}>Tour Manage</button>
                     </div>
                     <div class="sideNavbtn">
                         <img src={h3} className="icons" /> 
-                        <button>Hotel Book</button>
+                        <button onClick={onClickHotelBook}>Hotel Book</button>
                     </div>
                     <div class="sideNavbtn">
                         <img src={h4} className="icons" />
-                        <button>Vehicle Book</button>
+                        <button onClick={onClickVehicleBook}>Vehicle Book</button>
+                    </div>
+
+                    <div class="sideNavbtn">
+                        <img src={h4} className="icons" />
+                        <button onClick={onClickGuideBook}>Guide Book</button>
                     </div>
                     <div class="sideNavbtn">
                         <img src={h5} className="icons" />
-                        <button>Payment</button>
+                        <button onClick={null}>Payment</button>
                     </div>
                     </div>
 
