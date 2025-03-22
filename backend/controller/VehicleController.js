@@ -68,6 +68,38 @@ const addVehicle = async (req, res) => {
     }
 };
 
+const updateVehicle = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const updateData = { ...req.body };
+
+     
+        if (req.file) {
+            updateData.image = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            };
+        }
+
+        // Update the vehicle based on V_Id
+        const updatedVehicle = await Vehicle.findOneAndUpdate(
+            { V_Id: id },  // Query by V_Id instead of _id
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedVehicle) {
+            return res.status(404).json({ message: "Vehicle not found" });
+        }
+
+        res.status(200).json({ message: "Vehicle updated successfully", updatedVehicle });
+
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+};
+
+
 
 const getAllVehicle = async (req, res) => {
     try {
@@ -97,21 +129,6 @@ const getAllVehicle = async (req, res) => {
     }
 };
 
-
-const updateVehicle = async (req,res) => {
-    const V_Id = req.params.id; 
-    const body = req.body; 
-    try{
-        const updateVehicle = await Vehicle.findOneAndUpdate(
-            { V_Id: V_Id },
-            body,
-            { new: true, runValidators: true } 
-          );
-        res.status(200).json(updateVehicle);
-    }catch(error){
-        res.status(500).json({message:error.message});
-    }
-}
 const deleteVehicle = async (req,res) => {
     const V_Id = req.params.id;  
     try{

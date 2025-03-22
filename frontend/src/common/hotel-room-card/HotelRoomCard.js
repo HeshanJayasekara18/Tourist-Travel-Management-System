@@ -6,7 +6,40 @@ import v13 from '../../images/v13.png';
 import v19 from '../../images/v19.png';
 import v24 from '../../images/v24.png';
 
-function HotelRoomCard({hotel}) {
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import {useState} from 'react';
+import axios from 'axios';
+import HotelForm from "../../pages/property/property-manage/hotel/HotelForm/HotelForm";
+
+function HotelRoomCard({hotel,getAllHotelRoom,HR_Id}) {
+
+    
+    const [open, setOpen] = useState(false);
+
+            
+        // Open & Close Handlers
+    const handleClickOpen = () => {
+     setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+        getAllHotelRoom();
+
+    };
+
+    const deleteHotelRoom=()=>{
+        axios.delete(`http://localhost:4000/api/hotelRoom/${HR_Id}`)
+        .then(response => {
+            getAllHotelRoom();
+            console.log(response.data)        
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+      }
+
+
     return (
         <div className="main-card">
             
@@ -46,8 +79,8 @@ function HotelRoomCard({hotel}) {
 
              <div class="btnDiv">
                 <div class="btns">
-                    <button class="editBtn">Update</button>
-                     <button class="deleteBtn">Delete</button>
+                    <button class="editBtn" onClick={handleClickOpen}>Update</button>
+                     <button class="deleteBtn" onClick={deleteHotelRoom}>Delete</button>
                 </div>
 
                 <div>
@@ -57,6 +90,18 @@ function HotelRoomCard({hotel}) {
             
 
             </div>
+
+            {/* Material UI Dialog Popup */}
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+                <DialogContent md={{ width: "500px"}}>
+                  <HotelForm HR_Id={hotel.HR_Id} type="Update" getAllHotelRoom={getAllHotelRoom}/>               
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose} color="secondary">
+                    Cancel
+                </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

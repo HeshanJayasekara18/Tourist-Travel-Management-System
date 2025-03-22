@@ -13,7 +13,7 @@ const {
 router.get('/', getAllVehicle); 
 router.get('/:id', getVehicle);  
 router.post("/", upload.single("image"), addVehicle);
-router.put('/:id', updateVehicle); 
+router.put("/:id", upload.single("image"), updateVehicle);
 router.delete('/:id', deleteVehicle); 
 
 module.exports = router;

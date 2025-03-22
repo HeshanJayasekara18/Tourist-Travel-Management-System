@@ -92,20 +92,43 @@ const getHotelRoom = async (req,res) => {
     }
 }
 
-const updateHotelRoom = async (req,res) => {
-    const HR_Id = req.params.id; 
-    const body = req.body; 
-    try{
-        const updateHotelRoom = await HotelRoom.findOneAndUpdate(
-            { HR_Id: HR_Id },
-            body,
-            { new: true, runValidators: true } 
-          );
-        res.status(200).json(updateHotelRoom);
-    }catch(error){
-        res.status(500).json({message:error.message});
+const updateHotelRoom = async (req, res) => {
+    try {
+        const { id } = req.params; // HR_Id
+        const updateData = { ...req.body };  // Get the data from the request body
+
+        // If an image is uploaded, handle the image data similarly to how it is handled for the vehicle update
+        if (req.file) {
+            updateData.image = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            };
+        }
+
+        // Update the hotel room based on HR_Id
+        const updatedHotelRoom = await HotelRoom.findOneAndUpdate(
+            { HR_Id: id },  // Query by HR_Id instead of _id
+            updateData,
+            { new: true, runValidators: true }  // Ensures the updated data is validated
+        );
+
+        // If the hotel room isn't found, return a 404 response
+        if (!updatedHotelRoom) {
+            return res.status(404).json({ message: "Hotel room not found" });
+        }
+
+        // If update is successful, return the updated hotel room data
+        res.status(200).json({
+            message: "Hotel room updated successfully",
+            updatedHotelRoom
+        });
+
+    } catch (error) {
+        // Handle errors, especially server errors
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
-}
+};
+
 const deleteHotelRoom= async (req,res) => {
     const HR_Id = req.params.id;  
     try{

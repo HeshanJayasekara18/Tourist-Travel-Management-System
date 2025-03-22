@@ -59,7 +59,7 @@ function HotelPage() {
 
         <div className="hotel-card">
           {hotelData.map((hotel) => (
-            <HotelRoomCard key={hotel.HR_Id} hotel={hotel} />
+            <HotelRoomCard key={hotel.HR_Id} HR_Id={hotel.HR_Id} hotel={hotel} getAllHotelRoom={getAllHotelRoom}/>
           ))}
         </div>
       </div>
@@ -67,7 +67,7 @@ function HotelPage() {
       {/* Material UI Dialog Popup */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogContent md={{ width: "500px"}}>
-          <HotelForm/>
+          <HotelForm HR_Id={hotelData.HR_Id} type="Submit" getAllHotelRoom={getAllHotelRoom} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">

@@ -13,7 +13,7 @@ const {
 router.get('/', getAllHotelRoom);
 router.get('/:id', getHotelRoom);    
 router.post('/', upload.single("image") ,addHotelRoom);      
-router.put('/:id', updateHotelRoom); 
+router.put('/:id',upload.single("image"),updateHotelRoom); 
 router.delete('/:id', deleteHotelRoom); 
 
 module.exports = router;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./VehicleForm.css";
 import axios from 'axios';
 
-function VehicleForm() {
+function VehicleForm({ V_Id , type , getAllVehicle}) {
     const [formData, setFormData] = useState({
         B_Id:"B001",
         modelName: "",
@@ -27,8 +27,16 @@ function VehicleForm() {
     };
 
     const onSubmit = () => {
+
+        if(type=="Submit"){
+            createVehicle();
+           
+        }else if(type=="Update"){
+            updateVehicle();
+          
+        }
         console.log("My Form Data", formData);
-        createVehicle();
+      
     };
 
     const createVehicle = () => {
@@ -37,19 +45,35 @@ function VehicleForm() {
         })
         .then(response => {
             alert("Vehicle added successfully!");
+            getAllVehicle();
             console.log(response.data);
         })
         .catch(error => {
             console.error("Error adding vehicle:", error);
         });
     };
+
+    const updateVehicle = () => {
+        axios.put(`http://localhost:4000/api/vehicle/${V_Id}`, formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        })
+        .then(response => {
+            alert("Vehicle updated successfully!");   
+            getAllVehicle();       
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error("Error adding vehicle:", error);
+        });
+    };
+ 
     
 
 
     return (
         <div className="MainVehicleForm">
             <div className="VehicleFormHeader">
-                <h4>Vehicle Form</h4>
+                <h4>Vehicle  {type} Form</h4>
             </div>
             <div className="VformBody">
                 <div className="formInputSet">
@@ -129,7 +153,7 @@ function VehicleForm() {
                 </div>
             </div>
             <div className="Vbtn">
-                <button type="button" onClick={onSubmit}>Submit</button>
+                <button type="button" onClick={onSubmit}>{type}</button>
             </div>
         </div>
     );

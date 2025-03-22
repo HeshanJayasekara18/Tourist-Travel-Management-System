@@ -60,7 +60,7 @@ function VehiclePage (){
           <div class="vehicle-card">
              {
                  vehicleData.map((vehicle)=>(
-                     <VehicleCard key={vehicle.V_Id} vehicle={vehicle}/>   
+                     <VehicleCard key={vehicle.V_Id} V_Id={vehicle.V_Id} vehicle={vehicle}  getAllVehicle ={getAllVehicle}/>   
                 ))
               }
           </div>
@@ -68,7 +68,7 @@ function VehiclePage (){
         {/* Material UI Dialog Popup */}
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" >
          <DialogContent md={{ width: "800px"}}>
-          <VehicleForm/>
+          <VehicleForm V_Id={vehicleData.V_Id}  type="Submit" getAllVehicle ={getAllVehicle}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
