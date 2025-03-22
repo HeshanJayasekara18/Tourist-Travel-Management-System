@@ -19,12 +19,15 @@ import BookingHotel from './pages/tourist/booking-hotel/BookingHotel'
 import BookingPayment from './pages/tourist/booking-payment/BookingPayment';
 import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
-import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
+
 import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
 import Tourist from './pages/tourist/Tourist';
 import TouristDetailsHeader from './pages/tourist/user-detail-nav/TouristDetailsHeader';
 import TouristProfile from './pages/tourist/tourist-profile/TouristProfile';
 import BookingGuideAvailability from './pages/tourist/booking-guide/booking-guide-availability/BookingGuideAvailability'
+import MainLogin from './common/main-login/MainLogin';
+import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
+import LandingPages from './pages/landing/Landing';
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/tourist-signup" element={<TouristSignup/>}/>
+            <Route path="/property-signup" element={<PropertySignup/>}/>
+            <Route path="/login" element={<MainLogin/>}/>
+            <Route path="/" element={<LandingPages/>}/>
 
 
             <Route
