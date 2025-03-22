@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import './DisplayDetails.css';
+import Homepage from '../addpackage/Addpackage.js';
 
 const DisplayDetails = () => {
   // Sample data for testing
@@ -88,6 +90,23 @@ const DisplayDetails = () => {
   const [viewPackage, setViewPackage] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  // 🛠️ Fixed: Correct state definition for Dialog
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const getAllPackages = () => {
+    console.log("Fetching all packages...");
+    // Add API call logic here if needed
+  };
+
+  const handleClickOpen = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsDialogOpen(false);
+    getAllPackages();
+  };
+
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this tour package?')) {
       setTourPackages(tourPackages.filter(pkg => pkg.tp_Id !== id));
@@ -100,6 +119,11 @@ const DisplayDetails = () => {
     setShowModal(true);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setViewPackage(null);
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -109,19 +133,21 @@ const DisplayDetails = () => {
     });
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setViewPackage(null);
-  };
+  
+
+
+  
 
   return (
     <div className="tour-packages-container">
       <div className="header">
         <h1>Tour Packages</h1>
-        <button className="add-button" onClick={() => window.location.href = '/add-tour'}>
+        <button className="add-button" onClick={handleClickOpen}>
           <span style={{ marginRight: '8px' }}>&#10133;</span> Add New Package
         </button>
+       
       </div>
+      
 
       <div className="tour-packages-grid">
         {tourPackages.length === 0 ? (
@@ -186,13 +212,21 @@ const DisplayDetails = () => {
             </div>
             
             <div className="modal-footer">
-              <button className="edit-btn" onClick={() => window.location.href = `/edit-tour/${viewPackage.tp_Id}`}>
-                <span style={{ marginRight: '5px' }}>&#9998;</span> Edit Package
-              </button>
+              
             </div>
           </div>
         </div>
       )}
+     <Dialog open={isDialogOpen} onClose={handleClose} fullWidth maxWidth="md">
+        <DialogContent>
+          <Homepage />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
