@@ -6,7 +6,7 @@ import h9 from '../../images/h9.png';
 
 function UserDetailNav(){
     return (
-        <div class="mainUserDetailNav">
+        <div class="mainUserDetailNav-p">
             <div class="userDetailsub1">
                  <span class="s1">Welcome</span>
                  <span class="s2">Saman Kumara</span>

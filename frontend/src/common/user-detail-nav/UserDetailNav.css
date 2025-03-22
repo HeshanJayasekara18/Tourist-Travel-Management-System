@@ -1,9 +1,7 @@
-.mainUserDetailNav{
+.mainUserDetailNav-p{
     position:relative;
-    top:0;
-    right: 0;
-    left: 0;
-    width:85vw;
+
+    width:82vw;
     z-index: 1000;
     background-color:#FDFDFD;
     display: flex;
@@ -11,7 +9,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.8rem;
-    margin-left: 220px;
+   margin-left: 10px;
 }
 
 .userDetailsub1{
