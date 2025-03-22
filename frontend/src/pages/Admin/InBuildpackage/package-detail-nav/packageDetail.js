@@ -8,7 +8,7 @@ function PackageDetail(){
         <div class="mainUserDetailNav">
             <div class="userDetailsub1">
                  <span class="s1">Welcome</span>
-                 <span class="s2">Saman Kumara</span>
+                 <span class="s2">Adminstartor</span>
             </div>
             <div class="userDetailsub2">
                 <img src={v8} class="icons"/>
