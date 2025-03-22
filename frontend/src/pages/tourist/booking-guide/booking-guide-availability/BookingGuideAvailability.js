@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './BookingGuideAvailability.css'; 
 
-
-
 const BookingGuideAvailability = () => {
   const [selectedDate, setSelectedDate] = useState(18);
   const [currentMonth, setCurrentMonth] = useState('May');
@@ -13,10 +11,6 @@ const BookingGuideAvailability = () => {
     return new Date(year, month + 1, 0).getDate();
   };
   
-
-  
-
-
   const generateCalendarDays = () => {
     const monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 
                          'July', 'August', 'September', 'October', 'November', 'December']
@@ -78,54 +72,54 @@ const BookingGuideAvailability = () => {
   const calendarDays = generateCalendarDays();
   
   return (
-    <div className="availability-container">
-      <h2 className="availability-title">Availability</h2>
+    <div className="availability-container-h">
+      <h2 className="availability-title-h">Availability</h2>
       
-      <div className="availability-content">
+      <div className="availability-content-h">
         {/* Guide Profile Card */}
-        <div className="guide-card">
+        <div className="guide-card-h">
           <img 
             src="/api/placeholder/200/160" 
             alt="Guide profile" 
-            className="guide-image"
+            className="guide-image-h"
           />
-          <div className="rating">
-            <span className="star">★</span>
-            <span className="star">★</span>
-            <span className="star">★</span>
-            <span className="star">★</span>
-            <span className="star">★</span>
+          <div className="rating-h">
+            <span className="star-h">★</span>
+            <span className="star-h">★</span>
+            <span className="star-h">★</span>
+            <span className="star-h">★</span>
+            <span className="star-h">★</span>
           </div>
-          <h3 className="guide-name">Saman kumara</h3>
-          <p className="guide-price">$2750 / Day</p>
+          <h3 className="guide-name-h">Saman kumara</h3>
+          <p className="guide-price-h">$2750 / Day</p>
           
-          <div className="guide-languages">
-            <p className="language-label">Languages -</p>
-            <p className="language-list">English,France</p>
+          <div className="guide-languages-h">
+            <p className="language-label-h">Languages -</p>
+            <p className="language-list-h">English, France</p>
           </div>
           
-          <button className="view-profile-btn">View Profile</button>
+          <button className="view-profile-btn-h">View Profile</button>
         </div>
         
         {/* Calendar */}
-        <div className="calendar-container">
-          <div className="calendar-header">
-            <p className="select-text">Please Select Tour Days</p>
+        <div className="calendar-container-h">
+          <div className="calendar-header-h">
+            <p className="select-text-h">Please Select Tour Days</p>
             
-            <div className="month-navigation">
-              <h3 className="current-month">{`${currentMonth} ${currentYear}`}</h3>
-              <div className="month-buttons">
-                <button className="month-nav-btn" onClick={handlePrevMonth}>&lt;</button>
-                <button className="month-nav-btn" onClick={handleNextMonth}>&gt;</button>
+            <div className="month-navigation-h">
+              <h3 className="current-month-h">{`${currentMonth} ${currentYear}`}</h3>
+              <div className="month-buttons-h">
+                <button className="month-nav-btn-h" onClick={handlePrevMonth}>&lt;</button>
+                <button className="month-nav-btn-h" onClick={handleNextMonth}>&gt;</button>
               </div>
             </div>
           </div>
           
           {/* Calendar grid */}
-          <div className="calendar-grid">
+          <div className="calendar-grid-h">
             {/* Weekday headers */}
             {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day, index) => (
-              <div key={index} className="weekday-header">
+              <div key={index} className="weekday-header-h">
                 {day}
               </div>
             ))}
@@ -134,7 +128,7 @@ const BookingGuideAvailability = () => {
             {calendarDays.map((day, index) => (
               <div 
                 key={index} 
-                className={`calendar-day ${day === selectedDate ? 'selected' : ''} ${!day ? 'empty' : ''}`}
+                className={`calendar-day-h ${day === selectedDate ? 'selected-h' : ''} ${!day ? 'empty-h' : ''}`}
                 onClick={() => day && handleDateClick(day)}
               >
                 {day || ''}
@@ -144,10 +138,11 @@ const BookingGuideAvailability = () => {
         </div>
       </div>
       
-      <div className="action-buttons">
-        <button className="next-btn">Next</button>
+      <div className="action-buttons-h">
+        <button className="next-btn-h">Next</button>
       </div>
     </div>
   );
 };
+
 export default BookingGuideAvailability;

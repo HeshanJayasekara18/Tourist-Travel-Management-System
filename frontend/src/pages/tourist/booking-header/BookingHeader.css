@@ -1,4 +1,4 @@
-.booking-header {
+.booking-header-h {
     position: fixed;
     top: 70px;
     left: 260px;
@@ -16,14 +16,14 @@
 }
 
 /* Left Section */
-.header-left .date-section {
+.header-left .date-section-h {
     font-size: 14px;
     color: #333;
     font-weight: 500;
 }
 
 /* Title */
-.header-title {
+.header-title-h {
     font-size: 18px;
     font-weight: bold;
     color: #000;
@@ -31,13 +31,13 @@
 }
 
 /* Right Section */
-.header-right {
+.header-right-h {
     display: flex;
     align-items: center;
 }
 
 /* Search Box */
-.search-container {
+.search-container-h {
     display: flex;
     align-items: center;
     background: #FFFFFF;
@@ -47,7 +47,7 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.search-box {
+.search-box-h {
     border: none;
     outline: none;
     padding: 8px;
@@ -56,7 +56,7 @@
     border-radius: 8px;
 }
 
-.filter-button {
+.filter-button-h {
     background: transparent;
     border: none;
     cursor: pointer;

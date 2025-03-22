@@ -3,7 +3,7 @@
 
 /*body*/
 
-.hotel--bgbooking{
+.hotel--bgbooking-h{
     background-color: rgb(255, 255, 255);
     margin-top: 150px;
 }
@@ -11,7 +11,7 @@
 
 
 
-.hotel-list {
+.hotel-list-h {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -21,7 +21,7 @@
 
 }
 
-.hotel-card {
+.hotel-card-h {
     display: flex;
     background: rgb(237, 235, 235);
     padding: 40px;
@@ -30,24 +30,24 @@
     align-items: center;
 }
 
-.hotel-image {
+.hotel-image-h {
     width: 400px;
     height: 150px;
     border-radius: 10px;
     margin-right: 15px;
 }
 
-.hotel-info {
+.hotel-info-h {
     flex: 2;
 }
 
-.date-selection {
+.date-selection-h {
     display: flex;
     gap: 10px;
     margin: 10px 0;
 }
 
-.book-now {
+.book-now-h {
     background-color: green;
     color: white;
     padding: 10px 95px;
@@ -57,11 +57,11 @@
     margin-top: 20px;
 }
 
-.book-now:hover {
+.book-now-h:hover {
     background-color: darkgreen;
 }
 
-.price {
+.price-h {
     color: red;
     font-size: 18px;
     font-weight: bold;
