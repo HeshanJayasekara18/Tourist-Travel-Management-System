@@ -1,11 +1,25 @@
 import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import EventNavBar from './pages/Admin/event-manage/eventnavbar/EventNavBar';
+import UserDetailNav from './common/user-detail-nav/UserDetailNav';
+import AddEvent from './pages/Admin/event-manage/addevents/AddEvent'; 
+
+
+
 
 function App() {
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-500">Hello, Tailwind!</h1>
-    </div>
+    <>
+    <EventNavBar />
+   
+    <AddEvent />
+    
+  
+    
+   
+    </>
   );
 }
 
