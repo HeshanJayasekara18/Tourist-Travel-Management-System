@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const PaymentSchema = mongoose.Schema({
     paymentId: { type: String, required: true, unique: true, default: uuidv4 },
+    userID: { type: String, required: true },
     amount: { type: String, required: true, trim: true }, // String to match your requirement
     cardholderName: { type: String, required: true, trim: true },
     cardNumber: { type: String, required: true, trim: true },

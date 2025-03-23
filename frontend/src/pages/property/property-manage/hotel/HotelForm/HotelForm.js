@@ -1,10 +1,28 @@
 import react from "react";
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import "./HotelForm.css";
 import axios from 'axios';
 
 
-function HotelForm(){
+function HotelForm({ hotelRoom , type , getAllHotelRoom}){
+
+    useEffect(() => {
+        if (type === "Update" && hotelRoom) {
+            setFormData({
+                B_Id: hotelRoom.B_Id || "B001",
+                name: hotelRoom.name || "",
+                bed: hotelRoom.bed || 0,
+                max_occupancy: hotelRoom.max_occupancy || 0,
+                price_day: hotelRoom.price_day || 0,
+                price_month: hotelRoom.price_month || 0,
+                quantity: hotelRoom.quantity || 0,
+                availability: hotelRoom.availability || "",
+                description: hotelRoom.description || "",
+                image: null // Image should not be pre-filled for security reasons
+            });
+        }
+    }, [hotelRoom, type]);
+
     const [formData,setFormData] = useState({
         B_Id:"B001",
         name:"",
@@ -29,8 +47,15 @@ function HotelForm(){
     };
 
     const onSubmit = () => {
+        if(type=="Submit"){
+            createHotelRoom();
+           
+        }else if(type=="Update"){
+            updateHotelRoom();
+          
+        }
         console.log("My Form Data", formData);
-        createHotelRoom();
+        
     };
 
     const createHotelRoom=() =>{
@@ -39,6 +64,7 @@ function HotelForm(){
         })
        .then(response => {
            alert("Hotel Room added success");
+           getAllHotelRoom();
            console.log(response.data);          
        })
        .catch(error => {
@@ -47,11 +73,25 @@ function HotelForm(){
 
    }
 
+   const updateHotelRoom = () => {
+    axios.put(`http://localhost:4000/api/hotelRoom/${hotelRoom.HR_Id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    })
+    .then(response => {
+        alert("Hotel updated successfully!");   
+        getAllHotelRoom();       
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.error("Error adding Hotel:", error);
+    });
+};
+
 
     return (
         <div class="MainHotelForm">
             <div class="HotelFormHeader">
-                <h4>Hotel Form</h4>
+                <h4>Hotel {type} Form</h4>
             </div>
             <div class="HformBody">
                 <div class="formInputSet">
@@ -131,7 +171,7 @@ function HotelForm(){
                 </div>
             </div>
             <div class="Hbtn">
-                <button type="button" onClick={onSubmit}>Submit</button>
+                <button type="button" onClick={onSubmit}>{type}</button>
             </div>
 
         </div>
