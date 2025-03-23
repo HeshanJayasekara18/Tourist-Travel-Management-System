@@ -7,8 +7,8 @@ const dotenv = require("dotenv");
 const connectDB = require("./db/db");
 
 const testRoute = require('./route/testRoute');
-const vehicleRoute = require('./route/VehicleRoute');
-const hotelRoomRoute = require('./route/HotelRoomRoute');
+// const vehicleRoute = require('./route/VehicleRoute');
+// const hotelRoomRoute = require('./route/HotelRoomRoute');
 const bussinessRegisterRoute = require('./route/BussinessRegisterRoute');
 const TourPackageRoute = require('./route/TourPackageRoute');
 const PaymentRoute = require('./route/PaymentRoute');
@@ -29,12 +29,12 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 
-app.use('/api',testRoute);
-app.use('/api/vehicle',vehicleRoute);
-app.use('/api/hotelRoom',hotelRoomRoute);
-app.use('/api/bussinessRegister',bussinessRegisterRoute);
-app.use('/api/tourPackage',TourPackageRoute);
-app.use('/api/payment',PaymentRoute);
+// app.use('/api',testRoute);
+// app.use('/api/vehicle',vehicleRoute);
+// app.use('/api/hotelRoom',hotelRoomRoute);
+// app.use('/api/bussinessRegister',bussinessRegisterRoute);
+// app.use('/api/tourPackage',TourPackageRoute);
+// app.use('/api/payment',PaymentRoute);
 
 
 app.use('/api/Booking',BookingRoute);

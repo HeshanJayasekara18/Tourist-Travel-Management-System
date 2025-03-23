@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import './BookingGuideAvailability.css'; 
+import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+
+function useGuideNavigationToBooking() {
+  const navigate = useNavigate();
+  return {
+    onClickGuideAvailability: () => {
+      navigate('/guide-book/guide-availability/guide-book-availability');
+    }
+  };
+}
 
 const BookingGuideAvailability = () => {
   const [selectedDate, setSelectedDate] = useState(18);
