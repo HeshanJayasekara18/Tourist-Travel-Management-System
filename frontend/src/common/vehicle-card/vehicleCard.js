@@ -1,5 +1,4 @@
 import React from "react";
-// import css
 import './vehicleCard.css';
 import v14 from '../../images/v14.png';
 import v15 from '../../images/v15.png';
@@ -7,9 +6,39 @@ import v16 from '../../images/v16.png';
 import v17 from '../../images/v17.png';
 import v18 from '../../images/v18.png';
 import v24 from '../../images/v24.png';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import {useState} from 'react';
+import axios from 'axios';
+import VehicleForm from "../../pages/property/property-manage/vehicle/vehicleForm/VehicleForm";
+
+function VehicleCard({ vehicle , getAllVehicle,V_Id }) { 
+
+     const [vehicleData,setVehicleData]=useState([]);
+     const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+      const handleClose = () => {
+       
+        setOpen(false);
+      };
+
+      const deleteVehicle=()=>{
+        axios.delete(`http://localhost:4000/api/vehicle/${V_Id}`)
+        .then(response => {
+            getAllVehicle();
+            console.log(response.data)        
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+      }
 
 
-function VehicleCard({ vehicle }) {
+   
+
     return (
         <div class="main-vehicle-card">
             <div class="vehicle-image">
@@ -44,9 +73,21 @@ function VehicleCard({ vehicle }) {
                 </div>
             </div>
             <div class="vbtnDiv">           
-                    <button class="VeditBtn">Update</button>
-                     <button class="VdeleteBtn">Delete</button>
-                </div>            
+                    <button class="VeditBtn" onClick={handleClickOpen}>Update</button>
+                     <button class="VdeleteBtn"onClick={deleteVehicle}>Delete</button>
+            </div>    
+          {/* Material UI Dialog Popup */}
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" >
+         <DialogContent md={{ width: "800px"}}>
+            <VehicleForm vehicle={vehicle} type="Update" getAllVehicle ={getAllVehicle}/>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>  
+                    
         </div>
     );
 }
