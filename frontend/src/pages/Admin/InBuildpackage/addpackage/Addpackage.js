@@ -383,9 +383,7 @@ function Homepage() {
             {/* Right Side - Preview & Interactive Elements */}
             <div className="preview-section">
               <div className="sticky-container">
-                <h2 className="section-heading">Package Information</h2>
-                
-                {/* Package Summary */}
+                {/* Package Summary - Keeping just the information but removing the heading and completion bar */}
                 <div className="summary">
                   <h3 className="summary-title">Quick Summary</h3>
                   
@@ -413,21 +411,7 @@ function Homepage() {
                       </span>
                     </div>
                   </div>
-                  
-                  {/* Completion Status */}
-                  <div className="progress-container">
-                    <h4 className="progress-label">Form Completion</h4>
-                    <div className="progress-bar">
-                      <div 
-                        className="progress-indicator"
-                        style={{
-                          width: `${Object.entries(formData).filter(([key, value]) => 
-                            value && key !== 'image'
-                          ).length / (Object.keys(formData).length - 1) * 100}%`
-                        }}
-                      ></div>
-                    </div>
-                  </div>
+                  {/* Removed the completion status/progress bar */}
                 </div>
                 
                 {/* Full Preview */}

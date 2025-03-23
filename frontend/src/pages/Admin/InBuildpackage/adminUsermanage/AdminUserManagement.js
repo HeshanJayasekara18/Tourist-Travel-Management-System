@@ -1,7 +1,6 @@
-// UserManagement.js
 import React, { useState, useEffect } from 'react';
 import './AdminUserManagement.css';
-import { Search, Filter, Trash2, Edit, User, Mail, Calendar, CreditCard, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
+import { Search, Filter, Trash2, User, Mail, CreditCard, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -11,21 +10,21 @@ const UserManagement = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [activeFilters, setActiveFilters] = useState(false);
-  const [filterMonth, setFilterMonth] = useState('');
+  const [filterRole, setFilterRole] = useState('');
   
   // Mock data - in a real app, you would fetch this from an API
   useEffect(() => {
     // Simulate API call
     setTimeout(() => {
       const mockUsers = [
-        { id: 'U001', fullName: 'John Doe', email: 'john@gmail.com', startFrom: '2023-01-15', nic: '654654654648777' },
-        { id: 'U002', fullName: 'Jane Smith', email: 'jane@gmail.com', startFrom: '2023-02-20', nic: '876876887889889' },
-        { id: 'U003', fullName: 'Robert Johnson', email: 'robert@gmail.com', startFrom: '2023-03-10', nic: '876876868776558' },
-        { id: 'U004', fullName: 'Sarah Williams', email: 'sarah@gmail.com', startFrom: '2023-04-05', nic: '657576575765765' },
-        { id: 'U005', fullName: 'Michael Brown', email: 'michael@gmail.com', startFrom: '2023-05-15', nic: '657576575765984' },
-        { id: 'U006', fullName: 'Emily Davis', email: 'emily@gmail.com', startFrom: '2023-06-20', nic: '657576575732165' },
-        { id: 'U007', fullName: 'David Wilson', email: 'david@gmail.com', startFrom: '2023-07-10', nic: '657576575798765' },
-        { id: 'U008', fullName: 'Lisa Taylor', email: 'lisa@gmail.com', startFrom: '2023-08-05', nic: '657576575765123' },
+        { id: 'U001', fullName: 'John Doe', email: 'john@gmail.com', role: 'tourist', nic: '654654654648777' },
+        { id: 'U002', fullName: 'Jane Smith', email: 'jane@gmail.com', role: 'business', nic: '876876887889889' },
+        { id: 'U003', fullName: 'Robert Johnson', email: 'robert@gmail.com', role: 'guide', nic: '876876868776558' },
+        { id: 'U004', fullName: 'Sarah Williams', email: 'sarah@gmail.com', role: 'tourist', nic: '657576575765765' },
+        { id: 'U005', fullName: 'Michael Brown', email: 'michael@gmail.com', role: 'business', nic: '657576575765984' },
+        { id: 'U006', fullName: 'Emily Davis', email: 'emily@gmail.com', role: 'guide', nic: '657576575732165' },
+        { id: 'U007', fullName: 'David Wilson', email: 'david@gmail.com', role: 'tourist', nic: '657576575798765' },
+        { id: 'U008', fullName: 'Lisa Taylor', email: 'lisa@gmail.com', role: 'business', nic: '657576575765123' },
       ];
       setUsers(mockUsers);
       setIsLoading(false);
@@ -79,19 +78,13 @@ const UserManagement = () => {
     setActiveFilters(!activeFilters);
   };
 
-  // Format date for display
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+  // Get formatted role with proper capitalization
+  const formatRole = (role) => {
+    return role.charAt(0).toUpperCase() + role.slice(1);
   };
 
-  // Extract month from date for filtering
-  const getMonthFromDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', { month: 'long' });
-  };
-
-  // Get all available months for filter
-  const availableMonths = [...new Set(users.map(user => getMonthFromDate(user.startFrom)))];
+  // Get all available roles for filter
+  const availableRoles = [...new Set(users.map(user => user.role))];
 
   // Filter users based on search term and filter settings
   const filteredUsers = users.filter(user => {
@@ -101,9 +94,9 @@ const UserManagement = () => {
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.nic.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesMonthFilter = filterMonth === '' || getMonthFromDate(user.startFrom) === filterMonth;
+    const matchesRoleFilter = filterRole === '' || user.role === filterRole;
     
-    return matchesSearch && matchesMonthFilter;
+    return matchesSearch && matchesRoleFilter;
   });
 
   return (
@@ -135,15 +128,15 @@ const UserManagement = () => {
         {activeFilters && (
           <div className="filters-container">
             <div className="filter-group">
-              <label>Start Month:</label>
+              <label>Role:</label>
               <select 
-                value={filterMonth} 
-                onChange={(e) => setFilterMonth(e.target.value)}
+                value={filterRole} 
+                onChange={(e) => setFilterRole(e.target.value)}
                 className="filter-select"
               >
-                <option value="">All Months</option>
-                {availableMonths.map((month, index) => (
-                  <option key={index} value={month}>{month}</option>
+                <option value="">All Roles</option>
+                {availableRoles.map((role, index) => (
+                  <option key={index} value={role}>{formatRole(role)}</option>
                 ))}
               </select>
             </div>
@@ -187,10 +180,10 @@ const UserManagement = () => {
                       )}
                     </div>
                   </th>
-                  <th onClick={() => requestSort('startFrom')} className="sortable-header">
+                  <th onClick={() => requestSort('role')} className="sortable-header">
                     <div className="header-content">
-                      <span>Start From</span>
-                      {sortConfig.key === 'startFrom' && (
+                      <span>Role</span>
+                      {sortConfig.key === 'role' && (
                         sortConfig.direction === 'ascending' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
                       )}
                     </div>
@@ -225,8 +218,8 @@ const UserManagement = () => {
                       </td>
                       <td>
                         <div className="cell-with-icon">
-                          <Calendar size={16} className="cell-icon" />
-                          {formatDate(user.startFrom)}
+                          <User size={16} className="cell-icon" />
+                          {formatRole(user.role)}
                         </div>
                       </td>
                       <td>
@@ -237,9 +230,6 @@ const UserManagement = () => {
                       </td>
                       <td>
                         <div className="action-buttons">
-                          <button className="edit-btn">
-                            <Edit size={16} />
-                          </button>
                           <button 
                             className="delete-btn"
                             onClick={() => handleDelete(user.id)}
