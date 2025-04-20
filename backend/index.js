@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-<<<<<<< HEAD
+
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
@@ -64,6 +64,4 @@ app.get("/", (req, res) => {
 app.get("/", (req, res) => {
     res.send("Hello World");
   });
-=======
-
->>>>>>> d7a4a56c13a8ed53989e56d7bd38e92fae8d6bb3
+ d7a4a56c13a8ed53989e56d7bd38e92fae8d6bb3
