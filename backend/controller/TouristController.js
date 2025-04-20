@@ -26,15 +26,7 @@ const getTourist = async (req, res) => {
 }
 
 const addTourist = async (req, res) => {
-    try {
-        const { touristID } = req.body;
-
-        // Check if tourist with the same touristID already exists
-        const existingTourist = await Tourist.findOne({ touristID });
-
-        if (existingTourist) {
-            return res.status(400).json({ message: 'Tourist with this ID already exists' });
-        }
+    try {  
 
         // Create a new tourist
         const tourist = await Tourist.create(req.body);

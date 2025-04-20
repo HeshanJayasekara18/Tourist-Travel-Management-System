@@ -23,10 +23,10 @@ require("../model/Booking");
 require("../model/Tour");
 require("../model/Tourist");
 require("../model/User");
-// require("../model/Bussiness");
-// require("../model/BussinessAgent");
-// require("../model/Vehicle");
-// require("../model/hotelRoom");
+require("../model/Bussiness");
+require("../model/BussinessAgent");
+require("../model/Vehicle");
+require("../model/hotelRoom");
 require("../model/TourPackage");
 require("../model/Payment");
 
