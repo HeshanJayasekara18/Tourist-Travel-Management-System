@@ -7,14 +7,14 @@
   }
   
   /* Container */
-  .container {
+  .container-login {
     display: flex;
     height: 100vh;
     background-color: #f3f4f6;
   }
   
   /* Left Panel */
-  .left-panel {
+  .left-panel-login {
     width: 50%;
     background-color: #ffffff;
     display: flex;
@@ -24,23 +24,23 @@
     padding: 2rem;
   }
   
-  .logo {
+  .logo-login {
     height: 200px;
     margin-bottom: 1rem;
   }
   
-  .title {
+  .title-login {
     font-size: 1.8rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
   }
   
-  .subtitle {
+  .subtitle-login {
     color: gray;
     margin-bottom: 1.5rem;
   }
   
-  .form {
+  .form-login {
     width: 100%;
     max-width: 350px;
   }
@@ -66,7 +66,7 @@
   }
   
   /* Buttons */
-  .button {
+  .button-login {
     width: 100%;
     background-color: #255cd4;
     color: white;
@@ -77,12 +77,12 @@
     transition: background 0.3s;
   }
   
-  .button:hover {
+  .button-login:hover {
     background-color: #1d4ed8;
   }
   
   /* Divider */
-  .divider {
+  .divider-login {
     display: flex;
     align-items: center;
     width: 100%;
@@ -90,19 +90,19 @@
     margin: 15px 0;
   }
   
-  .divider-line {
+  .divider-line-login {
     flex: 1;
     height: 1px;
     background-color: #ccc;
   }
   
-  .divider-text {
+  .divider-text-login {
     padding: 0 10px;
     color: gray;
   }
   
   /* Sign Up Buttons */
-  .signup-button {
+  .signup-button-login {
     width: 100%;
     max-width: 350px;
     background-color: #e5e7eb;
@@ -115,12 +115,12 @@
     margin-top: 10px;
   }
   
-  .signup-button:hover {
+  .signup-button-login:hover {
     background-color: #d1d5db;
   }
   
   /* Right Panel */
-  .right-panel {
+  .right-panel-login {
     width: 50%;
     background-color: black;
     display: flex;
@@ -131,7 +131,7 @@
     overflow: hidden;
   }
   
-  .right-panel img {
+  .right-panel-login img {
     width: 100%;
     height: 100%;
     object-fit: cover;

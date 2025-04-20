@@ -2,7 +2,7 @@
     position: fixed;
     top: 70px;
     left: 260px;
-    width: 80%;
+    width: calc(100% - 260px); /* Adjust width dynamically */
     height: 70px; /* Adjust height as needed */
     background-color: #FDFDFD; /* Light background */
     display: flex;
@@ -27,7 +27,7 @@
     font-size: 18px;
     font-weight: bold;
     color: #000;
-    margin-right: 80vb;
+    margin-right: 20vw; /* Adjusted from 80vb */
 }
 
 /* Right Section */
@@ -51,7 +51,7 @@
     border: none;
     outline: none;
     padding: 8px;
-    width: 150px;
+    width: 180px; /* Slightly increased for better usability */
     font-size: 14px;
     border-radius: 8px;
 }
@@ -62,4 +62,21 @@
     cursor: pointer;
     font-size: 16px;
     padding: 5px 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking-header-h {
+        left: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .header-title-h {
+        margin-right: 10vw;
+    }
+
+    .search-box-h {
+        width: 120px;
+    }
 }

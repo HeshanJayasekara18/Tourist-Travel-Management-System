@@ -29,6 +29,7 @@ import MainLogin from './common/main-login/MainLogin';
 import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
 import LandingPages from './pages/landing/Landing';
 
+
 function App() {
   return (
     
@@ -70,6 +71,7 @@ function App() {
                 <Route path='Profile' element={<TouristProfile/>}/>
                 <Route path='feedback' element={<CustomerFeedback/>}/>
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
+                <Route path='guide-booking' element={<BookingGuideBooking/>}/>
             </Route>
             
           

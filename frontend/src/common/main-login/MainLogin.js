@@ -25,42 +25,42 @@ const MainLogin = () => {
 
 
   return (
-    <div className="container">
+    <div className="container-login">
       {/* Left Side - Login Form */}
-      <div className="left-panel">
+      <div className="left-panel-login">
         {/* Logo */}
         <div>
-          <img src={hlogo} alt="CeylonGO" className="logo" />
+          <img src={hlogo} alt="CeylonGO" className="logo-login" />
         </div>
-        <h2 className="title">Sign in</h2>
-        <p className="subtitle">Please login to continue to your account</p>
+        <h2 className="title-login">Sign in</h2>
+        <p className="subtitle-login">Please login to continue to your account</p>
 
         {/* Login Form */}
-        <div className="form">
+        <div className="form-login">
           <label>Email</label>
           <input type="email" placeholder="Enter your email" />
 
           <label>Password</label>
           <input type="password" placeholder="Enter your password" />
 
-          <button className="button" onClick={onSubmitLogin}>Sign in</button>
+          <button className="button-login" onClick={onSubmitLogin}>Sign in</button>
         </div>
 
         {/* Divider */}
-        <div className="divider">
-          <div className="divider-line"></div>
-          <span className="divider-text">or</span>
-          <div className="divider-line"></div>
+        <div className="divider-login">
+          <div className="divider-line-login"></div>
+          <span className="divider-text-login">or</span>
+          <div className="divider-line-login"></div>
         </div>
 
         {/* Sign Up Buttons */}
-        <button className="signup-button" onClick={onClickToursitRegister}>Sign Up Tourist</button>
-        <button className="signup-button" onClick={onClickBussnessRegister}>Sign Up Business</button>
-        <button className="signup-button" onClick={onClickGuideRegister}>Sign Up Tour Guide</button>
+        <button className="signup-button-login" onClick={onClickToursitRegister}>Sign Up Tourist</button>
+        <button className="signup-button-login" onClick={onClickBussnessRegister}>Sign Up Business</button>
+        <button className="signup-button-login" onClick={onClickGuideRegister}>Sign Up Tour Guide</button>
       </div>
 
       {/* Right Side - Image */}
-      <div className="right-panel">
+      <div className="right-panel-login">
         <img src={hloginimg} alt="Background" />
       </div>
     </div>

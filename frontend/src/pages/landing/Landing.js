@@ -4,7 +4,7 @@ import Section2 from "./section-2/Section2";
 function LandingPages() {
     return (
         <div>
-            <h1>This is Landing pages</h1>
+            <h1></h1>
 
             <Section1/>
             <Section2/>

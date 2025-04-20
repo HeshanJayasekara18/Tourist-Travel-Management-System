@@ -9,7 +9,7 @@ function useGuideNavigation() {
   const navigate = useNavigate();
   return {
     onClickGuideAvailability: () => {
-      navigate('/guide-book/guide-availability');
+      navigate('/');
     }
   };
 }
