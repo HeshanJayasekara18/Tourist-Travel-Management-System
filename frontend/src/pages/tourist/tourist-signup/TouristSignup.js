@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // ADD THIS
 import './TouristSignup.css';
-import Logo from  "../../../images/h-Logo.png";
-import BodySideimg from "../../../images/body-sideimg.jpg";
 import { CountryCodes } from './CountryCodes';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+
+import Logo from  "../../../images/h-Logo.png";
+import BodySideimg from "../../../images/body-sideimg.jpg";
 
 const TouristSignup = () => {
   const [formData, setFormData] = useState({
@@ -41,79 +43,60 @@ const TouristSignup = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
-    // Full Name validation
-    if (touched.fullName && !formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    }
-
-    // Phone number validation (if provided)
-    if (touched.phoneNumber && formData.phoneNumber) {
-      if (!/^\d{6,15}$/.test(formData.phoneNumber)) {
-        newErrors.phoneNumber = 'Please enter a valid phone number';
-      }
-    }
-
-    // Country validation
-    if (touched.country && !formData.country) {
-      newErrors.country = 'Country is required';
-    }
-
-    // Email validation
+    if (touched.fullName && !formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+    if (touched.phoneNumber && formData.phoneNumber && !/^\d{6,15}$/.test(formData.phoneNumber)) newErrors.phoneNumber = 'Valid phone number required';
+    if (touched.country && !formData.country) newErrors.country = 'Country is required';
     if (touched.email) {
-      if (!formData.email) {
-        newErrors.email = 'Email is required';
-      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-        newErrors.email = 'Please enter a valid email address';
-      }
+      if (!formData.email) newErrors.email = 'Email is required';
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Valid email required';
     }
-    
-    // Password validation
-    if (touched.password) {
-      if (!formData.password) {
-        newErrors.password = 'Password is required';
-      } else if (formData.password.length < 8) {
-        newErrors.password = 'Password must be at least 8 characters long';
-      }
-    }
-    
-    // Re-enter password validation
-    if (touched.reEnterPassword) {
-      if (!formData.reEnterPassword) {
-        newErrors.reEnterPassword = 'Please confirm your password';
-      } else if (formData.password !== formData.reEnterPassword) {
-        newErrors.reEnterPassword = 'Passwords do not match';
-      }
-    }
-    
+    if (touched.password && (!formData.password || formData.password.length < 8)) newErrors.password = 'Min 8 characters';
+    if (touched.reEnterPassword && formData.password !== formData.reEnterPassword) newErrors.reEnterPassword = 'Passwords do not match';
     setErrors(newErrors);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Mark all fields as touched to trigger validation
     const allTouched = {};
-    Object.keys(formData).forEach(key => {
-      allTouched[key] = true;
-    });
+    Object.keys(formData).forEach(key => allTouched[key] = true);
     setTouched(allTouched);
-    
     validateForm();
-    
-    // Check if there are any errors
+  
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
-      console.log('Form submitted:', formData);
-      // Submit form logic would go here
+      try {
+        const fullPhone = formData.countryCode + formData.phoneNumber;
+  
+        const response = await axios.post('http://localhost:4000/api/Tourist', {
+          username: formData.email,
+          fullname: formData.fullName,      
+          email: formData.email,
+          country: formData.country,
+          mobile_number: fullPhone || '',
+          password: formData.password,
+          userID: 'user_' + Date.now()
+        });
+  
+        if (response.status === 201) {
+          alert('Registration Successful!');
+          setFormData({
+            fullName: '',
+            phoneNumber: '',
+            countryCode: '+1',
+            country: '',
+            email: '',
+            password: '',
+            reEnterPassword: ''
+          });
+        }
+      } catch (err) {
+        alert(err.response?.data?.message || 'Registration failed!');
+      }
     }
   };
+  
 
-  const handleSocialSignup = (provider) => {
-    console.log(`Sign up with ${provider}`);
-    // Social sign up logic would go here
-  };
-
+ 
   return (
     <div className="signup-container-h">
       <div className="signup-left-h">
@@ -245,7 +228,7 @@ const TouristSignup = () => {
             <span>or</span>
           </div>
           
-          <div className="social-buttons-h">
+          {/* <div className="social-buttons-h">
             <button 
               type="button" 
               className="social-button-h google-h"
@@ -262,7 +245,7 @@ const TouristSignup = () => {
               <FaFacebook className="social-icon-h" />
               Sign up with Facebook
             </button>
-          </div>
+          </div> */}
           
           <div className="login-link-h">
             Already have an account? <Link to="/login">Sign in</Link>

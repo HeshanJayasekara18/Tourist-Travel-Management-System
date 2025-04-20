@@ -1,20 +1,16 @@
 .guide-container-h {
     display: flex;
-    flex-wrap: wrap;
-    gap: 40px; /* Increased from 30px to 40px for better spacing */
-    justify-content: space-between; /* Changed from flex-start to space-between for even distribution */
-    padding: 10px 24px; /* Slightly increased padding */
-    margin-top: 20px; /* Added top margin for better vertical spacing */
-    max-width: 1200px; /* Optional: limits maximum width for larger screens */
-    margin-left: 250px;
+    flex-wrap: wrap; /* Ensures cards wrap correctly */
+    gap: 40px; /* Better spacing between cards */
+    justify-content: space-evenly; /* Distributes cards evenly */
+    padding: 10px 24px;
+    margin-top: 150px; /* Increased margin to prevent header overlap */
+    max-width: 1200px;
+    margin-left: 280px;
     margin-right: auto;
-    margin-top: 180px;
 }
 
-.card-h:last-child {
-    margin-right: auto; /* Pushes the last card to the right */
-}
-
+/* Card container */
 .card-h {
     width: 250px;
     background: white;
@@ -22,37 +18,52 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     text-align: center;
+    display: flex;
+    flex-direction: column; /* Ensures content stacks properly */
+    justify-content: space-between;
+    height: 100%; /* Ensures card height is consistent */
 }
 
+/* Image container */
 .card-image-h {
     width: 100%;
-    height: 140px;
-    object-fit: cover;
+    height: 180px; /* Fixed height to ensure consistency */
+    object-fit: cover; /* Prevents image distortion */
     background: #f0f0f0; /* Placeholder for missing images */
 }
 
+/* Card content */
 .card-content-h {
-    padding: 0px 0;
+    padding: 10px;
+    flex-grow: 1; /* Ensures content fills available space */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* Rating */
 .rating-h {
     font-size: 14px;
     color: #ffa500;
     margin-bottom: 5px;
 }
 
+/* Car name */
 .name-h {
     font-size: 18px;
     font-weight: bold;
     margin: 5px 0;
 }
 
+/* Price */
 .price-h {
     font-size: 16px;
     font-weight: bold;
     color: rgb(3, 132, 3);
 }
 
+/* Separator line */
 .line-h {
     width: 100%;
     height: 1px;
@@ -60,6 +71,7 @@
     margin: 10px 0;
 }
 
+/* Car features */
 .car-features-h {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -67,6 +79,7 @@
     padding: 5px 0;
 }
 
+/* Feature item */
 .feature-h {
     display: flex;
     align-items: center;
@@ -75,10 +88,12 @@
     gap: 5px;
 }
 
+/* Feature icon */
 .feature-h svg {
     color: #555;
 }
 
+/* Book button */
 .book-button-h {
     width: 100%;
     background: #117d2a;
@@ -94,4 +109,21 @@
 
 .book-button-h:hover {
     background: #14a8c2;
+}
+
+/* Last card fix */
+.card-h:last-child {
+    margin-right: 0; /* Removes unnecessary margin */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .guide-container-h {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .card-h {
+        width: 90%;
+    }
 }

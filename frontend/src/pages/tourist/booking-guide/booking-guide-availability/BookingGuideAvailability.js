@@ -1,158 +1,150 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import './BookingGuideAvailability.css'; 
-import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+import React, { useState, useEffect } from 'react';
+import { Button } from "@mui/material";
+import dayjs from "dayjs";
+import BookingGuideBooking from './booking-guide-booking/BookingGuideBooking';
+import './BookingGuideAvailability.css';
 
-function useGuideNavigationToBooking() {
-  const navigate = useNavigate();
-  return {
-    onClickGuideAvailability: () => {
-      navigate('/guide-book/guide-availability/guide-book-availability');
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                'July', 'August', 'September', 'October', 'November', 'December'];
+
+const BookingGuideAvailability = ({ open, handleClose }) => {
+  
+  const [selectedDates, setSelectedDates] = useState([]); // ✅ Multiple dates support
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [openBookingPopup, setOpenBookingPopup] = useState(false);
+  const [availableDates, setAvailableDates] = useState([]); // ✅ Store available dates
+
+  // Fetch available dates from database (Mock API call)
+  useEffect(() => {
+    const fetchAvailableDates = async () => {
+      const dbDates = ["2025-04-10", "2025-04-12", "2025-04-15", "2025-04-18"];
+      setAvailableDates(dbDates);
+    };
+    fetchAvailableDates();
+  }, []);
+
+  // Handle date selection (✅ Allows multiple selections)
+  const handleDateClick = (day) => {
+    const formattedDate = dayjs(`${currentYear}-${currentMonth + 1}-${day}`).format("YYYY-MM-DD");
+
+    if (dayjs(formattedDate).isBefore(dayjs(), "day")) {
+      return; // ❌ Prevent selecting past dates
+    }
+
+    setSelectedDates((prev) =>
+      prev.includes(formattedDate) ? prev.filter((d) => d !== formattedDate) : [...prev, formattedDate]
+    );
+  };
+
+  const handleNextClick = () => {
+    if (selectedDates.length > 0) {
+      setOpenBookingPopup(true); // ✅ Open Booking popup
     }
   };
-}
 
-const BookingGuideAvailability = () => {
-  const [selectedDate, setSelectedDate] = useState(18);
-  const [currentMonth, setCurrentMonth] = useState('May');
-  const [currentYear, setCurrentYear] = useState(2023);
-  
-  // Calendar data generation
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
   };
-  
+
   const generateCalendarDays = () => {
-    const monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 
-                         'July', 'August', 'September', 'October', 'November', 'December']
-                         .indexOf(currentMonth);
-    const daysInMonth = getDaysInMonth(monthIndex, currentYear);
-    const firstDay = new Date(currentYear, monthIndex, 1).getDay();
-    const days = [];
-    
-    // Adjust for Monday as first day (0 becomes Sunday at the end)
+    const daysInMonth = getDaysInMonth(currentMonth, currentYear);
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
     const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
-    
-    // Add empty cells for days before the first day of the month
+
+    let days = [];
     for (let i = 0; i < adjustedFirstDay; i++) {
       days.push(null);
     }
-    
-    // Add days of the month
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(i);
     }
-    
     return days;
   };
-  
+
   const handlePrevMonth = () => {
-    const monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 
-                         'July', 'August', 'September', 'October', 'November', 'December']
-                         .indexOf(currentMonth);
-    
-    if (monthIndex === 0) {
-      setCurrentMonth('December');
-      setCurrentYear(currentYear - 1);
-    } else {
-      setCurrentMonth(['January', 'February', 'March', 'April', 'May', 'June', 
-                        'July', 'August', 'September', 'October', 'November', 'December'][monthIndex - 1]);
-    }
-    setSelectedDate(null);
+    if (currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) return;
+    setCurrentMonth((prev) => (prev === 0 ? 11 : prev - 1));
+    setCurrentYear((prev) => (currentMonth === 0 ? prev - 1 : prev));
   };
-  
+
   const handleNextMonth = () => {
-    const monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 
-                         'July', 'August', 'September', 'October', 'November', 'December']
-                         .indexOf(currentMonth);
-    
-    if (monthIndex === 11) {
-      setCurrentMonth('January');
-      setCurrentYear(currentYear + 1);
-    } else {
-      setCurrentMonth(['January', 'February', 'March', 'April', 'May', 'June', 
-                        'July', 'August', 'September', 'October', 'November', 'December'][monthIndex + 1]);
-    }
-    setSelectedDate(null);
+    setCurrentMonth((prev) => (prev === 11 ? 0 : prev + 1));
+    setCurrentYear((prev) => (currentMonth === 11 ? prev + 1 : prev));
   };
-  
-  const handleDateClick = (day) => {
-    setSelectedDate(day);
-  };
-  
+
   const calendarDays = generateCalendarDays();
-  
+
   return (
-    <div className="availability-container-h">
-      <h2 className="availability-title-h">Availability</h2>
-      
-      <div className="availability-content-h">
-        {/* Guide Profile Card */}
-        <div className="guide-card-h">
-          <img 
-            src="/api/placeholder/200/160" 
-            alt="Guide profile" 
-            className="guide-image-h"
-          />
-          <div className="rating-h">
-            <span className="star-h">★</span>
-            <span className="star-h">★</span>
-            <span className="star-h">★</span>
-            <span className="star-h">★</span>
-            <span className="star-h">★</span>
+    <>
+      <div className="availability-container-h">
+        <h2 className="availability-title-h">Availability</h2>
+
+        <div className="availability-content-h">
+          {/* Guide Profile */}
+          <div className="guide-card-h">
+            <img src="/api/placeholder/200/160" alt="Guide profile" className="guide-image-h" />
+            <h3 className="guide-name-h">Saman Kumara</h3>
+            <p className="guide-price-h">$2750 / Day</p>
+            <p className="language-list-h">Languages: English, French</p>
+            <button className="view-profile-btn-h">View Profile</button>
           </div>
-          <h3 className="guide-name-h">Saman kumara</h3>
-          <p className="guide-price-h">$2750 / Day</p>
-          
-          <div className="guide-languages-h">
-            <p className="language-label-h">Languages -</p>
-            <p className="language-list-h">English, France</p>
-          </div>
-          
-          <button className="view-profile-btn-h">View Profile</button>
-        </div>
-        
-        {/* Calendar */}
-        <div className="calendar-container-h">
-          <div className="calendar-header-h">
-            <p className="select-text-h">Please Select Tour Days</p>
-            
-            <div className="month-navigation-h">
-              <h3 className="current-month-h">{`${currentMonth} ${currentYear}`}</h3>
-              <div className="month-buttons-h">
+
+          {/* Calendar */}
+          <div className="calendar-container-h">
+            <div className="calendar-header-h">
+              <p className="select-text-h">Please Select Tour Days</p>
+              <div className="month-navigation-h">
                 <button className="month-nav-btn-h" onClick={handlePrevMonth}>&lt;</button>
+                <h3 className="current-month-h">{`${months[currentMonth]} ${currentYear}`}</h3>
                 <button className="month-nav-btn-h" onClick={handleNextMonth}>&gt;</button>
               </div>
             </div>
-          </div>
-          
-          {/* Calendar grid */}
-          <div className="calendar-grid-h">
-            {/* Weekday headers */}
-            {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day, index) => (
-              <div key={index} className="weekday-header-h">
-                {day}
-              </div>
-            ))}
-            
-            {/* Calendar days */}
-            {calendarDays.map((day, index) => (
-              <div 
-                key={index} 
-                className={`calendar-day-h ${day === selectedDate ? 'selected-h' : ''} ${!day ? 'empty-h' : ''}`}
-                onClick={() => day && handleDateClick(day)}
-              >
-                {day || ''}
-              </div>
-            ))}
+
+            <div className="calendar-grid-h">
+              {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day, index) => (
+                <div key={index} className="weekday-header-h">{day}</div>
+              ))}
+
+              {calendarDays.map((day, index) => {
+                if (!day) return <div key={index} className="empty-h" />;
+
+                const formattedDate = dayjs(`${currentYear}-${currentMonth + 1}-${day}`).format("YYYY-MM-DD");
+                const isPast = dayjs(formattedDate).isBefore(dayjs(), "day");
+                const isSelected = selectedDates.includes(formattedDate);
+                const isAvailable = availableDates.includes(formattedDate);
+
+                return (
+                  <div
+                    key={index}
+                    className={`calendar-day-h ${isSelected ? 'selected-h' : ''} ${isPast ? 'disabled-h' : ''} ${isAvailable ? 'available-h' : ''}`}
+                    onClick={() => isAvailable && !isPast && handleDateClick(day)}
+                  >
+                    {day}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+
+        <div className="action-buttons-h">
+          <Button onClick={handleClose} color="primary">Close</Button>
+          <Button
+            className="next-btn-h"
+            variant="contained"
+            color="secondary"
+            onClick={handleNextClick}
+            disabled={selectedDates.length === 0} // ✅ Enable only if dates selected
+>
+            Next
+          </Button>
+        </div>
       </div>
-      
-      <div className="action-buttons-h">
-        <button className="next-btn-h">Next</button>
-      </div>
-    </div>
+
+      {/* Booking Popup */}
+      <BookingGuideBooking open={openBookingPopup} handleClose={() => setOpenBookingPopup(false)} selectedDates={selectedDates} />
+    </>
   );
 };
 

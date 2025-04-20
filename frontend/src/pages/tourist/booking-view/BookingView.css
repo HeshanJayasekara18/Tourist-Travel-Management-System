@@ -1,0 +1,63 @@
+.table-container-h {
+    width: 95%;
+    overflow-x: auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 180px;
+    margin-left: 150px;
+    
+  }
+  
+  .styled-table-h {
+    width: 90%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-cell-h {
+    background-color: #007bff;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-weight: bold;
+  }
+  
+  .cell-h {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .cell-h input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .cell-h button {
+    margin: 0 5px;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .cell-h button:hover {
+    opacity: 0.8;
+  }
+  
+  .cell-h button:first-child {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .cell-h button:last-child {
+    background-color: #dc3545;
+    color: white;
+  }
+  

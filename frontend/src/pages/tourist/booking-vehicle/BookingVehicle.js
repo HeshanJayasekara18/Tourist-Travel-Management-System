@@ -1,81 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./BookingVehicle.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faGasPump, faCarSide, faCogs } from "@fortawesome/free-solid-svg-icons";
 import BookingHeaderVehicle from "../booking-header/BookingHeaderVehicle";
 
-const guides = [
-    {
-        id: 1,
-        name: "Prius",
-        price: "$27.00",
-        rating: "⭐⭐⭐⭐⭐",
-        image: "null"
-    },
-    {
-        id: 2,
-        name: "Axio",
-        price: "$15.00",
-        rating: "⭐⭐⭐⭐☆",
-        image: "null"
-    },
-    {
-        id: 3,
-        name: "KDH",
-        price: "$10.00",
-        rating: "⭐⭐⭐⭐☆",
-        image: "null"
-    },
-    {
-        id: 4,
-        name: "Allion",
-        price: "$10.00",
-        rating: "⭐⭐⭐⭐☆",
-        image: "null"
-    },
-    {
-        id: 5,
-        name: "Passo",
-        price: "$10.00",
-        rating: "⭐⭐⭐⭐☆",
-        image: "null"
-    }
-];
-
 function BookingVehicle() {
+    const [vehicles, setVehicles] = useState([]);
+
+    useEffect(() => {
+        const fetchVehicles = async () => {
+            try {
+                const response = await axios.get("http://localhost:4000/api/vehicle");
+                setVehicles(response.data);
+            } catch (error) {
+                console.error("Error fetching vehicles:", error);
+            }
+        };
+        fetchVehicles();
+    }, []);
+
     return (
         <>
             <BookingHeaderVehicle />
             <div className="guide-container-h rtl">
-                {guides.map((guide) => (
-                    <div className="card-h" key={guide.id}>
-                        <img src={guide.image} alt="Vehicle" className="card-image-h" />
+                {vehicles.map((vehicle) => (
+                    <div className="card-h" key={vehicle.V_Id}>
+                        <img 
+                            src={vehicle.image || "default-image.jpg"} 
+                            alt="Vehicle" 
+                            className="card-image-h" 
+                        />
                         <div className="card-content-h">
-                            <div className="rating-h">{guide.rating}</div>
-                            <h3 className="name-h">{guide.name}</h3>
+                            <div className="rating-h">⭐⭐⭐⭐☆</div>
+                            <h3 className="name-h">{vehicle.modelName}</h3>
                             <p className="price-h">
-                                <span className="price-value-h">{guide.price}</span> / Day
+                                <span className="price-value-h">${vehicle.priceDay}</span> / Day
                             </p>
                             <div className="line-h"></div>
 
                             <div className="car-features-h">
                                 <div className="feature-h">
                                     <FontAwesomeIcon icon={faUserGroup} />
-                                    <span>4 Seats</span>
+                                    <span>{vehicle.seats} Seats</span>
                                 </div>
                                 <div className="feature-h">
                                     <FontAwesomeIcon icon={faGasPump} />
-                                    <span>Petrol</span>
+                                    <span>{vehicle.fuelType}</span>
                                 </div>
                                 <div className="feature-h">
                                     <FontAwesomeIcon icon={faCarSide} />
-                                    <span>4 Doors</span>
+                                    <span>{vehicle.doors} Doors</span>
                                 </div>
                                 <div className="feature-h">
                                     <FontAwesomeIcon icon={faCogs} />
-                                    <span>Automatic</span>
+                                    <span>{vehicle.transmission}</span>
                                 </div>
                             </div>
+                            
                             <button className="book-button-h">Book</button>
                         </div>
                     </div>
