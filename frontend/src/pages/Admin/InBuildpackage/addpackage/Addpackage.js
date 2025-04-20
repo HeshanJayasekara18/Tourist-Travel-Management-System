@@ -1,7 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Addpackage.css';
+import axios from 'axios';
 
 function Homepage() {
+
+  const [previewImage, setPreviewImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState({ type: '', message: '' });
+  const [showPreview, setShowPreview] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const tourTypes = [
+    'Adventure', 'Beach', 'Cultural', 'Family', 'Luxury', 
+    'Wildlife', 'Cruise', 'Hiking', 'Historical', 'Honeymoon'
+  ];
+
   const [formData, setFormData] = useState({
     packageId: '',
     name: '',
@@ -15,27 +28,53 @@ function Homepage() {
     image: null
   });
 
-  const [previewImage, setPreviewImage] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState({ type: '', message: '' });
-  const [showPreview, setShowPreview] = useState(false);
-
-  const tourTypes = [
-    'Adventure', 'Beach', 'Cultural', 'Family', 'Luxury', 
-    'Wildlife', 'Cruise', 'Hiking', 'Historical', 'Honeymoon'
-  ];
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value
     });
+    
+    // Clear error for this field when user makes changes
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0] || null;
     if (file) {
+      // Validate image size and format
+      const validFormats = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      
+      if (!validFormats.includes(file.type)) {
+        setErrors({
+          ...errors,
+          image: 'Invalid file format. Please upload JPEG, PNG, JPG or GIF images only.'
+        });
+        return;
+      }
+      
+      if (file.size > maxSize) {
+        setErrors({
+          ...errors,
+          image: 'Image size exceeds 5MB. Please upload a smaller image.'
+        });
+        return;
+      }
+      
+      // Clear image error if any
+      if (errors.image) {
+        setErrors({
+          ...errors,
+          image: ''
+        });
+      }
+      
       setFormData({
         ...formData,
         image: file
@@ -50,18 +89,126 @@ function Homepage() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const validateForm = () => {
+    const newErrors = {};
     
-    // Simulate API call with timeout
-    setTimeout(() => {
-      console.log('Submitted form data:', formData);
-      setSubmitMessage({ 
-        type: 'success', 
-        message: 'Tour package added successfully!' 
+    // Package ID validation
+    if (!formData.packageId.trim()) {
+      newErrors.packageId = 'Package ID is required';
+    } else if (!/^[A-Za-z0-9-]+$/.test(formData.packageId)) {
+      newErrors.packageId = 'Package ID should contain only letters, numbers and hyphens';
+    }
+    
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Package name is required';
+    } else if (formData.name.length < 3) {
+      newErrors.name = 'Package name must be at least 3 characters';
+    }
+    
+    // Destination validation
+    if (!formData.destination.trim()) {
+      newErrors.destination = 'Destination is required';
+    }
+    
+    // Price validation
+    if (!formData.price) {
+      newErrors.price = 'Price is required';
+    } else if (parseFloat(formData.price) <= 0) {
+      newErrors.price = 'Price must be greater than 0';
+    }
+    
+    // Description validation
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    } else if (formData.description.length < 20) {
+      newErrors.description = 'Description should be at least 20 characters';
+    }
+    
+    // Date validations - only checking if they are provided
+    if (!formData.startDate) {
+      newErrors.startDate = 'Start date is required';
+    }
+    
+    if (!formData.endDate) {
+      newErrors.endDate = 'End date is required';
+    }
+    
+    // Tour guide validation
+    if (!formData.tourGuideName.trim()) {
+      newErrors.tourGuideName = 'Tour guide name is required';
+    }
+    
+    // Tour type validation
+    if (!formData.tourType) {
+      newErrors.tourType = 'Please select a tour type';
+    }
+    
+    // Image validation
+    if (!formData.image && !previewImage) {
+      newErrors.image = 'Please upload a package image';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validate the form before submission
+    if (!validateForm()) {
+      // Scroll to the first error
+      const firstErrorField = Object.keys(errors)[0];
+      if (firstErrorField) {
+        const errorElement = document.getElementById(firstErrorField);
+        if (errorElement) {
+          errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          errorElement.focus();
+        }
+      }
+      return;
+    }
+    
+    setIsSubmitting(true);
+  
+    // Create FormData for sending files
+    const formDataToSend = new FormData();
+    formDataToSend.append('packageId', formData.packageId);
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('destination', formData.destination);
+    formDataToSend.append('price', Number(formData.price));
+    formDataToSend.append('description', formData.description);
+    formDataToSend.append('startDate', new Date(formData.startDate).toISOString());
+    formDataToSend.append('endDate', new Date(formData.endDate).toISOString());
+    formDataToSend.append('tourGuideName', formData.tourGuideName);
+    formDataToSend.append('tourType', formData.tourType);
+  
+    if (formData.image) {
+      formDataToSend.append('image', formData.image);
+    }
+
+    for (let pair of formDataToSend.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }  
+    
+    try {
+      const response = await axios.post('http://localhost:4000/api/tourPackage', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Required for file uploads
+        },
       });
-      setIsSubmitting(false);
+  
+      console.log('Response from server:', response.data);
+  
+      setSubmitMessage({
+        type: 'success',
+        message: 'Tour package added successfully!',
+      });
+  
+      setPreviewImage(null);
+      setShowPreview(false);
+      alert("Package Added Success..");
       
       // Reset form after successful submission
       setFormData({
@@ -76,9 +223,16 @@ function Homepage() {
         tourType: '',
         image: null
       });
-      setPreviewImage(null);
-      setShowPreview(false);
-    }, 1500);
+      
+    } catch (error) {
+      console.error('Error saving data:', error.response ? error.response.data : error.message);
+      setSubmitMessage({
+          type: 'error',
+          message: 'Failed to add tour package. Please try again.',
+      });
+    }
+  
+    setIsSubmitting(false);
   };
 
   const calculateDuration = () => {
@@ -110,7 +264,7 @@ function Homepage() {
           <div className="flex-row">
             {/* Left Side - Form */}
             <div className="form-section">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate>
                 <div className="form-grid">
                   {/* Package ID */}
                   <div>
@@ -123,9 +277,10 @@ function Homepage() {
                       name="packageId"
                       value={formData.packageId}
                       onChange={handleChange}
-                      className="form-input"
+                      className={`form-input ${errors.packageId ? 'input-error' : ''}`}
                       required
                     />
+                    {errors.packageId && <div className="error-message">{errors.packageId}</div>}
                   </div>
                   
                   {/* Package Name */}
@@ -139,9 +294,10 @@ function Homepage() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="form-input"
+                      className={`form-input ${errors.name ? 'input-error' : ''}`}
                       required
                     />
+                    {errors.name && <div className="error-message">{errors.name}</div>}
                   </div>
                   
                   {/* Destination */}
@@ -155,9 +311,10 @@ function Homepage() {
                       name="destination"
                       value={formData.destination}
                       onChange={handleChange}
-                      className="form-input"
+                      className={`form-input ${errors.destination ? 'input-error' : ''}`}
                       required
                     />
+                    {errors.destination && <div className="error-message">{errors.destination}</div>}
                   </div>
                   
                   {/* Price */}
@@ -173,12 +330,13 @@ function Homepage() {
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
-                        className="form-input form-input-with-padding"
+                        className={`form-input form-input-with-padding ${errors.price ? 'input-error' : ''}`}
                         required
                         min="0"
                         step="0.01"
                       />
                     </div>
+                    {errors.price && <div className="error-message">{errors.price}</div>}
                   </div>
                   
                   {/* Start Date */}
@@ -192,9 +350,10 @@ function Homepage() {
                       name="startDate"
                       value={formData.startDate}
                       onChange={handleChange}
-                      className="form-input"
+                      className={`form-input ${errors.startDate ? 'input-error' : ''}`}
                       required
                     />
+                    {errors.startDate && <div className="error-message">{errors.startDate}</div>}
                   </div>
                   
                   {/* End Date */}
@@ -208,9 +367,10 @@ function Homepage() {
                       name="endDate"
                       value={formData.endDate}
                       onChange={handleChange}
-                      className="form-input"
+                      className={`form-input ${errors.endDate ? 'input-error' : ''}`}
                       required
                     />
+                    {errors.endDate && <div className="error-message">{errors.endDate}</div>}
                   </div>
                   
                   {/* Tour Guide Name */}
@@ -224,9 +384,10 @@ function Homepage() {
                       name="tourGuideName"
                       value={formData.tourGuideName}
                       onChange={handleChange}
-                      className="form-input"
+                      className={`form-input ${errors.tourGuideName ? 'input-error' : ''}`}
                       required
                     />
+                    {errors.tourGuideName && <div className="error-message">{errors.tourGuideName}</div>}
                   </div>
                   
                   {/* Tour Type */}
@@ -239,7 +400,7 @@ function Homepage() {
                       name="tourType"
                       value={formData.tourType}
                       onChange={handleChange}
-                      className="form-input"
+                      className={`form-input ${errors.tourType ? 'input-error' : ''}`}
                       required
                     >
                       <option value="">Select Tour Type</option>
@@ -247,6 +408,7 @@ function Homepage() {
                         <option key={type} value={type}>{type}</option>
                       ))}
                     </select>
+                    {errors.tourType && <div className="error-message">{errors.tourType}</div>}
                   </div>
                 </div>
                 
@@ -261,10 +423,11 @@ function Homepage() {
                     value={formData.description}
                     onChange={handleChange}
                     rows={4}
-                    className="textarea"
+                    className={`textarea ${errors.description ? 'input-error' : ''}`}
                     required
                     placeholder="Describe the tour package, attractions, and what visitors can expect..."
                   />
+                  {errors.description && <div className="error-message">{errors.description}</div>}
                 </div>
                 
                 {/* Image Upload */}
@@ -274,7 +437,7 @@ function Homepage() {
                   </label>
                   <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
                     <div style={{flex: 1}}>
-                      <div className="file-drop-area">
+                      <div className={`file-drop-area ${errors.image ? 'file-drop-error' : ''}`}>
                         <svg className="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -296,6 +459,7 @@ function Homepage() {
                           Browse Files
                         </label>
                       </div>
+                      {errors.image && <div className="error-message">{errors.image}</div>}
                     </div>
                     
                     {previewImage && (
@@ -352,6 +516,7 @@ function Homepage() {
                         });
                         setPreviewImage(null);
                         setShowPreview(false);
+                        setErrors({});
                       }}
                     >
                       Reset Form
@@ -411,7 +576,6 @@ function Homepage() {
                       </span>
                     </div>
                   </div>
-                  {/* Removed the completion status/progress bar */}
                 </div>
                 
                 {/* Full Preview */}

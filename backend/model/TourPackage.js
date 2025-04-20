@@ -8,7 +8,7 @@ const TourPackageSchema = mongoose.Schema({
         required: true,
         trim: true
       },
-      Packagename: {
+      name: {
         type: String,
         required: true,
         trim: true
@@ -45,12 +45,14 @@ const TourPackageSchema = mongoose.Schema({
         type: String,
         required: true
       },
-      imageUrl: {
-        type: String,
-        required: true
-      },
+      image: {
+        data: Buffer, 
+        contentType: String
+      }
+      
+      
 
 
-},{timestamps: true});
+});
 const TourPackage = mongoose.model("TourPackage", TourPackageSchema);//table name
 module.exports = TourPackage;
