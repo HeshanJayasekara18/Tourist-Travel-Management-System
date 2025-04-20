@@ -1,7 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './EditPackagefrom.css'; // You'll need to create this CSS file
+import axios from 'axios';
 
-function SimplifiedTourForm() {
+function SimplifiedTourForm({packageData}) {
+  const [validationErrors, setValidationErrors] = useState({});
+
+  useEffect(() => {
+    if (packageData) {
+      setFormData({
+        packageId: packageData.packageId || '',
+        name: packageData.name || '',
+        destination: packageData.destination || '',
+        price: packageData.price || '',
+        description: packageData.description || '',
+        startDate: packageData.startDate ? packageData.startDate.slice(0, 10) : '', // Format Fix
+        endDate: packageData.endDate ? packageData.endDate.slice(0, 10) : '', // Format Fix
+        tourGuideName: packageData.tourGuideName || '',
+        tourType: packageData.tourType || '',
+        image: null
+      });
+  
+      if (packageData.image) {
+        setPreviewImage(packageData.image);
+      }
+    }
+  }, [packageData]);
+  
+
   const [formData, setFormData] = useState({
     packageId: '',
     name: '',
@@ -31,6 +56,14 @@ function SimplifiedTourForm() {
       ...formData,
       [name]: value
     });
+    
+    // Clear validation error for this field when user changes value
+    if (validationErrors[name]) {
+      setValidationErrors({
+        ...validationErrors,
+        [name]: ''
+      });
+    }
   };
 
   const handleImageChange = (e) => {
@@ -46,22 +79,102 @@ function SimplifiedTourForm() {
         setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
+      
+      // Clear image validation error if it exists
+      if (validationErrors.image) {
+        setValidationErrors({
+          ...validationErrors,
+          image: ''
+        });
+      }
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const validateForm = () => {
+    const errors = {};
     
-    setTimeout(() => {
-      console.log('Updated form data:', formData);
-      setSubmitMessage({ 
-        type: 'success', 
-        message: 'Tour package updated successfully!' 
-      });
-      setIsSubmitting(false);
-    }, 1500);
+    // Required validation for all fields
+    Object.keys(formData).forEach(key => {
+      if (key === 'image') {
+        // Only require image if no previewImage exists (could be existing image)
+        if (!formData.image && !previewImage) {
+          errors.image = 'Please select an image for the package';
+        }
+      } else if (!formData[key]) {
+        errors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
+      }
+    });
+    
+    // Validate price is a positive number
+    if (formData.price && (isNaN(formData.price) || parseFloat(formData.price) <= 0)) {
+      errors.price = 'Price must be a positive number';
+    }
+    
+    // We removed the date comparison validation as requested
+    // Only checking that dates are provided
+    
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
+
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      // Validate form before submitting
+      if (!validateForm()) {
+        // Scroll to the first error
+        const firstErrorField = document.querySelector('.error-message');
+        if (firstErrorField) {
+          firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      
+      setIsSubmitting(true);
+  
+      try {
+          const formDataToSend = new FormData();
+          formDataToSend.append("packageId", formData.packageId);
+          formDataToSend.append("name", formData.name);
+          formDataToSend.append("destination", formData.destination);
+          formDataToSend.append("price", formData.price);
+          formDataToSend.append("description", formData.description);
+          formDataToSend.append("startDate", formData.startDate);
+          formDataToSend.append("endDate", formData.endDate);
+          formDataToSend.append("tourGuideName", formData.tourGuideName);
+          formDataToSend.append("tourType", formData.tourType);
+          
+          if (formData.image) {
+              formDataToSend.append("image", formData.image);
+          }
+  
+          const response = await axios.put(
+              `http://localhost:4000/api/tourPackage/${packageData.tp_Id}`,
+              formDataToSend,
+              {
+                  headers: {
+                      "Content-Type": "multipart/form-data",
+                  },
+              }
+          );
+  
+          console.log('Server response:', response.data);
+          setSubmitMessage({ type: 'success', message: 'Tour package updated successfully!' });
+          
+          // Show success message as alert also
+          alert("Tour package updated successfully!");
+  
+      } catch (error) {
+          console.error("Error updating package:", error);
+          setSubmitMessage({ 
+              type: 'error', 
+              message: error.response?.data?.message || 'Failed to update package.' 
+          });
+      } finally {
+          setIsSubmitting(false);
+      }
+  };
+  
   
   return (
     <div className="form-container">
@@ -78,11 +191,11 @@ function SimplifiedTourForm() {
         )}
         
         <div className="form-body">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="form-grid">
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.packageId ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="packageId">
-                  Package ID
+                  Package ID <span className="required-mark">*</span>
                 </label>
                 <input
                   type="text"
@@ -90,14 +203,17 @@ function SimplifiedTourForm() {
                   name="packageId"
                   value={formData.packageId}
                   onChange={handleChange}
-                  className="form-input"
+                  className={`form-input ${validationErrors.packageId ? 'error-input' : ''}`}
                   required
                 />
+                {validationErrors.packageId && (
+                  <p className="error-message">{validationErrors.packageId}</p>
+                )}
               </div>
               
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.name ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="name">
-                  Package Name
+                  Package Name <span className="required-mark">*</span>
                 </label>
                 <input
                   type="text"
@@ -105,14 +221,17 @@ function SimplifiedTourForm() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="form-input"
+                  className={`form-input ${validationErrors.name ? 'error-input' : ''}`}
                   required
                 />
+                {validationErrors.name && (
+                  <p className="error-message">{validationErrors.name}</p>
+                )}
               </div>
               
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.destination ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="destination">
-                  Destination
+                  Destination <span className="required-mark">*</span>
                 </label>
                 <input
                   type="text"
@@ -120,14 +239,17 @@ function SimplifiedTourForm() {
                   name="destination"
                   value={formData.destination}
                   onChange={handleChange}
-                  className="form-input"
+                  className={`form-input ${validationErrors.destination ? 'error-input' : ''}`}
                   required
                 />
+                {validationErrors.destination && (
+                  <p className="error-message">{validationErrors.destination}</p>
+                )}
               </div>
               
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.price ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="price">
-                  Price
+                  Price <span className="required-mark">*</span>
                 </label>
                 <div className="price-input-container">
                   <span className="price-symbol">$</span>
@@ -137,17 +259,20 @@ function SimplifiedTourForm() {
                     name="price"
                     value={formData.price}
                     onChange={handleChange}
-                    className="price-input"
+                    className={`price-input ${validationErrors.price ? 'error-input' : ''}`}
                     required
                     min="0"
                     step="0.01"
                   />
                 </div>
+                {validationErrors.price && (
+                  <p className="error-message">{validationErrors.price}</p>
+                )}
               </div>
               
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.startDate ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="startDate">
-                  Start Date
+                  Start Date <span className="required-mark">*</span>
                 </label>
                 <input
                   type="date"
@@ -155,14 +280,17 @@ function SimplifiedTourForm() {
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
-                  className="form-input"
+                  className={`form-input ${validationErrors.startDate ? 'error-input' : ''}`}
                   required
                 />
+                {validationErrors.startDate && (
+                  <p className="error-message">{validationErrors.startDate}</p>
+                )}
               </div>
               
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.endDate ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="endDate">
-                  End Date
+                  End Date <span className="required-mark">*</span>
                 </label>
                 <input
                   type="date"
@@ -170,14 +298,17 @@ function SimplifiedTourForm() {
                   name="endDate"
                   value={formData.endDate}
                   onChange={handleChange}
-                  className="form-input"
+                  className={`form-input ${validationErrors.endDate ? 'error-input' : ''}`}
                   required
                 />
+                {validationErrors.endDate && (
+                  <p className="error-message">{validationErrors.endDate}</p>
+                )}
               </div>
               
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.tourGuideName ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="tourGuideName">
-                  Tour Guide Name
+                  Tour Guide Name <span className="required-mark">*</span>
                 </label>
                 <input
                   type="text"
@@ -185,21 +316,24 @@ function SimplifiedTourForm() {
                   name="tourGuideName"
                   value={formData.tourGuideName}
                   onChange={handleChange}
-                  className="form-input"
+                  className={`form-input ${validationErrors.tourGuideName ? 'error-input' : ''}`}
                   required
                 />
+                {validationErrors.tourGuideName && (
+                  <p className="error-message">{validationErrors.tourGuideName}</p>
+                )}
               </div>
               
-              <div className="form-group">
+              <div className={`form-group ${validationErrors.tourType ? 'has-error' : ''}`}>
                 <label className="form-label" htmlFor="tourType">
-                  Tour Type
+                  Tour Type <span className="required-mark">*</span>
                 </label>
                 <select
                   id="tourType"
                   name="tourType"
                   value={formData.tourType}
                   onChange={handleChange}
-                  className="form-select"
+                  className={`form-select ${validationErrors.tourType ? 'error-input' : ''}`}
                   required
                 >
                   <option value="">Select Tour Type</option>
@@ -207,12 +341,15 @@ function SimplifiedTourForm() {
                     <option key={type} value={type}>{type}</option>
                   ))}
                 </select>
+                {validationErrors.tourType && (
+                  <p className="error-message">{validationErrors.tourType}</p>
+                )}
               </div>
             </div>
             
-            <div className="form-group full-width">
+            <div className={`form-group full-width ${validationErrors.description ? 'has-error' : ''}`}>
               <label className="form-label" htmlFor="description">
-                Package Description
+                Package Description <span className="required-mark">*</span>
               </label>
               <textarea
                 id="description"
@@ -220,17 +357,20 @@ function SimplifiedTourForm() {
                 value={formData.description}
                 onChange={handleChange}
                 rows={4}
-                className="form-textarea"
+                className={`form-textarea ${validationErrors.description ? 'error-input' : ''}`}
                 required
                 placeholder="Describe the tour package, attractions, and what visitors can expect..."
               />
+              {validationErrors.description && (
+                <p className="error-message">{validationErrors.description}</p>
+              )}
             </div>
             
-            <div className="form-group full-width">
+            <div className={`form-group full-width ${validationErrors.image ? 'has-error' : ''}`}>
               <label className="form-label">
-                Package Image
+                Package Image <span className="required-mark">*</span>
               </label>
-              <div className="image-upload-container">
+              <div className={`image-upload-container ${validationErrors.image ? 'error-border' : ''}`}>
                 <div className="image-upload-area">
                   <svg className="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -278,6 +418,9 @@ function SimplifiedTourForm() {
                   </div>
                 )}
               </div>
+              {validationErrors.image && (
+                <p className="error-message">{validationErrors.image}</p>
+              )}
             </div>
             
             {showPreview && (
@@ -334,6 +477,13 @@ function SimplifiedTourForm() {
             )}
             
             <div className="form-actions">
+              <button
+                type="button"
+                className="preview-button"
+                onClick={() => setShowPreview(!showPreview)}
+              >
+                {showPreview ? 'Hide Preview' : 'Show Preview'}
+              </button>
               <button
                 type="submit"
                 className="update-button"
