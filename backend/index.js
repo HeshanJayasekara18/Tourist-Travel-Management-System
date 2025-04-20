@@ -10,8 +10,8 @@ const testRoute = require('./route/testRoute');
 const vehicleRoute = require('./route/VehicleRoute');
 const hotelRoomRoute = require('./route/HotelRoomRoute');
 const bussinessRegisterRoute = require('./route/BussinessRegisterRoute');
-const feedbackRoute = require('./route/feedbackRoute');
-const TourGuideRoute = require('./route/TourGuideRoute');
+//const feedbackRoute = require('./route/feedbackRoute');
+//const TourGuideRoute = require('./route/TourGuideRoute');
 const TourPackageRoute = require('./route/TourPackageRoute');
 const PaymentRoute = require('./route/PaymentRoute');
 const BookingRoute = require('./route/BookingRoute');
@@ -35,8 +35,8 @@ app.use('/api',testRoute);
 app.use('/api/vehicle',vehicleRoute);
 app.use('/api/hotelRoom',hotelRoomRoute);
 app.use('/api/bussinessRegister',bussinessRegisterRoute);
-app.use('/api/feedback',feedbackRoute);
-app.use('/api/tourGuide', TourGuideRoute);
+//app.use('/api/feedback',feedbackRoute);
+//app.use('/api/tourGuide', TourGuideRoute);
 app.use('/api/tourPackage',TourPackageRoute);
 app.use('/api/payment',PaymentRoute);
 
@@ -56,6 +56,7 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+<<<<<<< HEAD
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
@@ -63,3 +64,6 @@ app.get("/", (req, res) => {
 app.get("/", (req, res) => {
     res.send("Hello World");
   });
+=======
+
+>>>>>>> d7a4a56c13a8ed53989e56d7bd38e92fae8d6bb3

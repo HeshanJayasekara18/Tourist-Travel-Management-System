@@ -9,10 +9,12 @@ const {
 
 
 } = require('../controller/TourPackageController');
+
+const upload = require("../middleware/upload");
 router.get('/', getAllTourPackages);
 router.get('/:id', getTourPackageById);
-router.post('/', createTourPackage);
-router.put('/:id', updateTourPackage);
+router.post('/',upload.single("image"), createTourPackage);
+router.put('/:id',upload.single("image") ,updateTourPackage);
 router.delete('/:id', deleteTourPackage);
 module.exports = router;
 //compare this snippet from backend/route/TourPackageRoute.js:
