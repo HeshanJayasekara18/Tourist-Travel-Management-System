@@ -21,7 +21,7 @@ const HotelRoom = require ("../model/hotelRoom");
 
 const addHotelRoom = async (req, res) => {
     try {
-        const { B_Id, name, description, quantity, availability, price_day, price_month, bed, max_occupancy } = req.body;
+        const { B_Id, name, description, quantity, availability, price_day, price_month, bed, max_occupancy,userId } = req.body;
 
         if (!req.file) {
             return res.status(400).json({ message: "Image is required" });
@@ -41,7 +41,8 @@ const addHotelRoom = async (req, res) => {
             image: {
                 data: req.file.buffer, // Store binary data
                 contentType: req.file.mimetype
-            }
+            },
+            userId
         });
 
         await hotelRoom.save();
@@ -53,7 +54,7 @@ const addHotelRoom = async (req, res) => {
 
 const getAllHotelRoom = async (req, res) => {
     try {
-        const rooms = await HotelRoom.find();
+        const rooms = await HotelRoom.find({userId:req.query.userId});
 
         // Convert image buffer to Base64
         const roomsWithImages = rooms.map(room => ({
@@ -71,6 +72,7 @@ const getAllHotelRoom = async (req, res) => {
             image: room.image
                 ? `data:${room.image.contentType};base64,${room.image.data.toString("base64")}`
                 : null,
+             
         }));
 
         res.status(200).json(roomsWithImages);
@@ -85,7 +87,7 @@ const getHotelRoom = async (req,res) => {
     try{
         const { HR_Id } = req.params.id;
         const room = await HotelRoom.findOne({ HR_Id: HR_Id });
-        res.status(200).jason(room);
+        res.status(200).json(room);
 
     }catch (error){
         res.status(500).json ({message:error.message});

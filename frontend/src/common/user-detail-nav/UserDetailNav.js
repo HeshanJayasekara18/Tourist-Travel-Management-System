@@ -5,11 +5,14 @@ import h8 from '../../images/h8.png';
 import h9 from '../../images/h9.png'; 
 
 function UserDetailNav(){
+
+    const bussnessName=localStorage.getItem("businessName");
+
     return (
         <div class="mainUserDetailNav-p">
             <div class="userDetailsub1">
                  <span class="s1">Welcome</span>
-                 <span class="s2">Saman Kumara</span>
+                 <span class="s2">{bussnessName}</span>
             </div>
             <div class="userDetailsub2">
                 <img src={h8} class="icons"/>

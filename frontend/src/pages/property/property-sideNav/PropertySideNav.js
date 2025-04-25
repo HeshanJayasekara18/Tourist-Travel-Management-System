@@ -1,5 +1,5 @@
-import react from "react";
-import "./PropertySideNav.css"
+import React, { useEffect } from "react";
+import "./PropertySideNav.css";
 import logo from '../../../images/logo.png'; 
 import v1 from '../../../images/v1.png'; 
 import v3 from '../../../images/v3.png'; 
@@ -12,79 +12,93 @@ import v22 from '../../../images/v22.png';
 import v23 from '../../../images/v23.png';
 import { useNavigate } from "react-router-dom";
 
-function PropertySideNav(){
+function PropertySideNav() {
 
-    const navigate=useNavigate();
+    const navigate = useNavigate();
+    const bussinessType = localStorage.getItem("bussinessType");
 
-    const onClickDashboard=()=>{
+    const onClickDashboard = () => {
         navigate('/property/');
     }
 
-    const onClickVehicleManage=()=>{
+    const onClickVehicleManage = () => {
         navigate('/property/vehicle');
     }
 
-    const onClickHotelManage=()=>{
+    const onClickHotelManage = () => {
         navigate('/property/hotel');
     }
-    const onClickTransactionManage=()=>{
+
+    const onClickTransactionManage = () => {
         navigate('/property/transaction');
     }
 
-    const onClickProfileDetail=()=>{
+    const onClickProfileDetail = () => {
         navigate('/property/profile');
     }
 
-    return(
-        <div class="mainSideNav">
+    const onLogOut = () => {
+        navigate('/login');
+    }
 
-                <div> 
-                    <img src={logo} alt="Description of image" />
-                </div>
+    return (
+        <div className="mainSideNav">
+            <div> 
+                <img src={logo} alt="Logo" />
+            </div>
 
-            <div class="sideNavBody">
-                  <div class="sub1">
+            <div className="sideNavBody">
+                <div className="sub1">
                     <div><p>Main</p></div>
 
-                    <div class="sideNavbtn">
+                    <div className="sideNavbtn">
                         <img src={v1} className="icons" />   
                         <button onClick={onClickDashboard}>Dashboard</button>
                     </div>
-                    <div class="sideNavbtn">
-                        <img src={v21} className="icons" /> 
-                        <button onClick={onClickVehicleManage}>Vehicle Manage</button>
-                    </div>
-                    <div class="sideNavbtn">
-                        <img src={v22} className="icons" /> 
-                        <button onClick={onClickHotelManage}>Hotel Manage</button>
-                    </div>
-                    <div class="sideNavbtn">
+
+                    {bussinessType === 'Vehicle' && (
+                        <div className="sideNavbtn">
+                            <img src={v21} className="icons" />
+                            <button onClick={onClickVehicleManage}>Vehicle Manage</button>
+                        </div>
+                    )}
+
+                    {bussinessType === 'Hotel' && (
+                        <div className="sideNavbtn">
+                            <img src={v22} className="icons" />
+                            <button onClick={onClickHotelManage}>Hotel Manage</button>
+                        </div>
+                    )}
+
+                    <div className="sideNavbtn">
                         <img src={v23} className="icons" />
                         <button onClick={onClickTransactionManage}>Transaction Manage</button>
                     </div>
-                    <div class="sideNavbtn">
+
+                    <div className="sideNavbtn">
                         <img src={v5} className="icons" />
                         <button>Chat</button>
                     </div>
+                </div>
+
+                <div className="sub2">
+                    <div>
+                        <p>Others</p>
                     </div>
 
-                    <div class="sub2">
-                      <div>
-                        <p>Others</p>
-                     </div>
-                      <div class="sideNavbtn">
-                            <img src={v6} className="icons" />
-                            <button onClick={onClickProfileDetail}>Setting</button>
-                      </div>
-                      <div class="sideNavbtn">
-                            <img src={v7} className="icons" />
-                            <button>LogOut</button>
-                      </div>  
+                    <div className="sideNavbtn">
+                        <img src={v6} className="icons" />
+                        <button onClick={onClickProfileDetail}>Setting</button>
+                    </div>
+
+                    <div className="sideNavbtn">
+                        <img src={v7} className="icons" />
+                        <button onClick={onLogOut}>LogOut</button>
+                    </div>  
                 </div>                 
             </div>
-
-         </div>     
-
+        </div>     
     );
 }
+
 export default PropertySideNav;

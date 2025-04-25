@@ -24,17 +24,19 @@ function VehicleCard({ vehicle , getAllVehicle,V_Id }) {
         setOpen(false);
       };
 
-      const deleteVehicle=()=>{
-        axios.delete(`http://localhost:4000/api/vehicle/${V_Id}`)
-        .then(response => {
-            getAllVehicle();
-            console.log(response.data)        
-        })
-        .catch(error => {
-          console.error(error);
-        });
-
-      }
+      const deleteVehicle = () => {
+        if (window.confirm("Are you sure you want to delete this vehicle?")) {
+            axios.delete(`http://localhost:4000/api/vehicle/${V_Id}`)
+                .then(response => {
+                    getAllVehicle();
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    };
+    
 
 
    
@@ -47,7 +49,9 @@ function VehicleCard({ vehicle , getAllVehicle,V_Id }) {
             <div class="vehicle-details">
                 <img  class="icon" src={v24}/>
                 <h6>{vehicle.modelName}</h6>
-                <h6>${vehicle.priceDay}</h6>
+                <h6 style={{ color: vehicle.priceDay > 6500 ? "red" : "black" }}>
+                     ${vehicle.priceDay}
+                    </h6>
             </div>
             <div class="vehicle-features">
                 <div class="vehicle-features-set">

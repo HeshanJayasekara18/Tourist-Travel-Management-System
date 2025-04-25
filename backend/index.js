@@ -15,8 +15,7 @@ const PaymentRoute = require('./route/PaymentRoute');
 const BookingRoute = require('./route/BookingRoute');
 const TouristRoute = require('./route/TouristRoute');
 const TourRoute = require('./route/TourRoute');
-
-
+const LoginRoute = require('./route/LoginRoute');
 
 dotenv.config();
 
@@ -40,6 +39,7 @@ app.use('/api/payment',PaymentRoute);
 app.use('/api/Booking',BookingRoute);
 app.use('/api/Tourist',TouristRoute);
 app.use('/api/Tour',TourRoute);
+app.use('/api/Login',LoginRoute);
 
 
 // Start Server

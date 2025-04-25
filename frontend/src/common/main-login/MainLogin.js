@@ -1,34 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MainLogin.css";
 import hlogo from '../../images/h-Logo.png'; 
 import hloginimg from '../../images/h-Login-img.jpeg'; 
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const MainLogin = () => {
+  const navigate = useNavigate();
 
-
-  const navigate=useNavigate();
+  // State for form inputs
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSubmitLogin = () => {
-    navigate('/admin');
-  }
+    const loginData = {
+      email: email,
+      password: password
+    };
 
-  const onClickBussnessRegister=()=>{
+    axios.post('http://localhost:4000/api/login', loginData)
+      .then(response => {       
+        console.log('Login successful:', response.data);
+        console.log('User details:', response.userDetails); 
+
+        if (response.data.userDetails.role === 'Bussiness') {
+          navigate('/property');
+          localStorage.setItem("userID",response.data.userDetails.userID);
+          localStorage.setItem("businessName",response.data.businessDetails.businessName); 
+          localStorage.setItem("bussinessType",response.data.businessDetails.bussinessType); 
+        } 
+        
+      })
+      .catch(error => {     
+        console.error('Login failed:', error.response ? error.response.data : error.message);
+      });
+  };
+
+  const onClickBussnessRegister = () => {
     navigate('/property-signup');
-  }
+  };
 
-  const onClickToursitRegister=()=>{
+  const onClickToursitRegister = () => {
     navigate('/tourist-signup');
-  }
+  };
 
-  const onClickGuideRegister=()=>{}
-
+  const onClickGuideRegister = () => {
+    navigate('/tourist-signup'); // or your tour guide signup route
+  };
 
   return (
     <div className="container-login">
       {/* Left Side - Login Form */}
       <div className="left-panel-login">
-        {/* Logo */}
         <div>
           <img src={hlogo} alt="CeylonGO" className="logo-login" />
         </div>
@@ -38,10 +61,20 @@ const MainLogin = () => {
         {/* Login Form */}
         <div className="form-login">
           <label>Email</label>
-          <input type="email" placeholder="Enter your email" />
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
           <label>Password</label>
-          <input type="password" placeholder="Enter your password" />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <button className="button-login" onClick={onSubmitLogin}>Sign in</button>
         </div>
