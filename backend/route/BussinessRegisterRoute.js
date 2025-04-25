@@ -4,7 +4,6 @@ const {
     register,
     getBussinessDetails,
     loginBussiness
-    getBussinessDetails
   } = require('../controller/BussinessRegisterController');
 
    
