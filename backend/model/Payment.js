@@ -1,19 +1,68 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-const PaymentSchema = mongoose.Schema({
-    paymentId: { type: String, required: true, unique: true, default: uuidv4 },
-    userID: { type: String, required: true },
-    amount: { type: String, required: true, trim: true }, // String to match your requirement
-    cardholderName: { type: String, required: true, trim: true },
-    cardNumber: { type: String, required: true, trim: true },
-    expiryDate: { type: String, required: true, trim: true }, // Format: MM/YY
-    cvv: { type: String, required: true, trim: true },
-    billingAddress: { type: String, required: true, trim: true },
-    city: { type: String, required: true, trim: true },//trim removes white spaces
-    state: { type: String, required: true, trim: true },
-    zipCode: { type: String, required: true, trim: true }
-}, { timestamps: true });
+const PaymentSchema = new mongoose.Schema({
+  paymentId: {
+    type: String,
+    required: true,
+    unique: true,
+    default: () => uuidv4(),  // Generate unique UUID for paymentId
+  },
+  transactionId: {
+    type: String,
+    required: true,
+    unique: true,
+    default: () => 'TXN' + Date.now() + Math.floor(Math.random() * 1000), // Unique transaction ID
+  },
+  fullName: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  phone: {
+    type: String,
+    required: true
+  },
+  packageId: {
+    type: String,
+    required: true
+  },
+  numberOfTravelers: {
+    type: Number,
+    required: true
+  },
+  totalAmount: {
+    type: Number,
+    required: true
+  },
+  cardDetails: {
+    cardNumber: {
+      type: String,
+      required: true
+    },
+    expiryDate: {
+      type: String,
+      required: true
+    },
+    cvv: {
+      type: String,
+      required: true
+    }
+  },
+  status: {
+    type: String,
+    enum: ['Pending', 'Completed', 'Failed'],
+    default: 'Pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-const Payment = mongoose.model("Payment", PaymentSchema);
+const Payment = mongoose.model('Payment', PaymentSchema);
+
 module.exports = Payment;

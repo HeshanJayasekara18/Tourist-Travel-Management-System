@@ -12,9 +12,11 @@ const hotelRoomRoute = require('./route/HotelRoomRoute');
 const bussinessRegisterRoute = require('./route/BussinessRegisterRoute');
 const TourPackageRoute = require('./route/TourPackageRoute');
 const PaymentRoute = require('./route/PaymentRoute');
+
 const BookingRoute = require('./route/BookingRoute');
 const TouristRoute = require('./route/TouristRoute');
 const TourRoute = require('./route/TourRoute');
+const MailRoute = require('./route/MailRoute');
 
 
 
@@ -34,7 +36,9 @@ app.use('/api/vehicle',vehicleRoute);
 app.use('/api/hotelRoom',hotelRoomRoute);
 app.use('/api/bussinessRegister',bussinessRegisterRoute);
 app.use('/api/tourPackage',TourPackageRoute);
-app.use('/api/payment',PaymentRoute);
+app.use('/api/payment', PaymentRoute);
+app.use('/api/sendMail', MailRoute);
+
 
 
 app.use('/api/Booking',BookingRoute);
