@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import 'leaflet/dist/leaflet.css';
+
 import "./TourPlan.css";
 
 const getPlaceName = async (lat, lon) => {

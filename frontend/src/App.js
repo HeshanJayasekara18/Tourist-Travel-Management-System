@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import 'leaflet/dist/leaflet.css';
+
 import {BrowserRouter,Route,Routes}from 'react-router-dom';
 import PropertySignup from './pages/property/property-signup/PropertySignup';
 import Property from './pages/property/Property';
@@ -12,13 +14,15 @@ import Admin from './pages/Admin/Admin';
 import SimpleDashboard from './pages/Admin/InBuildpackage/Dashboard/Dashboard';
 import UserManagement from './pages/Admin/InBuildpackage/adminUsermanage/AdminUserManagement';
 import DisplayDetails from './pages/Admin/InBuildpackage/packagedisplaydetails/DisplayDetails';
-import PaymentManagement from './pages/Admin/InBuildpackage/adminpaymentmanage/PaymentManagement';
+import PackagePayment from './pages/Admin/InBuildpackage/paymentpage/PackagePayment';
+import PaymentManagement from './pages/Admin/InBuildpackage/adminpaymentmanage/PaymentManagement'
 import BookingGuide from './pages/tourist/booking-guide/BookingGuide';
 import BookingGuideBooking from './pages/tourist/booking-guide/booking-guide-availability/booking-guide-booking/BookingGuideBooking';
 import BookingHotel from './pages/tourist/booking-hotel/BookingHotel'
 import BookingPayment from './pages/tourist/booking-payment/BookingPayment';
 import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
+import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
 
 import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
 import Tourist from './pages/tourist/Tourist';
@@ -47,7 +51,11 @@ function App() {
                 <Route index element={<SimpleDashboard/>}/>
                 <Route path='user-manage' element={<UserManagement/>}/>
                 <Route path='tour-manage' element={<DisplayDetails/>}/>
-                <Route path='payment' element={<PaymentManagement/>}/>
+                <Route path='PackagePayment' element={<PackagePayment/>}/>
+                <Route path='Receipt' element={<Receipt/>}/>
+                <Route path='PaymentManagement' element={<PaymentManagement/>}/>
+
+
                
             </Route>
 

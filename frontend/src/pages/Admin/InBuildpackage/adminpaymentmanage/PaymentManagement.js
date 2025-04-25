@@ -4,8 +4,6 @@ import {
   FiSearch, 
   FiEye, 
   FiFileText, 
-  FiMail, 
-  FiRefreshCw, 
   FiX, 
   FiDollarSign, 
   FiCalendar, 
@@ -14,8 +12,10 @@ import {
   FiPackage,
   FiCheckCircle,
   FiAlertCircle,
-  FiClock
+  FiClock,
+  FiTrash2
 } from 'react-icons/fi';
+import jsPDF from 'jspdf';
 
 const PaymentManagement = () => {
   // State for payments data
@@ -28,95 +28,90 @@ const PaymentManagement = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
 
-  // Mock payment data - in a real application, you'd fetch this from an API
+  // Fetch payments data from API
   useEffect(() => {
-    // Simulate API fetch
-    setTimeout(() => {
-      const mockPayments = [
-        {
-          id: 'PAY001',
-          bookingId: 'BK7825',
-          customerName: 'John Smith',
-          tourPackage: 'Adventure Tour Package',
-          amount: 1299.99,
-          date: '2025-03-18',
-          status: 'completed',
-          paymentMethod: 'card',
-          transactionId: 'TXN482751'
-        },
-        {
-          id: 'PAY002',
-          bookingId: 'BK7830',
-          customerName: 'Emma Johnson',
-          tourPackage: 'Beach Getaway',
-          amount: 899.50,
-          date: '2025-03-17',
-          status: 'completed',
-          paymentMethod: 'paypal',
-          transactionId: 'TXN482752'
-        },
-        {
-          id: 'PAY003',
-          bookingId: 'BK7835',
-          customerName: 'Michael Brown',
-          tourPackage: 'Cultural Heritage Tour',
-          amount: 1599.99,
-          date: '2025-03-19',
-          status: 'pending',
-          paymentMethod: 'bank',
-          transactionId: 'TXN482753'
-        },
-        {
-          id: 'PAY004',
-          bookingId: 'BK7840',
-          customerName: 'Sarah Wilson',
-          tourPackage: 'Mountain Trek',
-          amount: 1099.99,
-          date: '2025-03-16',
-          status: 'completed',
-          paymentMethod: 'card',
-          transactionId: 'TXN482754'
-        },
-        {
-          id: 'PAY005',
-          bookingId: 'BK7845',
-          customerName: 'David Lee',
-          tourPackage: 'Island Hopping',
-          amount: 1799.99,
-          date: '2025-03-15',
-          status: 'failed',
-          paymentMethod: 'card',
-          transactionId: 'TXN482755'
-        },
-        {
-          id: 'PAY006',
-          bookingId: 'BK7850',
-          customerName: 'Lisa Taylor',
-          tourPackage: 'City Explorer',
-          amount: 799.99,
-          date: '2025-03-20',
-          status: 'pending',
-          paymentMethod: 'paypal',
-          transactionId: 'TXN482756'
-        },
-      ];
-      
-      setPayments(mockPayments);
-      setFilteredPayments(mockPayments);
-      setIsLoading(false);
-    }, 1000);
+    fetchPayments();
   }, []);
+
+  const fetchPayments = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:4000/api/payment/all');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch payment data');
+      }
+      
+      const data = await response.json();
+      if (data.success) {
+        const formattedPayments = data.payments.map(payment => ({
+          id: payment.paymentId,
+          bookingId: payment.packageId,
+          customerName: payment.fullName,
+          tourPackage: payment.tourPackageName || 'Unknown Package',
+          amount: payment.totalAmount,
+          date: payment.createdAt,
+          status: payment.status.toLowerCase(),
+          paymentMethod: 'card',
+          transactionId: payment.transactionId,
+          email: payment.email,
+          phone: payment.phone,
+          numberOfTravelers: payment.numberOfTravelers
+        }));
+        
+        setPayments(formattedPayments);
+        setFilteredPayments(formattedPayments);
+      } else {
+        console.error('Error fetching payments:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching payment data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Delete payment
+  const deletePayment = async (paymentId) => {
+    if (window.confirm('Are you sure you want to delete this payment? This action cannot be undone.')) {
+      try {
+        const response = await fetch(`http://localhost:4000/api/payment/${paymentId}`, {
+          method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to delete payment');
+        }
+        
+        const data = await response.json();
+        if (data.success) {
+          setPayments(payments.filter(payment => payment.id !== paymentId));
+          setFilteredPayments(filteredPayments.filter(payment => payment.id !== paymentId));
+          
+          if (showDetailsModal && selectedPayment && selectedPayment.id === paymentId) {
+            setShowDetailsModal(false);
+            setSelectedPayment(null);
+          }
+          
+          alert('Payment deleted successfully');
+        } else {
+          alert(`Error: ${data.message}`);
+        }
+      } catch (error) {
+        console.error('Error deleting payment:', error);
+        alert('Failed to delete payment. Please try again.');
+      }
+    }
+  };
 
   // Filter payments based on search term and status
   useEffect(() => {
     let result = payments;
     
-    // Filter by status
     if (filterStatus !== 'all') {
       result = result.filter(payment => payment.status === filterStatus);
     }
     
-    // Filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       result = result.filter(payment => 
@@ -128,7 +123,6 @@ const PaymentManagement = () => {
       );
     }
     
-    // Apply sorting
     result = [...result].sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === 'asc' ? -1 : 1;
@@ -191,10 +185,67 @@ const PaymentManagement = () => {
     }
   };
 
-  // Generate payment receipt
+  // Generate PDF receipt
+  const generateReceiptPDF = (payment) => {
+    const doc = new jsPDF();
+
+    // Add company details
+    doc.setFontSize(12);
+    doc.text('Ceylon go', 20, 20);
+    doc.text('123 Travel Lane', 20, 25);
+    doc.text('Colombo, SriLanka', 20, 30);
+    doc.text('Phone: 123-456-7890', 20, 35);
+    doc.text('Email: info@travelCeylon.go', 20, 40);
+
+    // Add title
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Payment Receipt', 20, 55);
+    doc.setFont('helvetica', 'normal');
+
+    // Add payment details
+    doc.setFontSize(12);
+    let y = 65;
+    const labelX = 20;
+    const valueX = 80;
+
+    const details = [
+      { label: 'Payment ID:', value: payment.id },
+      { label: 'Transaction ID:', value: payment.transactionId },
+      { label: 'Customer Name:', value: payment.customerName },
+      { label: 'Email:', value: payment.email },
+      { label: 'Phone:', value: payment.phone },
+      { label: 'Tour Package:', value: payment.tourPackage },
+      { label: 'Package ID:', value: payment.bookingId },
+      { label: 'Number of Travelers:', value: payment.numberOfTravelers.toString() },
+      { label: 'Amount:', value: `$${payment.amount.toFixed(2)}` },
+      { label: 'Date:', value: formatDate(payment.date) },
+      { label: 'Status:', value: payment.status.charAt(0).toUpperCase() + payment.status.slice(1) },
+      { label: 'Payment Method:', value: 'Credit/Debit Card' },
+    ];
+
+    details.forEach(detail => {
+      doc.setFont('helvetica', 'bold');
+      doc.text(detail.label, labelX, y);
+      doc.setFont('helvetica', 'normal');
+      doc.text(detail.value, valueX, y);
+      y += 10;
+    });
+
+    // Add generated date
+    const currentDate = formatDate(new Date());
+    doc.text(`Generated on: ${currentDate}`, labelX, y + 10);
+
+    // Add thank you message
+    doc.text('Thank you for your payment.', labelX, y + 20);
+
+    // Save the PDF
+    doc.save(`receipt_${payment.id}.pdf`);
+  };
+
+  // Handle receipt generation
   const generateReceipt = (payment) => {
-    alert(`Receipt for ${payment.id} will be generated and downloaded.`);
-    // In a real application, this would generate a PDF receipt and trigger download
+    generateReceiptPDF(payment);
   };
 
   return (
@@ -259,16 +310,6 @@ const PaymentManagement = () => {
           <table className="payment-table">
             <thead>
               <tr>
-                <th onClick={() => requestSort('id')}>
-                  Payment ID {sortConfig.key === 'id' && (
-                    sortConfig.direction === 'asc' ? '↑' : '↓'
-                  )}
-                </th>
-                <th onClick={() => requestSort('bookingId')}>
-                  Booking ID {sortConfig.key === 'bookingId' && (
-                    sortConfig.direction === 'asc' ? '↑' : '↓'
-                  )}
-                </th>
                 <th onClick={() => requestSort('customerName')}>
                   <FiUser className="header-icon" /> Customer {sortConfig.key === 'customerName' && (
                     sortConfig.direction === 'asc' ? '↑' : '↓'
@@ -301,8 +342,6 @@ const PaymentManagement = () => {
               {filteredPayments.length > 0 ? (
                 filteredPayments.map(payment => (
                   <tr key={payment.id} className={`payment-row status-${payment.status}`}>
-                    <td>{payment.id}</td>
-                    <td>{payment.bookingId}</td>
                     <td>{payment.customerName}</td>
                     <td>{payment.tourPackage}</td>
                     <td>${payment.amount.toFixed(2)}</td>
@@ -330,28 +369,22 @@ const PaymentManagement = () => {
                           <FiFileText className="action-icon" />
                         </button>
                       )}
-                      {payment.status === 'pending' && (
-                        <button 
-                          className="action-button remind"
-                          title="Send Reminder"
-                        >
-                          <FiMail className="action-icon" />
-                        </button>
-                      )}
-                      {payment.status === 'failed' && (
-                        <button 
-                          className="action-button retry"
-                          title="Retry Payment"
-                        >
-                          <FiRefreshCw className="action-icon" />
-                        </button>
-                      )}
+                      <button 
+                        className="action-button delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deletePayment(payment.id);
+                        }}
+                        title="Delete Payment"
+                      >
+                        <FiTrash2 className="action-icon" />
+                      </button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="8" className="no-data">No payments found</td>
+                  <td colSpan="6" className="no-data">No payments found</td>
                 </tr>
               )}
             </tbody>
@@ -375,10 +408,6 @@ const PaymentManagement = () => {
                 <div className="detail-value">{selectedPayment.id}</div>
               </div>
               <div className="detail-row">
-                <div className="detail-label">Booking ID:</div>
-                <div className="detail-value">{selectedPayment.bookingId}</div>
-              </div>
-              <div className="detail-row">
                 <div className="detail-label">Transaction ID:</div>
                 <div className="detail-value">{selectedPayment.transactionId}</div>
               </div>
@@ -387,8 +416,24 @@ const PaymentManagement = () => {
                 <div className="detail-value">{selectedPayment.customerName}</div>
               </div>
               <div className="detail-row">
+                <div className="detail-label">Email:</div>
+                <div className="detail-value">{selectedPayment.email}</div>
+              </div>
+              <div className="detail-row">
+                <div className="detail-label">Phone:</div>
+                <div className="detail-value">{selectedPayment.phone}</div>
+              </div>
+              <div className="detail-row">
                 <div className="detail-label"><FiPackage className="detail-icon" /> Tour Package:</div>
                 <div className="detail-value">{selectedPayment.tourPackage}</div>
+              </div>
+              <div className="detail-row">
+                <div className="detail-label">Package ID:</div>
+                <div className="detail-value">{selectedPayment.bookingId}</div>
+              </div>
+              <div className="detail-row">
+                <div className="detail-label">Number of Travelers:</div>
+                <div className="detail-value">{selectedPayment.numberOfTravelers}</div>
               </div>
               <div className="detail-row">
                 <div className="detail-label"><FiDollarSign className="detail-icon" /> Amount:</div>
@@ -409,31 +454,24 @@ const PaymentManagement = () => {
               </div>
               <div className="detail-row">
                 <div className="detail-label"><FiCreditCard className="detail-icon" /> Payment Method:</div>
-                <div className="detail-value">
-                  {selectedPayment.paymentMethod === 'card' ? 'Credit/Debit Card' : 
-                   selectedPayment.paymentMethod === 'paypal' ? 'PayPal' : 'Bank Transfer'}
-                </div>
+                <div className="detail-value">Credit/Debit Card</div>
               </div>
             </div>
             <div className="modal-footer">
               {selectedPayment.status === 'completed' && (
                 <button 
-                  className="modal-button"
+                  className="modal-button receipt"
                   onClick={() => generateReceipt(selectedPayment)}
                 >
                   <FiFileText className="button-icon" /> Generate Receipt
                 </button>
               )}
-              {selectedPayment.status === 'pending' && (
-                <button className="modal-button">
-                  <FiMail className="button-icon" /> Send Reminder
-                </button>
-              )}
-              {selectedPayment.status === 'failed' && (
-                <button className="modal-button">
-                  <FiRefreshCw className="button-icon" /> Retry Payment
-                </button>
-              )}
+              <button 
+                className="modal-button delete"
+                onClick={() => deletePayment(selectedPayment.id)}
+              >
+                <FiTrash2 className="button-icon" /> Delete
+              </button>
               <button 
                 className="modal-button secondary"
                 onClick={() => setShowDetailsModal(false)}
