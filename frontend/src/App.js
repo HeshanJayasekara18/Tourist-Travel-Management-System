@@ -23,11 +23,7 @@ import BookingPayment from './pages/tourist/booking-payment/BookingPayment';
 import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
 import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
-<<<<<<< HEAD
 import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
-=======
-import TourPackagesLanding from './pages/tourist/packageInBuild/InBuildPackageLanding';
->>>>>>> 3fe38e70d6b28d9c9a4947ba6aa93e9c38e261d6
 
 import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
 import Tourist from './pages/tourist/Tourist';
@@ -89,11 +85,10 @@ function App() {
                 <Route path='hotel-book' element={<BookingHotel/>}/>
                 <Route path='vehicle-book' element={<BookingVehicle/>}/>
                 <Route path='guide-book' element={<BookingGuide/>}/>
-                <Route path='tourist-profile' element={<TouristProfile/>}/> 
-                {/* <Route path='feedback' element={<CustomerFeedback/>}/> */}
+                <Route path='Profile' element={<TouristProfile/>}/>
+                <Route path='feedback' element={<CustomerFeedback/>}/>
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
-                <Route path='package' element={<TourPackagesLanding/>}/>
             </Route>
 
              <Route
