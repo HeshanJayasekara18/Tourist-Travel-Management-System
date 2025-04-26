@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-=======
-import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import 'leaflet/dist/leaflet.css';
-
->>>>>>> 7de07865f64e44dc5091f0fb6eb98dd878fc4d57
 import "./TourPlan.css";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
