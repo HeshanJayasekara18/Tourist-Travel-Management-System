@@ -3,7 +3,7 @@ import axios from "axios";
 import "./BookingVehicle.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faGasPump, faCarSide, faCogs } from "@fortawesome/free-solid-svg-icons";
-import BookingHeaderVehicle from "../booking-header/BookingHeaderVehicle";
+
 
 function BookingVehicle() {
     const [vehicles, setVehicles] = useState([]);
@@ -22,7 +22,7 @@ function BookingVehicle() {
 
     return (
         <>
-            <BookingHeaderVehicle />
+           
             <div className="guide-container-h rtl">
                 {vehicles.map((vehicle) => (
                     <div className="card-h" key={vehicle.V_Id}>

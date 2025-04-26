@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./BookingHotel.css";
-import BookingHeaderHotel from "../booking-header/BookingHeaderHotel";
 import axios from "axios";
 import BookingHotelCard from "./BookingHotelCard"
 import BookingForm from "./booking-hotel-form/BookingHotelForm";
@@ -47,7 +46,7 @@ function BookingHotel() {
 
     return (
         <>
-            <BookingHeaderHotel />
+           
             <div className="hotel-booking-container-h">
                 <div className="hotel-list-h">
                 <div className="hotel-card">

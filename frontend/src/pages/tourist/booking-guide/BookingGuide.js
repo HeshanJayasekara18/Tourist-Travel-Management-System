@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./BookingGuide.css";
 import { useNavigate } from "react-router-dom";
-import BookingHeaderHotel from "../booking-header/BookingHeaderGuide";
+
 import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import BookingGuideAvailability from "./booking-guide-availability/BookingGuideAvailability";
 
@@ -40,7 +40,7 @@ function BookingGuide() {
   
   return (
     <>
-      <BookingHeaderHotel />
+      
       <div className="guide-container-h rtl">
         {guides.map((guide) => (
           <div className="card-h" key={guide.id}>

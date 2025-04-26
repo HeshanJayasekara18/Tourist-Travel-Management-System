@@ -23,6 +23,7 @@ import BookingPayment from './pages/tourist/booking-payment/BookingPayment';
 import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
 import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
+import TourPackagesLanding from './pages/tourist/packageInBuild/InBuildPackageLanding';
 
 import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
 import Tourist from './pages/tourist/Tourist';
@@ -80,6 +81,7 @@ function App() {
                 <Route path='feedback' element={<CustomerFeedback/>}/>
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
+                <Route path='package' element={<TourPackagesLanding/>}/>
             </Route>
             
           
