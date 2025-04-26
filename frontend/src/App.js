@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import 'leaflet/dist/leaflet.css';
+
 import {BrowserRouter,Route,Routes}from 'react-router-dom';
 import PropertySignup from './pages/property/property-signup/PropertySignup';
 import Property from './pages/property/Property';
@@ -12,13 +14,15 @@ import Admin from './pages/Admin/Admin';
 import SimpleDashboard from './pages/Admin/InBuildpackage/Dashboard/Dashboard';
 import UserManagement from './pages/Admin/InBuildpackage/adminUsermanage/AdminUserManagement';
 import DisplayDetails from './pages/Admin/InBuildpackage/packagedisplaydetails/DisplayDetails';
-import PaymentManagement from './pages/Admin/InBuildpackage/adminpaymentmanage/PaymentManagement';
+import PackagePayment from './pages/Admin/InBuildpackage/paymentpage/PackagePayment';
+import PaymentManagement from './pages/Admin/InBuildpackage/adminpaymentmanage/PaymentManagement'
 import BookingGuide from './pages/tourist/booking-guide/BookingGuide';
 import BookingGuideBooking from './pages/tourist/booking-guide/booking-guide-availability/booking-guide-booking/BookingGuideBooking';
 import BookingHotel from './pages/tourist/booking-hotel/BookingHotel'
 import BookingPayment from './pages/tourist/booking-payment/BookingPayment';
 import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
+import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
 
 import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
 import Tourist from './pages/tourist/Tourist';
@@ -29,6 +33,11 @@ import MainLogin from './common/main-login/MainLogin';
 import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
 import LandingPages from './pages/landing/Landing';
 
+import TourGuideDashboard from './pages/tour-guide/tourguide-dashboard/TourGuideDashboard';
+import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProfile';
+import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp';
+import TourGuideVerification from './pages/tour-guide/tourguide-verification/Verification';
+import TourGuide from './pages/tour-guide/TourGuide';
 
 function App() {
   return (
@@ -39,6 +48,8 @@ function App() {
             <Route path="/property-signup" element={<PropertySignup/>}/>
             <Route path="/login" element={<MainLogin/>}/>
             <Route path="/" element={<LandingPages/>}/>
+            <Route path='/tourguide-signup' element={<TourGuideSignUp/>}/>
+            <Route path='/verification' element={<TourGuideVerification/>}/>
 
 
             <Route
@@ -47,7 +58,11 @@ function App() {
                 <Route index element={<SimpleDashboard/>}/>
                 <Route path='user-manage' element={<UserManagement/>}/>
                 <Route path='tour-manage' element={<DisplayDetails/>}/>
-                <Route path='payment' element={<PaymentManagement/>}/>
+                <Route path='PackagePayment' element={<PackagePayment/>}/>
+                <Route path='Receipt' element={<Receipt/>}/>
+                <Route path='PaymentManagement' element={<PaymentManagement/>}/>
+
+
                
             </Route>
 
@@ -73,6 +88,13 @@ function App() {
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
             </Route>
+
+             <Route
+                path='/TourGuide'
+                element={<TourGuide/>}>
+                <Route index element={<TourGuideDashboard/>}/>
+                 <Route path='profile' element={<TourGuideProfile/>}/>
+              </Route>
             
           
           </Routes>

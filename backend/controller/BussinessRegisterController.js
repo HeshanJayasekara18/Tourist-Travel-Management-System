@@ -85,5 +85,30 @@ const getBussinessDetails = async (req, res) => {
     }
 };
 
-module.exports = { register, getBussinessDetails };
+const loginBussiness = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Check if the user exists
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        // Check if the password is correct
+        const isMatch = await user.comparePassword(password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        res.status(200).json({ message: "Login successful", user });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { register, getBussinessDetails ,loginBussiness};
 

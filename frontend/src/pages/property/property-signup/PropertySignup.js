@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "./PropertySignup.css";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function PropertySignup() {
+
+    const navigate=useNavigate();
+
     const [formData, setFormData] = useState({
         businessName: "",
         businessType: "",
@@ -30,19 +34,57 @@ function PropertySignup() {
 
     const onSubmit = () => {
         console.log("My Form Data", formData);
-        createBussinessUser();
+        if (formData.password==formData.rePassword) {
+            createBussinessUser();
+            clearFeilds();
+            navigate('/login');
+        }else{
+            alert("InCorrect Confirm Password");
+        }
+        
     };
+
+    const clearFeilds=()=>{
+        setFormData({
+            businessName: "",
+            businessType: "",
+            businessAddress: "",
+            businessFile: null, 
+            description: "",
+            fullName: "",
+            userAddress: "",
+            contact: "",
+            email: "",
+            password: "",
+            rePassword: "",
+            role: "Bussiness"
+        });
+
+        // Clear file input manually
+        document.querySelector("input[type='file']").value = "";
+    }
 
     const createBussinessUser=() =>{
         axios.post("http://localhost:4000/api/bussinessRegister",formData)
        .then(response => {
            alert("Bussiness User Added");
+           sendRegistrationMail();
            console.log(response.data);          
        })
        .catch(error => {
          console.error(error);
        });
 
+   }
+
+   const sendRegistrationMail=()=>{ 
+    axios.post(`http://localhost:4000/api/sendMail/registerMail?email=thinurichathma2002@gmail.com`)
+    .then(response => {
+        alert("Mail Send Successfully");        
+    })
+    .catch(error => {
+      console.error(error);
+    });
    }
 
     return (

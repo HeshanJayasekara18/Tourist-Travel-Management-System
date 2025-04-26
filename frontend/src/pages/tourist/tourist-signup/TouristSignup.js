@@ -67,14 +67,13 @@ const TouristSignup = () => {
       try {
         const fullPhone = formData.countryCode + formData.phoneNumber;
   
-        const response = await axios.post('http://localhost:4000/api/Tourist', {
+        const response = await axios.post('http://localhost:4000/api/TouristRegister', {
           username: formData.email,
           fullname: formData.fullName,      
           email: formData.email,
           country: formData.country,
           mobile_number: fullPhone || '',
-          password: formData.password,
-          userID: 'user_' + Date.now()
+          password: formData.password, 
         });
   
         if (response.status === 201) {

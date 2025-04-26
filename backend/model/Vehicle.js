@@ -15,7 +15,8 @@ const VehicleSchema = mongoose.Schema({
     image: { 
         data: Buffer, 
         contentType: String 
-      } 
+      },
+    userId: { type: String },   
 });
 const Vehicle = mongoose.model("Vehicle",VehicleSchema);
 module.exports = Vehicle; 

@@ -1,16 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const{
-    createPayment,
-    getAllPayments,
-    getPaymentById,
-    updatePayment,
-    deletePayment
-}=require('../controller/PaymentController');
-router.get('/', getAllPayments);
-router.get('/:id', getPaymentById);
-router.post('/', createPayment);
-router.put('/:id', updatePayment);
-router.delete('/:id', deletePayment);
+const { processPayment,getAllPayments,deletePayment } = require('../controller/PaymentController');
+
+router.post('/process', processPayment);
+router.get('/all', getAllPayments);
+router.delete('/:paymentId', deletePayment);
+
 module.exports = router;
-// Compare this snippet from backend/app.js:

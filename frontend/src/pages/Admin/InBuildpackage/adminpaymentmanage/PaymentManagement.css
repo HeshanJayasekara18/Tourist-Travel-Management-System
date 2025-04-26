@@ -602,3 +602,45 @@
     justify-content: center;
   }
 }
+/* Delete button styles */
+.action-button.delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.action-button.delete:hover {
+  background-color: #d32f2f;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.modal-button.delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-button.delete:hover {
+  background-color: #d32f2f;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* If you don't already have these styles, add them for consistent button styling */
+.modal-button.receipt {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-button.receipt:hover {
+  background-color: #3d8b40;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Animation for delete confirmation */
+@keyframes deleteHighlight {
+  0% { background-color: rgba(244, 67, 54, 0.1); }
+  50% { background-color: rgba(244, 67, 54, 0.3); }
+  100% { background-color: rgba(244, 67, 54, 0.1); }
+}
+
+.payment-row.deleting {
+  animation: deleteHighlight 1s ease-in-out;
+}

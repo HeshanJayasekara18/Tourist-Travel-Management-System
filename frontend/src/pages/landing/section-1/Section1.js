@@ -4,7 +4,13 @@ import deerLanding from '../../../images/deer-landing.jpg';
 import weblogo from '../../../images/logo.png';
 import templeofthtoothLanding from '../../../images/templeofthtooth-landing.jpeg';
 import './Section1.css';
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
+=======
+import { useNavigate } from 'react-router-dom';
+
+
+>>>>>>> 7de07865f64e44dc5091f0fb6eb98dd878fc4d57
 
 const slides = [
   {
@@ -24,8 +30,15 @@ const slides = [
   }
 ];
 
+<<<<<<< HEAD
 const TravelLandingPage1 = () => {
   const navigate = useNavigate();
+=======
+function TravelLandingPage1() {
+
+  const navigate=useNavigate();
+
+>>>>>>> 7de07865f64e44dc5091f0fb6eb98dd878fc4d57
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -38,6 +51,11 @@ const TravelLandingPage1 = () => {
   const handleCardClick = (index) => {
     setCurrentSlide(index);
   };
+
+  const login = () => {
+    navigate('/login');
+
+  }
 
   return (
     <div className="landingLandingPage">
@@ -52,8 +70,13 @@ const TravelLandingPage1 = () => {
           <a href="#" className="landingNavLink">Join with us</a>
         </div>
         <div className="landingRegbutton">
+<<<<<<< HEAD
           <button className="landingsignupbutton" onClick={() => navigate('/tourist-signup')}>Sign Up</button>
           <button className="landinglogbutton" onClick={() => navigate('/login')}>Login</button>
+=======
+          <button onClick={login}>Login</button>
+          <button>Sign Up</button>
+>>>>>>> 7de07865f64e44dc5091f0fb6eb98dd878fc4d57
         </div>
       </nav>
 
