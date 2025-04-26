@@ -1,88 +1,37 @@
-import react from "react";
-import "./BookingNavbar.css"
-import hlogo from '../../../images/h-Logo.png'; 
-import h1 from '../../../images/h1.png'; 
-import h2 from '../../../images/h2.png'; 
-import h3 from '../../../images/h3.png'; 
-import h4 from '../../../images/h4.png'; 
-import h5 from '../../../images/h5.png';
-import h6 from '../../../images/h6.png';
-import h7 from '../../../images/h7.png';
+
+import weblogo from '../../../images/logo.png';
+import './BookingNavbar.css';
 import { useNavigate } from "react-router-dom";
 
 
 
+const BookingNavbar = () => {
+  const navigate = useNavigate();
 
 
-function BookingNavbar(){
-    const navigate=useNavigate();
+  
+  return (
+    <div className="landingLandingPage-h">
+      <nav className="landingNavigation-h">
+        <div className="landingLogo-h"><img src={weblogo} alt="Logo" /></div>
+        <div className="landingNavLinks-h">
+          <span href="#" className="landingNavLink-h" onClick={() => navigate('/#')}>Home</span>
+          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Plan your tour</span>
 
-    const onClickTourPlan=()=>{
-        navigate('/tourist/');
-    }
+          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Our Packages</span>
+          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Gallery</span>
+          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Contact</span>
+          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Join with us</span>
+        </div>
+        <div className="landingRegbutton-h">
+          
+          
+          <button className="landinglogbutton-h" onClick={() => navigate('/login')}>Log out</button>
+        </div>
+      </nav>
+</div>
 
-    const onClickHotelBook=()=>{
-        navigate('/tourist/hotel-book');
-    }
+  )   
+};
 
-    const onClickVehicleBook=()=>{
-        navigate('/tourist/vehicle-book');
-    }
-    const onClickGuideBook=()=>{
-        navigate('/tourist/guide-book');
-    }
-
-    const onClickTouristProfile=()=>{
-        navigate('/tourist/profile');
-    }
-    return(
-        <div class="mainSideNav">
-
-                <div> 
-                    <img src={hlogo} alt="Description of image" />
-                </div>
-
-            <div class="sideNavBody">
-                  <div class="sub1">
-                    
-                    <div class="sideNavbtn">
-                        <img src={h2} className="icons" /> 
-                        <button onClick={onClickTourPlan}>Tour Manage</button>
-                    </div>
-                    <div class="sideNavbtn">
-                        <img src={h3} className="icons" /> 
-                        <button onClick={onClickHotelBook}>Hotel Book</button>
-                    </div>
-                    <div class="sideNavbtn">
-                        <img src={h4} className="icons" />
-                        <button onClick={onClickVehicleBook}>Vehicle Book</button>
-                    </div>
-
-                    <div class="sideNavbtn">
-                        <img src={h4} className="icons" />
-                        <button onClick={onClickGuideBook}>Guide Book</button>
-                    </div>
-                    <div class="sideNavbtn">
-                        <img src={h5} className="icons" />
-                        <button onClick={null}>Payment</button>
-                    </div>
-                    </div>
-
-                    <div class="nav-other">
-                      <div class="sideNavbtn">
-                            <img src={h6} className="icons" />
-                            <button>Setting</button>
-                      </div>
-                      <div class="sideNavbtn">
-                            <img src={h7} className="icons" />
-                            <button>LogOut</button>
-                      </div> 
-                    </div> 
-                                
-            </div>
-
-         </div>     
-
-    );
-}
 export default BookingNavbar;
