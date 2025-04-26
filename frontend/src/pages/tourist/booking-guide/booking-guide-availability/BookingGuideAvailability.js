@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@mui/material";
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
+import 'dayjs/locale/en-gb'; // Import the locale you want to use
 import BookingGuideBooking from './booking-guide-booking/BookingGuideBooking';
 import './BookingGuideAvailability.css';
 

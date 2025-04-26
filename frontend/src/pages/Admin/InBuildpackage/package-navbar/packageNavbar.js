@@ -30,7 +30,7 @@ function PackageSideNav() {
         // }
     
         const onClickPaymentManage=()=>{
-            navigate('/admin/payment');
+            navigate('/admin/PaymentManagement');
         }
 
     return (

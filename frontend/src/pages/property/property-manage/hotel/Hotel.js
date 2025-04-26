@@ -10,14 +10,16 @@ import HotelForm from "./HotelForm/HotelForm";
 function HotelPage() {
   const [hotelData, setHotelData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // <- added
 
+  const userId=localStorage.getItem("userID")
   useEffect(() => {
     getAllHotelRoom();
   }, []);
 
   const getAllHotelRoom = () => {
     axios
-      .get("http://localhost:4000/api/hotelRoom")
+      .get(`http://localhost:4000/api/hotelRoom?userId=${userId}`)
       .then((response) => {
         console.log(response.data);
         setHotelData(response.data);
@@ -36,6 +38,13 @@ function HotelPage() {
     getAllHotelRoom();
 
   };
+
+    // Filtered data based on search
+    const filteredHotels = hotelData.filter((hotel) =>
+      hotel.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      hotel.availability?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  
 
   return (
     <div>
@@ -58,8 +67,18 @@ function HotelPage() {
           </div>
         </div>
 
+        <div className="searchContainer">
+        <input
+          type="text"
+          className="searchInput"
+          placeholder="Search by hotel name, room type, or status..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
         <div className="hotel-card">
-          {hotelData.map((hotel) => (
+          {filteredHotels.map((hotel) => (
             <HotelRoomCard key={hotel.HR_Id} HR_Id={hotel.HR_Id} hotel={hotel} getAllHotelRoom={getAllHotelRoom}/>
           ))}
         </div>
