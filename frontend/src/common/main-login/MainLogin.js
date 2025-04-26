@@ -83,6 +83,7 @@ const MainLogin = () => {
         <div className="form-login">
           <label>Email</label>
           <input
+             className="inputLogin"
             type="email"
             placeholder="Enter your email"
             value={email}
@@ -91,6 +92,7 @@ const MainLogin = () => {
 
           <label>Password</label>
           <input
+          className="inputLogin"
             type="password"
             placeholder="Enter your password"
             value={password}
