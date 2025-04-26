@@ -27,7 +27,7 @@ const MainLogin = () => {
     axios.post('http://localhost:4000/api/login', loginData)
       .then(response => {       
         console.log('Login successful:', response.data);
-        console.log('User details:', response.userDetails); 
+       
 
         if (response.data.userDetails.role === 'Bussiness') {
           navigate('/property');
@@ -41,7 +41,15 @@ const MainLogin = () => {
           localStorage.setItem("userID",response.data.userDetails.userID);
           localStorage.setItem("touristID",response.data.userDetails.touristID);
           localStorage.setItem("fullname",response.data.userDetails.fullname);
-        } 
+        }
+        
+        if(response.data.userDetails.role === "TourGuide") {
+          console.log("Tour Guide Login",response.data.tourGuideDetails.guideId);
+          navigate('/TourGuide');
+          localStorage.setItem("userID",response.data.userDetails.userID);
+          localStorage.setItem("guideId",response.data.tourGuideDetails.guideId);
+          localStorage.setItem("guideName",response.data.tourGuideDetails.guideName);
+        }
 
       })
       .catch(error => {     
@@ -58,7 +66,7 @@ const MainLogin = () => {
   };
 
   const onClickGuideRegister = () => {
-    navigate('/tourist-signup'); // or your tour guide signup route
+    navigate('/tourguide-signup'); // or your tour guide signup route
   };
 
   return (

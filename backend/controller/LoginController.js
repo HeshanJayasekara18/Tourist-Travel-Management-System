@@ -2,6 +2,7 @@ const User = require('../model/User');
 const BussinessAgent = require('../model/BussinessAgent');
 const Bussiness = require('../model/Bussiness'); 
 const Tourist = require('../model/Tourist');   
+const TourGuide = require('../model/TourGuide');
 
 
 const login = async (req, res) => {
@@ -76,7 +77,28 @@ const login = async (req, res) => {
             });
         }
 
-        if(user.role=='TourGuide'){}
+        if(user.role=='TourGuide'){
+            const tourGuide = await TourGuide.findOne({ user: user._id }); // linked by user ObjectId
+
+            if (!tourGuide) {
+                return res.status(404).json({ message: "Tour guide not found" });
+            }
+
+            return res.status(200).json({
+                message: "Login successful",
+                userDetails: {
+                    userID: user.userID,
+                    username: user.username,
+                    role: user.role,
+                    email: user.email,
+                },
+                tourGuideDetails: {
+                    guideId: tourGuide._id,
+                    guideName: tourGuide.guideName,
+                }
+            });
+        
+        }
 
 
 
