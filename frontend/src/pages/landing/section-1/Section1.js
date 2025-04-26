@@ -6,8 +6,6 @@ import templeofthtoothLanding from '../../../images/templeofthtooth-landing.jpeg
 import './Section1.css';
 import { useNavigate } from 'react-router-dom';
 
-
-
 const slides = [
   {
     image: sigiriyaLanding,
@@ -41,11 +39,6 @@ const TravelLandingPage1 = () => {
     setCurrentSlide(index);
   };
 
-  const login = () => {
-    navigate('/login');
-
-  }
-
   return (
     <div className="landingLandingPage">
       <nav className="landingNavigation">
@@ -61,6 +54,8 @@ const TravelLandingPage1 = () => {
         <div className="landingRegbutton">
           <button onClick={login}>Login</button>
           <button>Sign Up</button>
+          <button className="landingsignupbutton" onClick={() => navigate('/tourist-signup')}>Sign Up</button>
+          <button className="landinglogbutton" onClick={() => navigate('/login')}>Login</button>
         </div>
       </nav>
 
