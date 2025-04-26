@@ -6,7 +6,7 @@ import Homepage from '../addpackage/Addpackage.js';
 import SimplifiedTourForm from '../editpackagefrom/Editpackagefrom.js';
 import axios from 'axios';
 // Import React Icons
-import { FaSearch, FaPlus, FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaSearch, FaPlus, FaEye, FaEdit, FaTrashAlt, FaTimes } from 'react-icons/fa';
 import { BiDollar } from 'react-icons/bi';
 import { MdLocationOn, MdDateRange } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
@@ -21,6 +21,8 @@ const DisplayDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPackageId, setSelectedPackageId] = useState(null);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [searchCategory, setSearchCategory] = useState('all');
 
   const navigate = useNavigate(); // Initialize useNavigate hook
 
@@ -48,17 +50,44 @@ const DisplayDetails = () => {
       setFilteredPackages(tourPackages);
     } else {
       const lowercasedSearch = searchTerm.toLowerCase();
-      const filtered = tourPackages.filter(pkg => 
-        pkg.name.toLowerCase().includes(lowercasedSearch) || 
-        pkg.destination.toLowerCase().includes(lowercasedSearch) || 
-        pkg.tourType.toLowerCase().includes(lowercasedSearch)
-      );
+      let filtered;
+      
+      switch(searchCategory) {
+        case 'name':
+          filtered = tourPackages.filter(pkg => 
+            pkg.name.toLowerCase().includes(lowercasedSearch)
+          );
+          break;
+        case 'destination':
+          filtered = tourPackages.filter(pkg => 
+            pkg.destination.toLowerCase().includes(lowercasedSearch)
+          );
+          break;
+        case 'tourType':
+          filtered = tourPackages.filter(pkg => 
+            pkg.tourType.toLowerCase().includes(lowercasedSearch)
+          );
+          break;
+        default: // 'all'
+          filtered = tourPackages.filter(pkg => 
+            pkg.name.toLowerCase().includes(lowercasedSearch) || 
+            pkg.destination.toLowerCase().includes(lowercasedSearch) || 
+            pkg.tourType.toLowerCase().includes(lowercasedSearch)
+          );
+      }
+      
       setFilteredPackages(filtered);
     }
-  }, [searchTerm, tourPackages]);
+  }, [searchTerm, tourPackages, searchCategory]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    // Automatically focus the search input after clearing
+    document.querySelector('.search-input').focus();
   };
 
   const handleClickOpen = (pkgId = null) => {
@@ -121,15 +150,48 @@ const DisplayDetails = () => {
         <div className="header-content">
           <h1>Tour Packages</h1>
           <div className="header-controls">
-            <div className="search-container">
+            <div className={`search-container ${searchFocused ? 'search-focused' : ''}`}>
               <FaSearch className="search-icon" />
               <input 
                 type="text" 
-                placeholder="Search by name, destination, or tour type..." 
+                placeholder="Search packages..." 
                 className="search-input"
                 value={searchTerm}
                 onChange={handleSearchChange}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
               />
+              {searchTerm && (
+                <button className="clear-search-btn" onClick={clearSearch}>
+                  <FaTimes />
+                </button>
+              )}
+              <div className="search-categories">
+                <span 
+                  className={`category ${searchCategory === 'all' ? 'active' : ''}`}
+                  onClick={() => setSearchCategory('all')}
+                >
+                  All
+                </span>
+                <span 
+                  className={`category ${searchCategory === 'name' ? 'active' : ''}`}
+                  onClick={() => setSearchCategory('name')}
+                >
+                  Name
+                </span>
+                <span 
+                  className={`category ${searchCategory === 'destination' ? 'active' : ''}`}
+                  onClick={() => setSearchCategory('destination')}
+                >
+                  Destination
+                </span>
+                <span 
+                  className={`category ${searchCategory === 'tourType' ? 'active' : ''}`}
+                  onClick={() => setSearchCategory('tourType')}
+                >
+                  Tour Type
+                </span>
+              </div>
             </div>
             <button className="add-button" onClick={() => handleClickOpen()}>
               <FaPlus className="button-icon" /> Add New Package

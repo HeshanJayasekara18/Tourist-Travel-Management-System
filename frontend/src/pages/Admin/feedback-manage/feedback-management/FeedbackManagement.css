@@ -1,0 +1,334 @@
+/* FeedbackManagement.css */
+
+.feedback-management-container-r {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .feedback-header-r {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .feedback-title-r {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .feedback-tools-r {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .search-container-r {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-icon-r {
+    position: absolute;
+    left: 10px;
+    color: #666;
+  }
+  
+  .search-input-r {
+    padding: 10px 10px 10px 36px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 250px;
+    font-size: 14px;
+  }
+  
+  .filter-toggle-button-r, .export-button-r {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+  
+  .filter-toggle-button-r:hover, .export-button-r:hover {
+    background-color: #e9e9e9;
+  }
+  
+  .export-button-r {
+    background-color: #eaf5ea;
+    color: #3c763d;
+    border-color: #d6e9c6;
+  }
+  
+  .export-button-r:hover {
+    background-color: #d6e9c6;
+  }
+  
+  .filter-panel-r {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .filter-row-r {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+  }
+  
+  .filter-field-r {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 150px;
+  }
+  
+  .filter-field-r label {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .filter-field-r select, .filter-field-r input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .clear-filters-button-r {
+    padding: 8px 16px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #d9534f;
+    transition: all 0.2s;
+  }
+  
+  .clear-filters-button-r:hover {
+    background-color: #f9f2f4;
+    border-color: #d9534f;
+  }
+  
+  .feedback-stats-r {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .stat-box-r {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stat-label-r {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+  
+  .stat-value-r {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .feedback-table-container-r {
+    overflow-x: auto;
+    margin-bottom: 24px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+  }
+  
+  .feedback-table-r {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+  
+  .feedback-table-r th {
+    background-color: #f5f5f5;
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .sortable-header-r {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .feedback-table-r td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+  }
+  
+  .service-badge-r {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .tourguide-r {
+    background-color: #dff0d8;
+    color: #3c763d;
+  }
+  
+  .hotelroom-r {
+    background-color: #d9edf7;
+    color: #31708f;
+  }
+  
+  .vehicle-r {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+  }
+  
+  .rating-cell-r {
+    font-size: 16px;
+  }
+  
+  .stars-display-r {
+    color: #f8b84e;
+    letter-spacing: 2px;
+  }
+  
+  .comment-cell-r {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .no-comment-r {
+    color: #999;
+    font-style: italic;
+    font-size: 13px;
+  }
+  
+  .no-results-r {
+    text-align: center;
+    padding: 32px;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .pagination-r {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .pagination-button-r {
+    padding: 6px 12px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .pagination-button-r:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination-button-r:not(:disabled):hover {
+    background-color: #f5f5f5;
+  }
+  
+  .page-numbers-r {
+    display: flex;
+    gap: 4px;
+  }
+  
+  .page-number-r {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .active-page-r {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+  
+  .ellipsis-r {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+  }
+  
+  .loading-container-r {
+    text-align: center;
+    padding: 48px;
+    color: #666;
+    font-size: 16px;
+  }
+  
+  .error-container-r {
+    text-align: center;
+    padding: 48px;
+    color: #d9534f;
+    font-size: 16px;
+  }
+  
+  @media (max-width: 768px) {
+    .feedback-header-r {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .filter-row-r {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .feedback-stats-r {
+      flex-direction: column;
+    }
+    
+    .search-input-r {
+      width: 100%;
+    }
+  }

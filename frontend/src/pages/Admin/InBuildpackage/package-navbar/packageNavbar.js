@@ -64,9 +64,17 @@ function PackageSideNav() {
                         <img src={j3} className="icons" />
                         <button onClick={onClickPaymentManage}>payment manage</button>
                     </div>
+
+                    
                     
 
                 </div>
+
+
+
+
+
+                
 
                 <div class="sub2">
                     <div>

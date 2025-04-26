@@ -59,3 +59,4 @@ const RoutingMachine = ({ waypoints, onDistanceChange }) => {
 };
 
 export default RoutingMachine;
+

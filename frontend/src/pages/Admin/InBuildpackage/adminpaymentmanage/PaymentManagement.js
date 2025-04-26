@@ -13,9 +13,26 @@ import {
   FiCheckCircle,
   FiAlertCircle,
   FiClock,
-  FiTrash2
+  FiTrash2,
+  FiBarChart2,
+  FiActivity
 } from 'react-icons/fi';
 import jsPDF from 'jspdf';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line
+} from 'recharts';
 
 const PaymentManagement = () => {
   // State for payments data
@@ -27,11 +44,20 @@ const PaymentManagement = () => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [showCharts, setShowCharts] = useState(false);
+  const [chartData, setChartData] = useState({ status: [], monthly: [] });
 
   // Fetch payments data from API
   useEffect(() => {
     fetchPayments();
   }, []);
+
+  // Prepare chart data when payments change
+  useEffect(() => {
+    if (payments.length > 0) {
+      prepareChartData();
+    }
+  }, [payments]);
 
   const fetchPayments = async () => {
     setIsLoading(true);
@@ -69,6 +95,68 @@ const PaymentManagement = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Prepare chart data
+  const prepareChartData = () => {
+    // Status chart data
+    const statusCounts = {
+      completed: payments.filter(p => p.status === 'completed').length,
+      pending: payments.filter(p => p.status === 'pending').length,
+      failed: payments.filter(p => p.status === 'failed').length
+    };
+    
+    const statusData = [
+      { name: 'Completed', value: statusCounts.completed },
+      { name: 'Pending', value: statusCounts.pending },
+      { name: 'Failed', value: statusCounts.failed }
+    ];
+
+    // Monthly data for the last 6 months
+    const monthlyData = getMonthlyData(payments);
+
+    setChartData({
+      status: statusData,
+      monthly: monthlyData
+    });
+  };
+
+  // Generate monthly data for chart
+  const getMonthlyData = (paymentData) => {
+    const months = {};
+    const now = new Date();
+    
+    // Initialize last 6 months
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const monthName = d.toLocaleString('default', { month: 'short' });
+      months[`${monthName} ${d.getFullYear()}`] = {
+        completed: 0,
+        pending: 0,
+        failed: 0,
+        total: 0
+      };
+    }
+    
+    // Populate with payment data
+    paymentData.forEach(payment => {
+      const date = new Date(payment.date);
+      const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+      
+      if (months[monthYear]) {
+        months[monthYear][payment.status]++;
+        months[monthYear].total += payment.amount;
+      }
+    });
+    
+    // Convert to array for chart
+    return Object.keys(months).map(month => ({
+      name: month,
+      completed: months[month].completed,
+      pending: months[month].pending,
+      failed: months[month].failed,
+      total: months[month].total
+    }));
   };
 
   // Delete payment
@@ -248,6 +336,15 @@ const PaymentManagement = () => {
     generateReceiptPDF(payment);
   };
 
+  // Chart colors
+  const COLORS = {
+    completed: '#2ecc71',
+    pending: '#f39c12',
+    failed: '#e74c3c'
+  };
+
+  const CHART_COLORS = ['#2ecc71', '#f39c12', '#e74c3c'];
+
   return (
     <div className="payment-management-container">
       <h1><FiDollarSign className="header-icon" /> Payment Management</h1>
@@ -278,6 +375,17 @@ const PaymentManagement = () => {
               <option value="failed">Failed</option>
             </select>
           </div>
+          
+          <div className="filter-container">
+            <label><FiBarChart2 className="filter-icon" /> Charts:</label>
+            <button 
+              className="modal-button" 
+              style={{ marginLeft: '8px', padding: '6px 12px' }}
+              onClick={() => setShowCharts(!showCharts)}
+            >
+              {showCharts ? 'Hide Charts' : 'Show Charts'}
+            </button>
+          </div>
         </div>
         
         <div className="payment-summary">
@@ -299,6 +407,79 @@ const PaymentManagement = () => {
           </div>
         </div>
       </div>
+      
+      {/* Chart section */}
+      {showCharts && (
+        <div style={{ marginBottom: '24px', backgroundColor: '#f8fafc', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
+          <h2 style={{ fontSize: '20px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FiBarChart2 /> Payment Analytics
+          </h2>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+            {/* Payment Status Distribution */}
+            <div style={{ backgroundColor: 'white', padding: '15px', borderRadius: '8px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)' }}>
+              <h3 style={{ fontSize: '16px', marginBottom: '15px', color: '#4a5568' }}>Payment Status Distribution</h3>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={chartData.status}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {chartData.status.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => [`${value} payments`, 'Count']} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Monthly Payment Volume */}
+            <div style={{ backgroundColor: 'white', padding: '15px', borderRadius: '8px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)' }}>
+              <h3 style={{ fontSize: '16px', marginBottom: '15px', color: '#4a5568' }}>Monthly Payment Volume</h3>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart
+                  data={chartData.monthly}
+                  margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                  <YAxis />
+                  <Tooltip formatter={(value, name) => [value, name.charAt(0).toUpperCase() + name.slice(1)]} />
+                  <Legend />
+                  <Bar dataKey="completed" name="Completed" fill={COLORS.completed} />
+                  <Bar dataKey="pending" name="Pending" fill={COLORS.pending} />
+                  <Bar dataKey="failed" name="Failed" fill={COLORS.failed} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Monthly Payment Amount */}
+            <div style={{ backgroundColor: 'white', padding: '15px', borderRadius: '8px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)' }}>
+              <h3 style={{ fontSize: '16px', marginBottom: '15px', color: '#4a5568' }}>Monthly Revenue</h3>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart
+                  data={chartData.monthly}
+                  margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                >
+                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                  <YAxis />
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <Tooltip formatter={(value) => [`$${value.toFixed(2)}`, 'Revenue']} />
+                  <Legend />
+                  <Line type="monotone" dataKey="total" name="Total Revenue" stroke="#3498db" activeDot={{ r: 8 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isLoading ? (
         <div className="loading-indicator">

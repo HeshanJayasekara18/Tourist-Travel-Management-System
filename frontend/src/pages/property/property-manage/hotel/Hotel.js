@@ -19,7 +19,7 @@ function HotelPage() {
 
   const getAllHotelRoom = () => {
     axios
-      .get(`http://localhost:4000/api/hotelRoom?userId=${userId}`)
+      .get(`http://localhost:4000/api/hotelRoom/getHotelRoomById?userId=${userId}`)
       .then((response) => {
         console.log(response.data);
         setHotelData(response.data);

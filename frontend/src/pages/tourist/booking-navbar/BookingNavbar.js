@@ -1,4 +1,3 @@
-
 import weblogo from '../../../images/logo.png';
 import './BookingNavbar.css';
 import { useNavigate } from "react-router-dom";

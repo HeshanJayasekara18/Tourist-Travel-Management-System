@@ -1,14 +1,6 @@
 const Vehicle = require ('../model/Vehicle');
 
 
-// const getAllVehicle = async (req,res) => {
-//     try{
-//         const vehicles = await Vehicle.find({});
-//         res.status(200).json(vehicles);
-//     }catch(error){
-//         res.status(500).jason({ message: error.message });
-//     }
-// }
 
 const getVehicle = async (req, res) => {
     try {
@@ -24,16 +16,6 @@ const getVehicle = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
-// const addVehicle = async (req,res) => {
-//     try{
-//         const vehicle = await Vehicle.create(req.body);
-//         res.status(200).json(vehicle);
-//     }catch(error){
-//         res.status(500).json({message:error.message});
-//     }
-// }
 
 
 const addVehicle = async (req, res) => {
@@ -102,10 +84,40 @@ const updateVehicle = async (req, res) => {
 
 
 
-const getAllVehicle = async (req, res) => {    
+const getAllVehicleByUserId = async (req, res) => {    
 
     try {
         const vehicles = await Vehicle.find({userId:req.query.userId});
+
+        // Convert image buffer to Base64
+        const vehiclesWithImages = vehicles.map(vehicle => ({
+            _id: vehicle._id,
+            V_Id: vehicle.V_Id,
+            B_Id: vehicle.B_Id,
+            modelName: vehicle.modelName,
+            seats: vehicle.seats,
+            fuelType: vehicle.fuelType,
+            transmission: vehicle.transmission,
+            doors: vehicle.doors,
+            status: vehicle.status,
+            priceDay: vehicle.priceDay,
+            priceMonth: vehicle.priceMonth,
+            image: vehicle.image 
+                ? `data:${vehicle.image.contentType};base64,${vehicle.image.data.toString("base64")}` 
+                : null,
+        }));
+
+        res.status(200).json(vehiclesWithImages);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+};
+
+
+const getAllVehicle = async (req, res) => {    
+
+    try {
+        const vehicles = await Vehicle.find({});
 
         // Convert image buffer to Base64
         const vehiclesWithImages = vehicles.map(vehicle => ({
@@ -146,5 +158,6 @@ module.exports = {
     getVehicle,
     addVehicle,
     updateVehicle,
-    deleteVehicle
+    deleteVehicle,
+    getAllVehicleByUserId
 };
