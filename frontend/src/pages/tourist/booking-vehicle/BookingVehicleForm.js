@@ -25,22 +25,23 @@ import {
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { 
-  HotelOutlined, 
+  DirectionsCarOutlined, 
   CalendarMonthOutlined, 
-  BedOutlined, 
   PersonOutline, 
   PhoneOutlined,
   PaymentOutlined,
-  AcUnitOutlined,
+  LocalGasStationOutlined,
   EventOutlined,
-  AttachMoneyOutlined
+  AttachMoneyOutlined,
+  LocationOnOutlined,
+  SettingsOutlined
 } from "@mui/icons-material";
 
-const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) => {
+const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle }) => {
   const [formData, setFormData] = useState({
     bookingID: "",
     name: "",
-    booking_type: "hotel",
+    booking_type: "vehicle",
     booking_date: dayjs().format("YYYY-MM-DD"),
     booking_time: dayjs().format("HH:mm"),
     start_date: dayjs(),
@@ -50,18 +51,18 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
     tourID: "",
     touristID: "",
     payment_amount: "",
-    hotel_booking: {
-      room_type: "AC", // Default to AC
-      number_of_rooms: 1,
-      number_of_guests: 1,
+    vehicle_booking: {
+      vehicle_type: "",
+      driver_name: "",
+      pickup_location: "",
+      dropoff_location: ""
     },
   });
 
   const [errors, setErrors] = useState({});
-  const [hotelNames, setHotelNames] = useState([]);
-  const [hotelDetails, setHotelDetails] = useState(null);
+  const [vehicleDetails, setVehicleDetails] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [totalNights, setTotalNights] = useState(1);
+  const [totalDays, setTotalDays] = useState(1);
 
   useEffect(() => {
     if (open) {
@@ -69,36 +70,44 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
         ...prevData,
         booking_date: dayjs().format("YYYY-MM-DD"),
         booking_time: dayjs().format("HH:mm"),
-        name: selectedHotel ? selectedHotel.name : "",
-        payment_amount: selectedHotel ? selectedHotel.price_day : "",
+        name: selectedVehicle ? selectedVehicle.modelName : "",
+        payment_amount: selectedVehicle ? selectedVehicle.priceDay : "",
+        vehicle_booking: {
+          ...prevData.vehicle_booking,
+          vehicle_type: selectedVehicle ? selectedVehicle.modelName : ""
+        }
       }));
       
-      if (selectedHotel) {
-        setHotelDetails(selectedHotel);
-      } else {
-        fetchHotelNames();
+      if (selectedVehicle) {
+        setVehicleDetails(selectedVehicle);
       }
     }
-  }, [open, selectedHotel]);
+  }, [open, selectedVehicle]);
 
-  // Calculate total nights and price whenever dates change
+  // Calculate total days and price whenever dates change
   useEffect(() => {
     if (formData.start_date && formData.end_date) {
       const startDate = dayjs(formData.start_date);
       const endDate = dayjs(formData.end_date);
       
-      // Calculate number of nights
+      // Calculate number of days
       const diffInDays = endDate.diff(startDate, 'day');
-      const nights = diffInDays > 0 ? diffInDays : 0;
-      setTotalNights(nights);
+      const days = diffInDays > 0 ? diffInDays : 0;
+      setTotalDays(days);
       
       // Calculate total price
-      if (hotelDetails && nights > 0) {
-        const roomPrice = hotelDetails.price_day;
-        const roomCount = formData.hotel_booking.number_of_rooms || 1;
-        const roomTypeMultiplier = formData.hotel_booking.room_type === "AC" ? 1.2 : 1;
+      if (vehicleDetails && days > 0) {
+        // If more than 30 days, use monthly price for calculation
+        let calculatedPrice = 0;
         
-        const calculatedPrice = roomPrice * nights * roomCount * roomTypeMultiplier;
+        if (days >= 30) {
+          const months = Math.floor(days / 30);
+          const remainingDays = days % 30;
+          calculatedPrice = (months * vehicleDetails.priceMonth) + (remainingDays * vehicleDetails.priceDay);
+        } else {
+          calculatedPrice = days * vehicleDetails.priceDay;
+        }
+        
         setTotalPrice(calculatedPrice);
         
         // Update payment amount
@@ -108,45 +117,19 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
         }));
       }
     }
-  }, [formData.start_date, formData.end_date, formData.hotel_booking.number_of_rooms, formData.hotel_booking.room_type, hotelDetails]);
-
-  const fetchHotelNames = async () => {
-    try {
-      const response = await axios.get("http://localhost:4000/api/hotelrooms");
-      const hotels = response.data;
-      setHotelNames(hotels);
-      
-      // If a hotel name is already selected, find its details
-      if (formData.name && hotels.length > 0) {
-        const selectedHotel = hotels.find(hotel => hotel.name === formData.name);
-        if (selectedHotel) {
-          setHotelDetails(selectedHotel);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching hotel names:", error);
-    }
-  };
+  }, [formData.start_date, formData.end_date, vehicleDetails]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
-    // If hotel name changes, update hotel details
-    if (name === "name" && hotelNames.length > 0) {
-      const selectedHotel = hotelNames.find(hotel => hotel.name === value);
-      if (selectedHotel) {
-        setHotelDetails(selectedHotel);
-      }
-    }
   };
 
-  const handleHotelBookingChange = (e) => {
+  const handleVehicleBookingChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      hotel_booking: {
-        ...formData.hotel_booking,
+      vehicle_booking: {
+        ...formData.vehicle_booking,
         [name]: value,
       },
     });
@@ -177,13 +160,18 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
     let tempErrors = {};
     
     // Basic validations
-    tempErrors.name = formData.name ? "" : "Hotel name is required";
+    tempErrors.name = formData.name ? "" : "Vehicle name is required";
     tempErrors.start_date = formData.start_date ? "" : "Start date is required";
     tempErrors.end_date = formData.end_date ? "" : "End date is required";
     tempErrors.mobile_number = formData.mobile_number.length === 10 ? "" : "Mobile number must be 10 digits";
     tempErrors.payID = formData.payID ? "" : "Payment ID is required";
     tempErrors.tourID = formData.tourID ? "" : "Tour ID is required";
     tempErrors.touristID = formData.touristID ? "" : "Tourist ID is required";
+    
+    // Vehicle booking validations
+    tempErrors.driver_name = formData.vehicle_booking.driver_name ? "" : "Driver name is required";
+    tempErrors.pickup_location = formData.vehicle_booking.pickup_location ? "" : "Pickup location is required";
+    tempErrors.dropoff_location = formData.vehicle_booking.dropoff_location ? "" : "Dropoff location is required";
     
     // Date validations
     if (formData.start_date && formData.start_date < dayjs().startOf('day')) {
@@ -192,15 +180,6 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
     
     if (formData.end_date && formData.start_date && dayjs(formData.end_date).isBefore(dayjs(formData.start_date))) {
       tempErrors.end_date = "End date cannot be before start date";
-    }
-    
-    // Room validations
-    if (formData.hotel_booking.number_of_rooms <= 0) {
-      tempErrors.number_of_rooms = "Must book at least one room";
-    }
-    
-    if (formData.hotel_booking.number_of_guests <= 0) {
-      tempErrors.number_of_guests = "Must have at least one guest";
     }
     
     // Payment validation
@@ -235,21 +214,21 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
         touristID: formData.touristID,
         payment_amount: Number(formData.payment_amount),
         
-        // Add the hotel_booking object with proper structure
-        hotel_booking: {
-          hotel_name: formData.name,
-          room_type: formData.hotel_booking.room_type,
-          number_of_rooms: Number(formData.hotel_booking.number_of_rooms),
-          number_of_guests: Number(formData.hotel_booking.number_of_guests)
+        // Add the vehicle_booking object with proper structure
+        vehicle_booking: {
+          vehicle_type: formData.vehicle_booking.vehicle_type || formData.name,
+          driver_name: formData.vehicle_booking.driver_name,
+          pickup_location: formData.vehicle_booking.pickup_location,
+          dropoff_location: formData.vehicle_booking.dropoff_location
         }
       };
     
-      // Use consistent API endpoint (lowercase is preferred)
+      // Use consistent API endpoint
       const response = await axios.post("http://localhost:4000/api/booking", bookingData, {
         headers: { "Content-Type": "application/json" }
       });
     
-      alert("Successfully booked!");
+      alert("Vehicle successfully booked!");
       getAllBooking(); // Refresh the booking list
       handleClose(); // Close the dialog
     } catch (error) {
@@ -280,45 +259,57 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
             p: 2
           }}
         >
-          <HotelOutlined /> 
-          Hotel Booking Form
+          <DirectionsCarOutlined /> 
+          Vehicle Booking Form
         </DialogTitle>
         
         <DialogContent sx={{ p: 3 }}>
-          {/* Summary Box with Hotel Details */}
-          {hotelDetails && (
+          {/* Summary Box with Vehicle Details */}
+          {vehicleDetails && (
             <Paper elevation={1} sx={{ p: 2, mb: 3, borderRadius: 2, bgcolor: '#f8f9fa' }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                <Typography variant="h6" color="primary">{hotelDetails.name}</Typography>
+                <Typography variant="h6" color="primary">{vehicleDetails.modelName}</Typography>
                 <Typography variant="body1" fontWeight="bold">
-                  ${hotelDetails.price_day} / night
+                  ${vehicleDetails.priceDay} / day | ${vehicleDetails.priceMonth} / month
                 </Typography>
               </Box>
               
               <Divider sx={{ my: 1 }} />
               
               <Grid container spacing={2} sx={{ mt: 1 }}>
-                <Grid item xs={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <BedOutlined fontSize="small" />
-                    <Typography variant="body2">Beds: {hotelDetails.bed}</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={3}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <PersonOutline fontSize="small" />
-                    <Typography variant="body2">Max Occupancy: {hotelDetails.max_occupancy}</Typography>
+                    <Typography variant="body2">Seats: {vehicleDetails.seats}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={3}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LocalGasStationOutlined fontSize="small" />
+                    <Typography variant="body2">{vehicleDetails.fuelType}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={3}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <SettingsOutlined fontSize="small" />
+                    <Typography variant="body2">{vehicleDetails.transmission}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={3}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <DirectionsCarOutlined fontSize="small" />
+                    <Typography variant="body2">{vehicleDetails.doors} Doors</Typography>
                   </Box>
                 </Grid>
               </Grid>
               
               {/* Price Summary */}
-              {totalNights > 0 && (
+              {totalDays > 0 && (
                 <Box sx={{ mt: 2, p: 1, bgcolor: '#e3f2fd', borderRadius: 1 }}>
                   <Typography variant="subtitle2">Booking Summary:</Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
                     <Typography variant="body2">
-                      {formData.hotel_booking.room_type} Room × {formData.hotel_booking.number_of_rooms} × {totalNights} nights
+                      {vehicleDetails.modelName} × {totalDays} days
                     </Typography>
                     <Typography variant="body2" fontWeight="bold">
                       ${totalPrice.toFixed(2)}
@@ -342,7 +333,7 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
                   readOnly: true,
                   startAdornment: (
                     <InputAdornment position="start">
-                      <HotelOutlined />
+                      <DirectionsCarOutlined />
                     </InputAdornment>
                   ),
                 }}
@@ -352,89 +343,63 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
               <TextField
                 fullWidth
                 margin="dense"
-                label="Hotel Name"
+                label="Vehicle Model"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 error={!!errors.name}
                 helperText={errors.name}
-                list="hotel-options"
                 required
                 InputProps={{
+                  readOnly: !!selectedVehicle,
                   startAdornment: (
                     <InputAdornment position="start">
-                      <HotelOutlined />
+                      <DirectionsCarOutlined />
                     </InputAdornment>
                   )
                 }}
               />
-              <datalist id="hotel-options">
-                {hotelNames.map((hotel, index) => (
-                  <option key={index} value={hotel.name} />
-                ))}
-              </datalist>
 
-              <FormControl fullWidth margin="dense" required>
-                <InputLabel>Room Type</InputLabel>
-                <Select
-                  name="room_type"
-                  value={formData.hotel_booking.room_type}
-                  onChange={handleHotelBookingChange}
-                  startAdornment={
+             
+              
+
+              <TextField
+                fullWidth
+                margin="dense"
+                label="Pickup Location"
+                name="pickup_location"
+                value={formData.vehicle_booking.pickup_location}
+                onChange={handleVehicleBookingChange}
+                error={!!errors.pickup_location}
+                helperText={errors.pickup_location}
+                required
+                InputProps={{
+                  startAdornment: (
                     <InputAdornment position="start">
-                      <AcUnitOutlined />
+                      <LocationOnOutlined />
                     </InputAdornment>
-                  }
-                >
-                  <MenuItem value="AC">AC</MenuItem>
-                  <MenuItem value="Non-AC">Non-AC</MenuItem>
-                </Select>
-              </FormControl>
+                  )
+                }}
+              />
 
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    margin="dense"
-                    label="Number of Rooms"
-                    type="number"
-                    name="number_of_rooms"
-                    value={formData.hotel_booking.number_of_rooms}
-                    onChange={handleHotelBookingChange}
-                    error={!!errors.number_of_rooms}
-                    helperText={errors.number_of_rooms}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <BedOutlined />
-                        </InputAdornment>
-                      ),
-                      inputProps: { min: 1 }
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    margin="dense"
-                    label="Number of Guests"
-                    type="number"
-                    name="number_of_guests"
-                    value={formData.hotel_booking.number_of_guests}
-                    onChange={handleHotelBookingChange}
-                    error={!!errors.number_of_guests}
-                    helperText={errors.number_of_guests}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <PersonOutline />
-                        </InputAdornment>
-                      ),
-                      inputProps: { min: 1 }
-                    }}
-                  />
-                </Grid>
-              </Grid>
+              <TextField
+                fullWidth
+                margin="dense"
+                label="Dropoff Location"
+                name="dropoff_location"
+                value={formData.vehicle_booking.dropoff_location}
+                onChange={handleVehicleBookingChange}
+                error={!!errors.dropoff_location}
+                helperText={errors.dropoff_location}
+                required
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LocationOnOutlined />
+                    </InputAdornment>
+                  )
+                }}
+              />
 
               <DatePicker
                 label="Start Date"
@@ -568,10 +533,10 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
               
               <Box sx={{ mt: 2 }}>
                 <FormHelperText>
-                  * Price is calculated based on room type, number of rooms, and duration of stay
+                  * Price is calculated based on the duration of your reservation
                 </FormHelperText>
                 <FormHelperText>
-                  * AC rooms are priced 20% higher than Non-AC rooms
+                  * For bookings longer than 30 days, monthly rates will apply
                 </FormHelperText>
               </Box>
             </Grid>
@@ -592,7 +557,7 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
             color="primary"
             sx={{ ml: 2 }}
           >
-            Book Now
+            Book Vehicle
           </Button>
         </DialogActions>
       </Dialog>
@@ -600,4 +565,4 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
   );
 };
 
-export default BookingHotelForm;
+export default BookingVehicleForm;
