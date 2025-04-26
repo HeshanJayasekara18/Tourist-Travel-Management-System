@@ -18,6 +18,7 @@ const TouristRoute = require('./route/TouristRoute');
 const TourRoute = require('./route/TourRoute');
 const LoginRoute = require('./route/LoginRoute');
 const MailRoute = require('./route/MailRoute');
+const TouristRegisterRoute = require('./route/TouristRegistration');
 
 
 
@@ -46,6 +47,7 @@ app.use('/api/Booking',BookingRoute);
 app.use('/api/Tourist',TouristRoute);
 app.use('/api/Tour',TourRoute);
 app.use('/api/Login',LoginRoute);
+app.use('/api/TouristRegister',TouristRegisterRoute);
 
 
 // Start Server

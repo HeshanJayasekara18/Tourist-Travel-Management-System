@@ -68,12 +68,23 @@ function PropertySignup() {
         axios.post("http://localhost:4000/api/bussinessRegister",formData)
        .then(response => {
            alert("Bussiness User Added");
+           sendRegistrationMail();
            console.log(response.data);          
        })
        .catch(error => {
          console.error(error);
        });
 
+   }
+
+   const sendRegistrationMail=()=>{ 
+    axios.post(`http://localhost:4000/api/sendMail/registerMail?email=thinurichathma2002@gmail.com`)
+    .then(response => {
+        alert("Mail Send Successfully");        
+    })
+    .catch(error => {
+      console.error(error);
+    });
    }
 
     return (

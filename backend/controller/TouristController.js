@@ -27,7 +27,6 @@ const getTourist = async (req, res) => {
 
 const addTourist = async (req, res) => {
     try {  
-
         // Create a new tourist
         const tourist = await Tourist.create(req.body);
         res.status(201).json(tourist);

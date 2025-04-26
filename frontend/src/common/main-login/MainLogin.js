@@ -13,6 +13,12 @@ const MainLogin = () => {
   const [password, setPassword] = useState('');
 
   const onSubmitLogin = () => {
+
+    if(email === "admin@gmail.com" || password === "admin123") {
+     navigate('/admin');
+      return;
+    } 
+
     const loginData = {
       email: email,
       password: password
@@ -29,7 +35,14 @@ const MainLogin = () => {
           localStorage.setItem("businessName",response.data.businessDetails.businessName); 
           localStorage.setItem("bussinessType",response.data.businessDetails.bussinessType); 
         } 
-        
+
+        if(response.data.userDetails.role === 'Tourist') {
+          navigate('/Tourist');
+          localStorage.setItem("userID",response.data.userDetails.userID);
+          localStorage.setItem("touristID",response.data.userDetails.touristID);
+          localStorage.setItem("fullname",response.data.userDetails.fullname);
+        } 
+
       })
       .catch(error => {     
         console.error('Login failed:', error.response ? error.response.data : error.message);
