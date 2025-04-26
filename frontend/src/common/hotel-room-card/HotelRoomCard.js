@@ -27,17 +27,21 @@ function HotelRoomCard({hotel,getAllHotelRoom,HR_Id}) {
 
     };
 
-    const deleteHotelRoom=()=>{
-        axios.delete(`http://localhost:4000/api/hotelRoom/${HR_Id}`)
-        .then(response => {
-            getAllHotelRoom();
-            console.log(response.data)        
-        })
-        .catch(error => {
-          console.error(error);
-        });
-
-    }
+    const deleteHotelRoom = () => {
+        if (window.confirm("Are you sure you want to delete this hotel room?")) {
+            axios.delete(`http://localhost:4000/api/hotelRoom/${HR_Id}`)
+                .then(response => {
+                    getAllHotelRoom();
+                    console.log(response.data);
+                    alert("Hotel room deleted successfully!");
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Error deleting hotel room!");
+                });
+        }
+    };
+    
 
 
     return (

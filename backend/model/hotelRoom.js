@@ -15,7 +15,8 @@ const HotelRoomSchema = mongoose.Schema({
     image: { 
         data: Buffer, 
         contentType: String 
-    } 
+    },
+    userId: { type: String },  
 });
 
 const HotelRoom = mongoose.model("HotelRoom",HotelRoomSchema);

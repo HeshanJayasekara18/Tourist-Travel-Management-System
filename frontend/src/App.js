@@ -34,6 +34,11 @@ import MainLogin from './common/main-login/MainLogin';
 import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
 import LandingPages from './pages/landing/Landing';
 
+import TourGuideDashboard from './pages/tour-guide/tourguide-dashboard/TourGuideDashboard';
+import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProfile';
+import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp';
+import TourGuideVerification from './pages/tour-guide/tourguide-verification/Verification';
+import TourGuide from './pages/tour-guide/TourGuide';
 
 function App() {
   return (
@@ -44,6 +49,8 @@ function App() {
             <Route path="/property-signup" element={<PropertySignup/>}/>
             <Route path="/login" element={<MainLogin/>}/>
             <Route path="/" element={<LandingPages/>}/>
+            <Route path='/tourguide-signup' element={<TourGuideSignUp/>}/>
+            <Route path='/verification' element={<TourGuideVerification/>}/>
 
 
             <Route
@@ -83,6 +90,13 @@ function App() {
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
                 <Route path='package' element={<TourPackagesLanding/>}/>
             </Route>
+
+             <Route
+                path='/TourGuide'
+                element={<TourGuide/>}>
+                <Route index element={<TourGuideDashboard/>}/>
+                 <Route path='profile' element={<TourGuideProfile/>}/>
+              </Route>
             
           
           </Routes>

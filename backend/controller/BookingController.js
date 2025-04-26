@@ -1,4 +1,7 @@
-const Booking = require('../model/Booking');
+
+const { jsPDF } = require("jspdf");
+const PDFDocument = require('pdfkit');
+const Booking = require('../model/Booking'); // Import the Booking model
 
 const getAllBooking = async (req, res) => {
     try {
@@ -56,10 +59,48 @@ const deleteBooking = async (req, res) => {
     }
 };
 
+const generateReport = async (req, res) => {
+    try {
+        // Query the database for booking data (you can customize your query based on the required data)
+        const bookings = await Booking.find({}, 'bookingID name booking_type start_date end_date'); // Fields you need
+
+        // Create a PDF document
+        const doc = new PDFDocument();
+
+        // Set the response header to indicate it's a PDF file
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=booking_report.pdf');
+        
+        // Pipe the PDF into the response
+        doc.pipe(res);
+
+        // Add Title
+        doc.fontSize(15).text('Booking Report', { align: 'center' });
+        doc.moveDown();
+
+        // Iterate over bookings and add each to the PDF
+        bookings.forEach((booking, index) => {
+            doc.text(`Booking ID: ${booking.bookingID}`);
+            doc.text(`Name: ${booking.name}`);
+            doc.text(`Booking Type: ${booking.booking_type}`);
+            doc.text(`Start Date: ${new Date(booking.start_date).toLocaleDateString()}`);
+            doc.text(`End Date: ${new Date(booking.end_date).toLocaleDateString()}`);
+            doc.moveDown();
+        });
+
+        // Finalize and close the PDF document
+        doc.end();
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error generating report');
+    }
+}
+
 module.exports = {
     getAllBooking,
     getBooking,
     addBooking,
     updateBooking,
-    deleteBooking
+    deleteBooking,
+    generateReport
 };

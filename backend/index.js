@@ -16,8 +16,12 @@ const PaymentRoute = require('./route/PaymentRoute');
 const BookingRoute = require('./route/BookingRoute');
 const TouristRoute = require('./route/TouristRoute');
 const TourRoute = require('./route/TourRoute');
+const LoginRoute = require('./route/LoginRoute');
 const MailRoute = require('./route/MailRoute');
-
+const TouristRegisterRoute = require('./route/TouristRegistration');
+const TourGuideRoute = require('./route/TourGuideRoute');
+const FeedbackRoute = require('./route/FeedbackRoute');
+const GuideDetails = require('./route/GuideDetails');
 
 
 dotenv.config();
@@ -44,6 +48,13 @@ app.use('/api/sendMail', MailRoute);
 app.use('/api/Booking',BookingRoute);
 app.use('/api/Tourist',TouristRoute);
 app.use('/api/Tour',TourRoute);
+app.use('/api/Login',LoginRoute);
+app.use('/api/TouristRegister',TouristRegisterRoute);
+
+app.use('/api/TourGuide',TourGuideRoute);
+app.use('/api/GuideDetails',GuideDetails);
+app.use('/api/feedback',FeedbackRoute);
+app.use('/uploads', express.static('uploads'));
 
 
 // Start Server

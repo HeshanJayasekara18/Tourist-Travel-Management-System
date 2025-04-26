@@ -38,7 +38,7 @@ const getVehicle = async (req, res) => {
 
 const addVehicle = async (req, res) => {
     try {
-        const { B_Id, modelName, seats, fuelType, transmission, doors, status, priceDay, priceMonth } = req.body;
+        const { B_Id, modelName, seats, fuelType, transmission, doors, status, priceDay, priceMonth ,userId} = req.body;
 
         if (!req.file) {
             return res.status(400).json({ message: "Image is required" });
@@ -58,7 +58,8 @@ const addVehicle = async (req, res) => {
             image: {
                 data: req.file.buffer, // Store binary data
                 contentType: req.file.mimetype
-            }
+            },
+            userId
         });
 
         await vehicle.save();
@@ -101,9 +102,10 @@ const updateVehicle = async (req, res) => {
 
 
 
-const getAllVehicle = async (req, res) => {
+const getAllVehicle = async (req, res) => {    
+
     try {
-        const vehicles = await Vehicle.find();
+        const vehicles = await Vehicle.find({userId:req.query.userId});
 
         // Convert image buffer to Base64
         const vehiclesWithImages = vehicles.map(vehicle => ({

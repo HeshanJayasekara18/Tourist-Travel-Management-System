@@ -6,7 +6,7 @@ const TouristSchema = mongoose.Schema({
     username: { type: String, },
     fullname: { type: String, required: true },
     email: { type: String, required: true },
-    country: { type: String, required: true },
+    country: { type: String },
     mobile_number: { type: Number, required: true },
     password: { type: String, required: true },
     

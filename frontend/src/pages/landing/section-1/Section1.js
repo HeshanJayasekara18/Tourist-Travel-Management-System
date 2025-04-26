@@ -4,7 +4,9 @@ import deerLanding from '../../../images/deer-landing.jpg';
 import weblogo from '../../../images/logo.png';
 import templeofthtoothLanding from '../../../images/templeofthtooth-landing.jpeg';
 import './Section1.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
+
 
 const slides = [
   {
@@ -24,8 +26,10 @@ const slides = [
   }
 ];
 
-const TravelLandingPage1 = () => {
-  const navigate = useNavigate();
+function TravelLandingPage1() {
+
+  const navigate=useNavigate();
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -38,6 +42,11 @@ const TravelLandingPage1 = () => {
   const handleCardClick = (index) => {
     setCurrentSlide(index);
   };
+
+  const login = () => {
+    navigate('/login');
+
+  }
 
   return (
     <div className="landingLandingPage">
@@ -52,8 +61,8 @@ const TravelLandingPage1 = () => {
           <a href="#" className="landingNavLink">Join with us</a>
         </div>
         <div className="landingRegbutton">
-          <button className="landingsignupbutton" onClick={() => navigate('/tourist-signup')}>Sign Up</button>
-          <button className="landinglogbutton" onClick={() => navigate('/login')}>Login</button>
+          <button onClick={login}>Login</button>
+          <button>Sign Up</button>
         </div>
       </nav>
 

@@ -45,7 +45,7 @@ function BussinessProfile (){
 
     // getAllBussnessDetails===>Axios get
     const getBussinessDetails = () => {
-        axios.get("http://localhost:4000/api/bussinessRegister?B_Id=84275498-f70d-44d0-8731-320f36144a1a")
+        axios.get("http://localhost:4000/api/bussinessRegister?B_Id=f1f0a24f-beaf-4c8e-a19b-85dc548d5767")
         .then(response => {
             console.log(response.data);
             setBussinessDetails(response.data);

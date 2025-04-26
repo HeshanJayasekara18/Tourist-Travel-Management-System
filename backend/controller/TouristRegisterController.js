@@ -2,38 +2,42 @@ const User = require ('../model/User');
 const Tourist = require ('../model/Tourist'); 
 const Tour = require ('../model/Tour');
 const Booking = require ('../model/Booking');
-const User = require('../model/User');
+
 
 const Touristregister = async (req, res) => {
     try {
-        // Check if the user already exists
-        const existingUser = await User.findOne({ email: req.body.email });
-
+        const { fullname, email, password, country, mobile_number } = req.body;
+      
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: "Email is already registered. Please use a different email." });
         }
 
-        // Create User
-        const user = await User.create({          
-            username: req.body.email,
-            password: req.body.password, 
-            role: req.body.role,
-            email: req.body.email
+        const user = await User.create({
+            username: email,
+            password: password,
+            role: 'Tourist',
+            email
         });
 
         // Create Tourist
         const tourist = await Tourist.create({
-            fullname: req.body.fullName,
-            userAddress: req.body.userAddress,
-            contact: req.body.contact,
+            username: email,
+            fullname: fullname,
+            email,
+            country,
+            mobile_number,
+            password: password,
             userID: user.userID
         });
 
         res.status(201).json({
-            message: "User and Tourist created successfully", 
-            user, 
+            message: "User and Tourist created successfully",
+            user,
             tourist
         });
+
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
