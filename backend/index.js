@@ -24,6 +24,7 @@ const FeedbackRoute = require('./route/FeedbackRoute');
 const GuideDetails = require('./route/GuideDetails');
 
 
+
 dotenv.config();
 
 const PORT = process.env.PORT ;
@@ -50,6 +51,7 @@ app.use('/api/Tourist',TouristRoute);
 app.use('/api/Tour',TourRoute);
 app.use('/api/Login',LoginRoute);
 app.use('/api/TouristRegister',TouristRegisterRoute);
+
 
 app.use('/api/TourGuide',TourGuideRoute);
 app.use('/api/GuideDetails',GuideDetails);

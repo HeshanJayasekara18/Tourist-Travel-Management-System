@@ -25,6 +25,7 @@ const slides = [
 ];
 
 const TravelLandingPage1 = () => {
+
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -52,8 +53,6 @@ const TravelLandingPage1 = () => {
           <a href="#" className="landingNavLink">Join with us</a>
         </div>
         <div className="landingRegbutton">
-          <button onClick={login}>Login</button>
-          <button>Sign Up</button>
           <button className="landingsignupbutton" onClick={() => navigate('/tourist-signup')}>Sign Up</button>
           <button className="landinglogbutton" onClick={() => navigate('/login')}>Login</button>
         </div>
