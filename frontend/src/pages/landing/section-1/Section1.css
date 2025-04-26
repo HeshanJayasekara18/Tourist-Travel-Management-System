@@ -11,38 +11,57 @@
     top: 0;
     left: 0;
     width: 100%;
+    height: 80px;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: large;
     font-weight: bold;
-    background-color: rgba(223, 223, 223, 0.236);
+    background-color: rgb(255, 255, 255);
 }
 .landingNavLinks {
     display: flex;
     gap: 20px;
 }
 .landingNavLink {
-    color: rgb(246, 246, 246);
+    color: rgb(0, 0, 0);
     text-decoration: none;
     opacity: 0.7;
 }
 .landingLogo {
+    margin-top: 10px;
     max-width: 12px;
 }
 .landingHeroSection {
+    margin-top: 85px;
     position: relative;
-    height: 100vh;
+    height: 85vh; /* Consider reducing this if it's creating excessive space */
     overflow: hidden;
-}
+    /* Add this if not present */
+    margin-bottom: 0; 
+    padding-bottom: 0;
+  }
+  
 .landingSliderContainer {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 95%;
     height: 100%;
+    margin-left: 35px;
+   
+    
 }
+.landingWave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 2;
+  }
+  
 .landingSlide {
     position: absolute;
     top: 0;
@@ -51,6 +70,7 @@
     height: 100%;
     opacity: 0;
     transition: opacity 1s ease-in-out;
+    
 }
 .landingActiveSlide {
     opacity: 1;
@@ -58,7 +78,8 @@
 .landingSlideImage {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit:cover;
+    border-radius: 20px;
 }
 .landingOverlay {
     position: absolute;
@@ -67,6 +88,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+    border-radius: 20px;
 }
 .landingHeroContent {
     position: absolute;
@@ -74,7 +96,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: white;
+    color: rgb(255, 255, 255);
     z-index: 10;
 }
 .landingHeroTitle {
@@ -150,8 +172,35 @@
     font-size: 24px;
 }
 .landingRegbutton {
-    /* Add your styles for the registration button container */
+    /* White with transparency */
+    backdrop-filter: blur(8px);           /* Blur effect */
+    -webkit-backdrop-filter: blur(8px);   /* Safari support */
+    /* border: 1px solid rgba(0, 0, 0, 0); Thin white-gray border */
+    color: black;
+    /* padding: px 16px; */
+    margin: 0 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
-.landingActiveCard {
-    /* Add your styles for the active card */
+
+button:hover {
+    background: rgba(29, 111, 235, 0.5);
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+.landinglogbutton{
+    background: rgb(255, 136, 0);
 }
+.landingWave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    display: block;
+    z-index: 2;
+    
+  }
+  

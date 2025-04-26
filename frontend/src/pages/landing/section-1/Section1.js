@@ -4,6 +4,7 @@ import deerLanding from '../../../images/deer-landing.jpg';
 import weblogo from '../../../images/logo.png';
 import templeofthtoothLanding from '../../../images/templeofthtooth-landing.jpeg';
 import './Section1.css';
+import { useNavigate } from "react-router-dom";
 
 const slides = [
   {
@@ -23,7 +24,8 @@ const slides = [
   }
 ];
 
-function TravelLandingPage1() {
+const TravelLandingPage1 = () => {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -50,16 +52,16 @@ function TravelLandingPage1() {
           <a href="#" className="landingNavLink">Join with us</a>
         </div>
         <div className="landingRegbutton">
-          <button>Login</button>
-          <button>Sign Up</button>
+          <button className="landingsignupbutton" onClick={() => navigate('/tourist-signup')}>Sign Up</button>
+          <button className="landinglogbutton" onClick={() => navigate('/login')}>Login</button>
         </div>
       </nav>
 
       <div className="landingHeroSection">
         <div className="landingSliderContainer">
           {slides.map((slide, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`landingSlide ${index === currentSlide ? 'landingActiveSlide' : ''}`}
             >
               <img src={slide.image} alt={slide.title} className="landingSlideImage" />
@@ -70,7 +72,7 @@ function TravelLandingPage1() {
 
         <div className="landingHeroContent">
           <h1 className="landingHeroTitle">Your Dream Vacation Awaits</h1>
-          <p className="landingHeroSubtitle">Explore the Sri Lanka with us.</p>
+          <p className="landingHeroSubtitle">Explore Sri Lanka with us.</p>
           <button className="landingExploreButton">Explore Now →</button>
         </div>
 
@@ -78,17 +80,14 @@ function TravelLandingPage1() {
 
         <div className="landingDestinationCards">
           {slides.map((slide, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`landingDestinationCard ${index === currentSlide ? 'landingActiveCard' : ''}`}
               onClick={() => handleCardClick(index)}
               style={{
                 backgroundImage: `url(${slide.image})`,
                 backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                cursor: 'pointer',
-                color: 'white',
-                textShadow: '1px 1px 2px black'
+                backgroundPosition: 'center'
               }}
             >
               <h3>{slide.title}</h3>
@@ -96,9 +95,25 @@ function TravelLandingPage1() {
             </div>
           ))}
         </div>
+
+        {/* WAVE SVG - Positioned at the bottom */}
+        <div className="landingWaveContainer">
+          <svg
+            className="landingWave"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1440 320"
+            preserveAspectRatio="none"
+          >
+            <path
+              fill="#ffffff"
+              fillOpacity="1"
+              d="M0,96L0,128C160,10,320,224,49,218.7C640,213,800,139,960,117.3C0,96,1280,128,1910,144L1440,160L1440,320L1360,320C120,320,110,320,96,320C800,320,640,320,480,320C320,320,160,320,80,322L0,320Z"
+            ></path>
+          </svg>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default TravelLandingPage1;
