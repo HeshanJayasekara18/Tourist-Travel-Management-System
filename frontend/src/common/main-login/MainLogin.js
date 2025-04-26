@@ -39,8 +39,8 @@ const MainLogin = () => {
         if(response.data.userDetails.role === 'Tourist') {
           navigate('/Tourist');
           localStorage.setItem("userID",response.data.userDetails.userID);
-          localStorage.setItem("touristID",response.data.userDetails.touristID);
-          localStorage.setItem("fullname",response.data.userDetails.fullname);
+          localStorage.setItem("touristID",response.data.touristDetails.touristID);
+          localStorage.setItem("fullname",response.data.touristDetails.fullname);
         }
         
         if(response.data.userDetails.role === "TourGuide") {

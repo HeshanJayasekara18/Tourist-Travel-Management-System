@@ -22,6 +22,7 @@ const TouristRegisterRoute = require('./route/TouristRegistration');
 const TourGuideRoute = require('./route/TourGuideRoute');
 const FeedbackRoute = require('./route/FeedbackRoute');
 const GuideDetails = require('./route/GuideDetails');
+const ChatRoute = require('./route/ChatRoute');
 
 
 dotenv.config();
@@ -55,6 +56,7 @@ app.use('/api/TourGuide',TourGuideRoute);
 app.use('/api/GuideDetails',GuideDetails);
 app.use('/api/feedback',FeedbackRoute);
 app.use('/uploads', express.static('uploads'));
+app.use('/api/chat', ChatRoute);
 
 
 // Start Server

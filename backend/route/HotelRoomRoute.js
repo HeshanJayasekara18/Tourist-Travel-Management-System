@@ -5,7 +5,8 @@ const {
     getHotelRoom,
     addHotelRoom,
     updateHotelRoom,
-    deleteHotelRoom
+    deleteHotelRoom,
+    getAllHotelRoomByUserId
   } = require('../controller/HotelRoomController');
 
  const upload = require("../middleware/upload");
@@ -15,5 +16,6 @@ router.get('/:id', getHotelRoom);
 router.post('/', upload.single("image") ,addHotelRoom);      
 router.put('/:id',upload.single("image"),updateHotelRoom); 
 router.delete('/:id', deleteHotelRoom); 
+router.get('/getHotelRoomById', getAllHotelRoomByUserId); 
 
 module.exports = router;

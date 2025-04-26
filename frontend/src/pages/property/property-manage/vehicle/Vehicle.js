@@ -21,7 +21,7 @@ function VehiclePage() {
   }, []);
 
   const getAllVehicle = () => {
-    axios.get(`http://localhost:4000/api/vehicle?userId=${userId}`)
+    axios.get(`http://localhost:4000/api/vehicle/getVehicleById?userId=${userId}`)
       .then(response => {
         setVehicleData(response.data);
       })

@@ -38,6 +38,7 @@ import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProf
 import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp';
 import TourGuideVerification from './pages/tour-guide/tourguide-verification/Verification';
 import TourGuide from './pages/tour-guide/TourGuide';
+import ChatManage from './pages/property/chat-manage/Chat';
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
                 <Route path='hotel' element={<HotelPage/>}/>
                 <Route path='vehicle' element={<VehiclePage/>}/>
                 <Route path='transaction' element={<PropertyTransaction/>}/>
+                <Route path='chat' element={<ChatManage/>}/>
             </Route>
 
             <Route

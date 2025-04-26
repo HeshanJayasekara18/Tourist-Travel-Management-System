@@ -41,6 +41,10 @@ function PropertySideNav() {
         navigate('/login');
     }
 
+    const onClickChat=()=>{
+        navigate('/property/chat');
+    }
+
     return (
         <div className="mainSideNav">
             <div> 
@@ -77,7 +81,7 @@ function PropertySideNav() {
 
                     <div className="sideNavbtn">
                         <img src={v5} className="icons" />
-                        <button>Chat</button>
+                        <button onClick={onClickChat}>Chat</button>
                     </div>
                 </div>
 
