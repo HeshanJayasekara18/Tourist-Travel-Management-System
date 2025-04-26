@@ -84,8 +84,8 @@ function App() {
                 <Route path='hotel-book' element={<BookingHotel/>}/>
                 <Route path='vehicle-book' element={<BookingVehicle/>}/>
                 <Route path='guide-book' element={<BookingGuide/>}/>
-                <Route path='Profile' element={<TouristProfile/>}/>
-                <Route path='feedback' element={<CustomerFeedback/>}/>
+                <Route path='tourist-profile' element={<TouristProfile/>}/> 
+                {/* <Route path='feedback' element={<CustomerFeedback/>}/> */}
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
                 <Route path='package' element={<TourPackagesLanding/>}/>

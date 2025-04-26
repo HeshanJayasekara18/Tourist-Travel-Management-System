@@ -10,7 +10,6 @@ function Tourist(){
         
             <BookingNavAfterLog/>
             
-            
             <Outlet/>
         </div>
     )

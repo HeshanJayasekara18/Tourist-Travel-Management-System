@@ -1,3 +1,4 @@
+
 import weblogo from '../../../images/logo.png';
 import './BookingNavAfterLog.css';
 import { useNavigate } from "react-router-dom";
@@ -36,10 +37,10 @@ const BookingNavAfterLog = () => {
       <nav className="landingNavigation-h">
         <div className="landingLogo-h"><img src={weblogo} alt="Logo" /></div>
         <div className="landingNavLinks-h">
-          <span  className="landingNavLink-h" onClick={() => navigate('/#')}>Home</span>
+          <span href="#" className="landingNavLink-h" onClick={() => navigate('/#')}>Home</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Plan your tour</span>
 
-          <span className="landingNavLink-h" onClick={() => navigate('/tourist/package')}>Our Packages</span>
+          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Our Packages</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Gallery</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Contact</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Join with us</span>
