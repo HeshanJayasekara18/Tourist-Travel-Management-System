@@ -15,7 +15,7 @@ const BookingNavbar = () => {
         <div className="landingLogo-h"><img src={weblogo} alt="Logo" /></div>
         <div className="landingNavLinks-h">
           <span href="#" className="landingNavLink-h" onClick={() => navigate('/#')}>Home</span>
-          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Plan your tour</span>
+          <span className="landingNavLink-h" onClick={() => navigate('/login')}>Plan your tour</span>
 
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Our Packages</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Gallery</span>
