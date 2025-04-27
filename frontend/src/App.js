@@ -24,8 +24,9 @@ import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
 import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
 import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
+import TourPackagesLanding from './pages/tourist/packageInBuild/InBuildPackageLanding';
 
-import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
+import CustomerFeedback from './pages/tourist/feedback-section/FeedbackSection';
 import Tourist from './pages/tourist/Tourist';
 import TouristDetailsHeader from './pages/tourist/user-detail-nav/TouristDetailsHeader';
 import TouristProfile from './pages/tourist/tourist-profile/TouristProfile';
@@ -39,7 +40,10 @@ import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProf
 import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp';
 import TourGuide from './pages/tour-guide/TourGuide';
 
+import FeedbackSection from './pages/tourist/feedback-section/FeedbackSection';
 import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
+import TouristFeedbackDisplay from './common/feedback-rating/feedback-display/TouristFeedbackDisplay';
+
 function App() {
   return (
     
@@ -52,8 +56,8 @@ function App() {
             <Route path='/tourguide-signup' element={<TourGuideSignUp/>}/>
 
             <Route path='/feedback' element={<FeedbackForm/>}/>
-
-
+            <Route path='/feedback-display' element={<TouristFeedbackDisplay/>}/>
+            
             <Route
                path='/admin'
                element={<Admin/>}>
@@ -63,7 +67,7 @@ function App() {
                 <Route path='PackagePayment' element={<PackagePayment/>}/>
                 <Route path='Receipt' element={<Receipt/>}/>
                 <Route path='PaymentManagement' element={<PaymentManagement/>}/>
-
+                <Route path='feedback-manage' element={<FeedbackManagement/>}/>
 
                
             </Route>
@@ -86,9 +90,9 @@ function App() {
                 <Route path='vehicle-book' element={<BookingVehicle/>}/>
                 <Route path='guide-book' element={<BookingGuide/>}/>
                 <Route path='Profile' element={<TouristProfile/>}/>
-                <Route path='feedback' element={<CustomerFeedback/>}/>
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
+                <Route path='package' element={<TourPackagesLanding/>}/>
             </Route>
 
              <Route
