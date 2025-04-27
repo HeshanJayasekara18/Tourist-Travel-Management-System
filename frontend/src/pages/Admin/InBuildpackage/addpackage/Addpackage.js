@@ -247,28 +247,28 @@ function Homepage() {
   };
   
   return (
-    <div className="container">
-      <div className="wrapper">
-        <div className="card">
-          <div className="header">
-            <h1 className="header-title">Add Tour Package</h1>
-            <p className="header-subtitle">Complete the form below to add a new tour package</p>
+    <div className="container-j">
+      <div className="wrapper-j">
+        <div className="card-j">
+          <div className="header-j">
+            <h1 className="header-title-j">Add Tour Package</h1>
+            <p className="header-subtitle-j">Complete the form below to add a new tour package</p>
           </div>
           
           {submitMessage.message && (
-            <div className={submitMessage.type === 'success' ? 'alert-success' : 'alert-error'}>
+            <div className={submitMessage.type === 'success' ? 'alert-success-j' : 'alert-error-j'}>
               {submitMessage.message}
             </div>
           )}
           
-          <div className="flex-row">
+          <div className="flex-row-j">
             {/* Left Side - Form */}
-            <div className="form-section">
+            <div className="form-section-j">
               <form onSubmit={handleSubmit} noValidate>
-                <div className="form-grid">
+                <div className="form-grid-j">
                   {/* Package ID */}
                   <div>
-                    <label className="form-label" htmlFor="packageId">
+                    <label className="form-label-j" htmlFor="packageId">
                       Package ID
                     </label>
                     <input
@@ -277,15 +277,15 @@ function Homepage() {
                       name="packageId"
                       value={formData.packageId}
                       onChange={handleChange}
-                      className={`form-input ${errors.packageId ? 'input-error' : ''}`}
+                      className={`form-input-j ${errors.packageId ? 'input-error-j' : ''}`}
                       required
                     />
-                    {errors.packageId && <div className="error-message">{errors.packageId}</div>}
+                    {errors.packageId && <div className="error-message-j">{errors.packageId}</div>}
                   </div>
                   
                   {/* Package Name */}
                   <div>
-                    <label className="form-label" htmlFor="name">
+                    <label className="form-label-j" htmlFor="name">
                       Package Name
                     </label>
                     <input
@@ -294,15 +294,15 @@ function Homepage() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`form-input ${errors.name ? 'input-error' : ''}`}
+                      className={`form-input-j ${errors.name ? 'input-error-j' : ''}`}
                       required
                     />
-                    {errors.name && <div className="error-message">{errors.name}</div>}
+                    {errors.name && <div className="error-message-j">{errors.name}</div>}
                   </div>
                   
                   {/* Destination */}
                   <div>
-                    <label className="form-label" htmlFor="destination">
+                    <label className="form-label-j" htmlFor="destination">
                       Destination
                     </label>
                     <input
@@ -311,37 +311,37 @@ function Homepage() {
                       name="destination"
                       value={formData.destination}
                       onChange={handleChange}
-                      className={`form-input ${errors.destination ? 'input-error' : ''}`}
+                      className={`form-input-j ${errors.destination ? 'input-error-j' : ''}`}
                       required
                     />
-                    {errors.destination && <div className="error-message">{errors.destination}</div>}
+                    {errors.destination && <div className="error-message-j">{errors.destination}</div>}
                   </div>
                   
                   {/* Price */}
                   <div>
-                    <label className="form-label" htmlFor="price">
+                    <label className="form-label-j" htmlFor="price">
                       Price
                     </label>
-                    <div className="form-input-with-icon">
-                      <span className="form-input-icon">$</span>
+                    <div className="form-input-with-icon-j">
+                      <span className="form-input-icon-j">$</span>
                       <input
                         type="number"
                         id="price"
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
-                        className={`form-input form-input-with-padding ${errors.price ? 'input-error' : ''}`}
+                        className={`form-input-j form-input-with-padding-j ${errors.price ? 'input-error-j' : ''}`}
                         required
                         min="0"
                         step="0.01"
                       />
                     </div>
-                    {errors.price && <div className="error-message">{errors.price}</div>}
+                    {errors.price && <div className="error-message-j">{errors.price}</div>}
                   </div>
                   
                   {/* Start Date */}
                   <div>
-                    <label className="form-label" htmlFor="startDate">
+                    <label className="form-label-j" htmlFor="startDate">
                       Start Date
                     </label>
                     <input
@@ -350,15 +350,15 @@ function Homepage() {
                       name="startDate"
                       value={formData.startDate}
                       onChange={handleChange}
-                      className={`form-input ${errors.startDate ? 'input-error' : ''}`}
+                      className={`form-input-j ${errors.startDate ? 'input-error-j' : ''}`}
                       required
                     />
-                    {errors.startDate && <div className="error-message">{errors.startDate}</div>}
+                    {errors.startDate && <div className="error-message-j">{errors.startDate}</div>}
                   </div>
                   
                   {/* End Date */}
                   <div>
-                    <label className="form-label" htmlFor="endDate">
+                    <label className="form-label-j" htmlFor="endDate">
                       End Date
                     </label>
                     <input
@@ -367,15 +367,15 @@ function Homepage() {
                       name="endDate"
                       value={formData.endDate}
                       onChange={handleChange}
-                      className={`form-input ${errors.endDate ? 'input-error' : ''}`}
+                      className={`form-input-j ${errors.endDate ? 'input-error-j' : ''}`}
                       required
                     />
-                    {errors.endDate && <div className="error-message">{errors.endDate}</div>}
+                    {errors.endDate && <div className="error-message-j">{errors.endDate}</div>}
                   </div>
                   
                   {/* Tour Guide Name */}
                   <div>
-                    <label className="form-label" htmlFor="tourGuideName">
+                    <label className="form-label-j" htmlFor="tourGuideName">
                       Tour Guide Name
                     </label>
                     <input
@@ -384,15 +384,15 @@ function Homepage() {
                       name="tourGuideName"
                       value={formData.tourGuideName}
                       onChange={handleChange}
-                      className={`form-input ${errors.tourGuideName ? 'input-error' : ''}`}
+                      className={`form-input-j ${errors.tourGuideName ? 'input-error-j' : ''}`}
                       required
                     />
-                    {errors.tourGuideName && <div className="error-message">{errors.tourGuideName}</div>}
+                    {errors.tourGuideName && <div className="error-message-j">{errors.tourGuideName}</div>}
                   </div>
                   
                   {/* Tour Type */}
                   <div>
-                    <label className="form-label" htmlFor="tourType">
+                    <label className="form-label-j" htmlFor="tourType">
                       Tour Type
                     </label>
                     <select
@@ -400,7 +400,7 @@ function Homepage() {
                       name="tourType"
                       value={formData.tourType}
                       onChange={handleChange}
-                      className={`form-input ${errors.tourType ? 'input-error' : ''}`}
+                      className={`form-input-j ${errors.tourType ? 'input-error-j' : ''}`}
                       required
                     >
                       <option value="">Select Tour Type</option>
@@ -408,13 +408,13 @@ function Homepage() {
                         <option key={type} value={type}>{type}</option>
                       ))}
                     </select>
-                    {errors.tourType && <div className="error-message">{errors.tourType}</div>}
+                    {errors.tourType && <div className="error-message-j">{errors.tourType}</div>}
                   </div>
                 </div>
                 
                 {/* Description */}
-                <div className="form-group-full">
-                  <label className="form-label" htmlFor="description">
+                <div className="form-group-full-j">
+                  <label className="form-label-j" htmlFor="description">
                     Package Description
                   </label>
                   <textarea
@@ -423,25 +423,25 @@ function Homepage() {
                     value={formData.description}
                     onChange={handleChange}
                     rows={4}
-                    className={`textarea ${errors.description ? 'input-error' : ''}`}
+                    className={`textarea-j ${errors.description ? 'input-error-j' : ''}`}
                     required
                     placeholder="Describe the tour package, attractions, and what visitors can expect..."
                   />
-                  {errors.description && <div className="error-message">{errors.description}</div>}
+                  {errors.description && <div className="error-message-j">{errors.description}</div>}
                 </div>
                 
                 {/* Image Upload */}
-                <div className="image-upload-container">
-                  <label className="form-label">
+                <div className="image-upload-container-j">
+                  <label className="form-label-j">
                     Package Image
                   </label>
                   <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
                     <div style={{flex: 1}}>
-                      <div className={`file-drop-area ${errors.image ? 'file-drop-error' : ''}`}>
-                        <svg className="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className={`file-drop-area-j ${errors.image ? 'file-drop-error-j' : ''}`}>
+                        <svg className="upload-icon-j" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <p className="upload-text">
+                        <p className="upload-text-j">
                           Drag and drop your image here or
                         </p>
                         <input
@@ -450,25 +450,25 @@ function Homepage() {
                           name="image"
                           accept="image/*"
                           onChange={handleImageChange}
-                          className="file-input"
+                          className="file-input-j"
                         />
                         <label
                           htmlFor="image"
-                          className="browse-button"
+                          className="browse-button-j"
                         >
                           Browse Files
                         </label>
                       </div>
-                      {errors.image && <div className="error-message">{errors.image}</div>}
+                      {errors.image && <div className="error-message-j">{errors.image}</div>}
                     </div>
                     
                     {previewImage && (
-                      <div className="preview-container">
-                        <div className="preview-image-wrapper">
+                      <div className="preview-container-j">
+                        <div className="preview-image-wrapper-j">
                           <img
                             src={previewImage}
                             alt="Package preview"
-                            className="preview-image"
+                            className="preview-image-j"
                           />
                           <button
                             type="button"
@@ -476,7 +476,7 @@ function Homepage() {
                               setPreviewImage(null);
                               setFormData({...formData, image: null});
                             }}
-                            className="remove-button"
+                            className="remove-button-j"
                           >
                             <svg style={{width: '1rem', height: '1rem'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -489,18 +489,18 @@ function Homepage() {
                 </div>
                 
                 {/* Interactive Controls */}
-                <div className="button-container">
-                  <div className="button-group">
+                <div className="button-container-j">
+                  <div className="button-group-j">
                     <button
                       type="button"
                       onClick={() => setShowPreview(!showPreview)}
-                      className="preview-button"
+                      className="preview-button-j"
                     >
                       {showPreview ? "Hide Preview" : "Show Preview"}
                     </button>
                     <button
                       type="reset"
-                      className="reset-button"
+                      className="reset-button-j"
                       onClick={() => {
                         setFormData({
                           packageId: '',
@@ -526,12 +526,12 @@ function Homepage() {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className={isSubmitting ? "submit-button disabled-button" : "submit-button"}
+                    className={isSubmitting ? "submit-button-j disabled-button-j" : "submit-button-j"}
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                        <svg className="loading-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="20" height="20">
+                        <svg className="loading-icon-j" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="20" height="20">
                           <circle style={{opacity: 0.25}} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path style={{opacity: 0.75}} fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -546,32 +546,32 @@ function Homepage() {
             </div>
             
             {/* Right Side - Preview & Interactive Elements */}
-            <div className="preview-section">
-              <div className="sticky-container">
+            <div className="preview-section-j">
+              <div className="sticky-container-j">
                 {/* Package Summary - Keeping just the information but removing the heading and completion bar */}
-                <div className="summary">
-                  <h3 className="summary-title">Quick Summary</h3>
+                <div className="summary-j">
+                  <h3 className="summary-title-j">Quick Summary</h3>
                   
                   <div style={{marginBottom: '1rem'}}>
-                    <div className="summary-item">
-                      <span className="summary-label">Package ID:</span>
-                      <span className="summary-value">{formData.packageId || 'Not set'}</span>
+                    <div className="summary-item-j">
+                      <span className="summary-label-j">Package ID:</span>
+                      <span className="summary-value-j">{formData.packageId || 'Not set'}</span>
                     </div>
-                    <div className="summary-item">
-                      <span className="summary-label">Destination:</span>
-                      <span className="summary-value">{formData.destination || 'Not set'}</span>
+                    <div className="summary-item-j">
+                      <span className="summary-label-j">Destination:</span>
+                      <span className="summary-value-j">{formData.destination || 'Not set'}</span>
                     </div>
-                    <div className="summary-item">
-                      <span className="summary-label">Price:</span>
-                      <span className="summary-value">{formData.price ? `$${formData.price}` : 'Not set'}</span>
+                    <div className="summary-item-j">
+                      <span className="summary-label-j">Price:</span>
+                      <span className="summary-value-j">{formData.price ? `$${formData.price}` : 'Not set'}</span>
                     </div>
-                    <div className="summary-item">
-                      <span className="summary-label">Type:</span>
-                      <span className="summary-value">{formData.tourType || 'Not set'}</span>
+                    <div className="summary-item-j">
+                      <span className="summary-label-j">Type:</span>
+                      <span className="summary-value-j">{formData.tourType || 'Not set'}</span>
                     </div>
-                    <div className="summary-item">
-                      <span className="summary-label">Duration:</span>
-                      <span className="summary-value">
+                    <div className="summary-item-j">
+                      <span className="summary-label-j">Duration:</span>
+                      <span className="summary-value-j">
                         {calculateDuration() > 0 ? `${calculateDuration()} days` : 'Not set'}
                       </span>
                     </div>
@@ -580,51 +580,51 @@ function Homepage() {
                 
                 {/* Full Preview */}
                 {showPreview && (
-                  <div className="package-preview">
-                    <div className="preview-image-container">
+                  <div className="package-preview-j">
+                    <div className="preview-image-container-j">
                       {previewImage ? (
                         <img 
                           src={previewImage} 
                           alt="Package preview" 
-                          className="preview-image-large"
+                          className="preview-image-large-j"
                         />
                       ) : (
-                        <div className="image-placeholder">
-                          <svg className="placeholder-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="image-placeholder-j">
+                          <svg className="placeholder-icon-j" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
                         </div>
                       )}
                       
                       {formData.tourType && (
-                        <span className="type-badge">
+                        <span className="type-badge-j">
                           {formData.tourType}
                         </span>
                       )}
                     </div>
                     
-                    <div className="preview-content">
-                      <h3 className="preview-title">{formData.name || 'Tour Package Name'}</h3>
-                      <p className="preview-destination">{formData.destination || 'Destination'}</p>
+                    <div className="preview-content-j">
+                      <h3 className="preview-title-j">{formData.name || 'Tour Package Name'}</h3>
+                      <p className="preview-destination-j">{formData.destination || 'Destination'}</p>
                       
-                      <div className="date-display">
-                        <svg className="date-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="date-display-j">
+                        <svg className="date-icon-j" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span className="date-text">
+                        <span className="date-text-j">
                           {formData.startDate ? new Date(formData.startDate).toLocaleDateString() : 'Start Date'} - {formData.endDate ? new Date(formData.endDate).toLocaleDateString() : 'End Date'}
                         </span>
                       </div>
                       
-                      <p className="preview-description">
+                      <p className="preview-description-j">
                         {formData.description || 'No description provided'}
                       </p>
                       
-                      <div className="preview-footer">
-                        <span className="preview-price">
+                      <div className="preview-footer-j">
+                        <span className="preview-price-j">
                           {formData.price ? `$${formData.price}` : '$0.00'}
                         </span>
-                        <span className="guide-text">
+                        <span className="guide-text-j">
                           Guide: {formData.tourGuideName || 'Not assigned'}
                         </span>
                       </div>
@@ -633,13 +633,13 @@ function Homepage() {
                 )}
                 
                 {/* Help Text */}
-                <div className="tips-container">
-                  <h3 className="tips-title">Tips:</h3>
-                  <ul className="tips-list">
-                    <li className="tips-item">• Add high-quality images for better visual appeal</li>
-                    <li className="tips-item">• Write detailed descriptions to increase bookings</li>
-                    <li className="tips-item">• Set competitive pricing based on market research</li>
-                    <li className="tips-item">• Click "Show Preview" to see how your package will look</li>
+                <div className="tips-container-j">
+                  <h3 className="tips-title-j">Tips:</h3>
+                  <ul className="tips-list-j">
+                    <li className="tips-item-j">• Add high-quality images for better visual appeal</li>
+                    <li className="tips-item-j">• Write detailed descriptions to increase bookings</li>
+                    <li className="tips-item-j">• Set competitive pricing based on market research</li>
+                    <li className="tips-item-j">• Click "Show Preview" to see how your package will look</li>
                   </ul>
                 </div>
               </div>
