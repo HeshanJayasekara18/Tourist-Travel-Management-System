@@ -26,6 +26,10 @@ const feedbackSchema = new mongoose.Schema({
   },
   comment: {
     type: String
+  },
+  adminResponse: {    
+    type: String,
+    default: null
   }
 }, { timestamps: true });
 
