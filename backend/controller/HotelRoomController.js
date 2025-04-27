@@ -52,7 +52,7 @@ const addHotelRoom = async (req, res) => {
     }
 };
 
-const getAllHotelRoom = async (req, res) => {
+const getAllHotelRoomByUserId = async (req, res) => {
     try {
         const rooms = await HotelRoom.find({userId:req.query.userId});
 
@@ -81,6 +81,34 @@ const getAllHotelRoom = async (req, res) => {
     }
 };
 
+const getAllHotelRoom = async (req, res) => {
+    try {
+        const rooms = await HotelRoom.find({});
+
+        // Convert image buffer to Base64
+        const roomsWithImages = rooms.map(room => ({
+            _id: room._id,
+            HR_Id: room.HR_Id,
+            B_Id: room.B_Id,
+            name: room.name,
+            description: room.description,
+            quantity: room.quantity,
+            availability: room.availability,
+            price_day: room.price_day,
+            price_month: room.price_month,
+            bed: room.bed,
+            max_occupancy: room.max_occupancy,
+            image: room.image
+                ? `data:${room.image.contentType};base64,${room.image.data.toString("base64")}`
+                : null,
+             
+        }));
+
+        res.status(200).json(roomsWithImages);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+};
 
 
 const getHotelRoom = async (req,res) => {
@@ -146,5 +174,6 @@ module.exports = {
     getHotelRoom,
     addHotelRoom,
     updateHotelRoom,
-    deleteHotelRoom 
+    deleteHotelRoom,
+    getAllHotelRoomByUserId
 };

@@ -39,8 +39,8 @@ const MainLogin = () => {
         if(response.data.userDetails.role === 'Tourist') {
           navigate('/Tourist');
           localStorage.setItem("userID",response.data.userDetails.userID);
-          localStorage.setItem("touristID",response.data.userDetails.touristID);
-          localStorage.setItem("fullname",response.data.userDetails.fullname);
+          localStorage.setItem("touristID",response.data.touristDetails.touristID);
+          localStorage.setItem("fullname",response.data.touristDetails.fullname);
         }
         
         if(response.data.userDetails.role === "TourGuide") {
@@ -83,6 +83,7 @@ const MainLogin = () => {
         <div className="form-login">
           <label>Email</label>
           <input
+             className="inputLogin"
             type="email"
             placeholder="Enter your email"
             value={email}
@@ -91,6 +92,7 @@ const MainLogin = () => {
 
           <label>Password</label>
           <input
+          className="inputLogin"
             type="password"
             placeholder="Enter your password"
             value={password}
