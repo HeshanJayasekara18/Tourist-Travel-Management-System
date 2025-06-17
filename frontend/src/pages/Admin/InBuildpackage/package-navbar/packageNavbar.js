@@ -8,6 +8,7 @@ import v7 from '../../../../images/v7.png';
 import j1 from '../../../../images/j1.png';
 import j2 from '../../../../images/j2.png';
 import j3 from '../../../../images/j3.png';    
+import r1 from '../../../../images/r1.png';
 import { useNavigate } from "react-router-dom";
 
 function PackageSideNav() {
@@ -31,6 +32,9 @@ function PackageSideNav() {
     
         const onClickPaymentManage=()=>{
             navigate('/admin/PaymentManagement');
+        }
+        const onClickFeedbackManage=()=>{
+            navigate('/admin/feedback-manage');
         }
 
     return (
@@ -56,15 +60,16 @@ function PackageSideNav() {
                         <img src={j2} className="icons" />
                         <button onClick={onClickPacakgeManage}>Tour Manage</button>
                     </div>
-                    <div class="sideNavbtn">
-                        <img src={j3} className="icons" />
-                        <button>Event Manage</button>
-                    </div>
+
                     <div class="sideNavbtn">
                         <img src={j3} className="icons" />
                         <button onClick={onClickPaymentManage}>payment manage</button>
                     </div>
-
+     
+                    <div class="sideNavbtn">
+                        <img src={r1} className="icons" />
+                        <button onClick={onClickFeedbackManage}>Feedback Manage</button>
+                    </div>
                     
                     
 

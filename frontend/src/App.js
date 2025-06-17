@@ -40,6 +40,8 @@ import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp
 import TourGuideVerification from './pages/tour-guide/tourguide-verification/Verification';
 import TourGuide from './pages/tour-guide/TourGuide';
 
+import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
+
 function App() {
   return (
     
@@ -62,7 +64,7 @@ function App() {
                 <Route path='PackagePayment' element={<PackagePayment/>}/>
                 <Route path='Receipt' element={<Receipt/>}/>
                 <Route path='PaymentManagement' element={<PaymentManagement/>}/>
-
+                <Route path='feedback-manage' element={<FeedbackManagement/>}/>
 
                
             </Route>

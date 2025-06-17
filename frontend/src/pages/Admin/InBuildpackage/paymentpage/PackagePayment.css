@@ -184,8 +184,9 @@
 }
 
 .card-row {
+flex-direction: column;
   display: flex;
-  gap: 15px;
+  
 }
 
 .card-row .form-group {
@@ -271,8 +272,5 @@
     min-width: 100%;
   }
   
-  .card-row {
-    flex-direction: column;
-    gap: 0;
-  }
+  
 }

@@ -1,276 +1,337 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './AdminUserManagement.css';
-import { Search, Filter, Trash2, User, Mail, CreditCard, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
+import { FaTrash, FaSearch, FaUser, FaMapMarkedAlt, FaUserTie } from 'react-icons/fa';
 
 const UserManagement = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState({
+    tourGuides: [],
+    tourists: []
+  });
+  const [loading, setLoading] = useState({
+    tourGuides: true,
+    tourists: true
+  });
+  const [error, setError] = useState({
+    tourGuides: '',
+    tourists: ''
+  });
+  const [activeTab, setActiveTab] = useState('tourGuides');
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'ascending' });
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
-  const [activeFilters, setActiveFilters] = useState(false);
-  const [filterRole, setFilterRole] = useState('');
-  
-  // Mock data - in a real app, you would fetch this from an API
+  const [confirmDelete, setConfirmDelete] = useState({ type: null, id: null });
+  const [notification, setNotification] = useState({ show: false, message: '', type: '' });
+
+  // Fetch all users on component mount
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      const mockUsers = [
-        { id: 'U001', fullName: 'John Doe', email: 'john@gmail.com', role: 'tourist', nic: '654654654648777' },
-        { id: 'U002', fullName: 'Jane Smith', email: 'jane@gmail.com', role: 'business', nic: '876876887889889' },
-        { id: 'U003', fullName: 'Robert Johnson', email: 'robert@gmail.com', role: 'guide', nic: '876876868776558' },
-        { id: 'U004', fullName: 'Sarah Williams', email: 'sarah@gmail.com', role: 'tourist', nic: '657576575765765' },
-        { id: 'U005', fullName: 'Michael Brown', email: 'michael@gmail.com', role: 'business', nic: '657576575765984' },
-        { id: 'U006', fullName: 'Emily Davis', email: 'emily@gmail.com', role: 'guide', nic: '657576575732165' },
-        { id: 'U007', fullName: 'David Wilson', email: 'david@gmail.com', role: 'tourist', nic: '657576575798765' },
-        { id: 'U008', fullName: 'Lisa Taylor', email: 'lisa@gmail.com', role: 'business', nic: '657576575765123' },
-      ];
-      setUsers(mockUsers);
-      setIsLoading(false);
-    }, 1000);
+    fetchTourGuides();
+    fetchTourists();
   }, []);
 
-  // Handle user deletion
-  const handleDelete = (userId) => {
-    setUserToDelete(userId);
-    setShowConfirmModal(true);
-  };
-
-  const confirmDelete = () => {
-    setUsers(users.filter(user => user.id !== userToDelete));
-    setShowConfirmModal(false);
-    setUserToDelete(null);
-  };
-
-  const cancelDelete = () => {
-    setShowConfirmModal(false);
-    setUserToDelete(null);
-  };
-
-  // Handle sorting
-  const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+  // Function to fetch all tour guides
+  const fetchTourGuides = async () => {
+    setLoading(prev => ({ ...prev, tourGuides: true }));
+    try {
+      const response = await axios.get('http://localhost:4000/api/TourGuide/all');
+      setUsers(prev => ({ ...prev, tourGuides: response.data.data }));
+      setError(prev => ({ ...prev, tourGuides: '' }));
+    } catch (err) {
+      console.error('Error fetching tour guides:', err);
+      setError(prev => ({ 
+        ...prev, 
+        tourGuides: 'Failed to load tour guides. Please try again later.' 
+      }));
+    } finally {
+      setLoading(prev => ({ ...prev, tourGuides: false }));
     }
-    setSortConfig({ key, direction });
   };
 
-  // Get sorted users
-  const getSortedUsers = () => {
-    const sortedUsers = [...filteredUsers];
-    if (sortConfig.key) {
-      sortedUsers.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
+  // Function to fetch all tourists
+  const fetchTourists = async () => {
+    setLoading(prev => ({ ...prev, tourists: true }));
+    try {
+      const response = await axios.get('http://localhost:4000/api/TouristRegister/all');
+      setUsers(prev => ({ ...prev, tourists: response.data.data }));
+      setError(prev => ({ ...prev, tourists: '' }));
+    } catch (err) {
+      console.error('Error fetching tourists:', err);
+      setError(prev => ({ 
+        ...prev, 
+        tourists: 'Failed to load tourists. Please try again later.' 
+      }));
+    } finally {
+      setLoading(prev => ({ ...prev, tourists: false }));
+    }
+  };
+
+  // Function to handle delete user
+  const handleDelete = async (type, id) => {
+    try {
+      if (type === 'tourGuide') {
+        await axios.delete(`http://localhost:4000/api/TourGuide/${id}`);
+        // Remove the deleted tour guide from state
+        setUsers(prev => ({
+          ...prev,
+          tourGuides: prev.tourGuides.filter(guide => guide._id !== id)
+        }));
+      } else {
+        await axios.delete(`http://localhost:4000/api/TouristRegister/${id}`);
+        // Remove the deleted tourist from state
+        setUsers(prev => ({
+          ...prev,
+          tourists: prev.tourists.filter(tourist => tourist._id !== id)
+        }));
+      }
+      
+      // Show success notification
+      setNotification({
+        show: true,
+        message: `${type === 'tourGuide' ? 'Tour guide' : 'Tourist'} deleted successfully`,
+        type: 'success'
       });
+      
+    } catch (err) {
+      console.error(`Error deleting ${type}:`, err);
+      
+      // Show error notification
+      setNotification({
+        show: true,
+        message: `Failed to delete ${type === 'tourGuide' ? 'tour guide' : 'tourist'}`,
+        type: 'error'
+      });
+    } finally {
+      setConfirmDelete({ type: null, id: null });
+      
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: '' });
+      }, 3000);
     }
-    return sortedUsers;
   };
 
-  const toggleFilters = () => {
-    setActiveFilters(!activeFilters);
+  // Function to format date
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Get formatted role with proper capitalization
-  const formatRole = (role) => {
-    return role.charAt(0).toUpperCase() + role.slice(1);
+  // Filter users based on search term and active tab
+  const getFilteredUsers = () => {
+    if (activeTab === 'tourGuides') {
+      return users.tourGuides.filter(guide =>
+        guide.guideName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        guide.user?.email?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } else {
+      return users.tourists.filter(tourist =>
+        tourist.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tourist.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tourist.country?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
   };
 
-  // Get all available roles for filter
-  const availableRoles = [...new Set(users.map(user => user.role))];
+  // Get counts for stats
+  const getTotalCounts = () => {
+    return {
+      tourGuides: users.tourGuides.length,
+      tourists: users.tourists.length,
+      total: users.tourGuides.length + users.tourists.length
+    };
+  };
 
-  // Filter users based on search term and filter settings
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.nic.toLowerCase().includes(searchTerm.toLowerCase());
+  const renderTourGuideTable = () => {
+    const filteredGuides = getFilteredUsers();
     
-    const matchesRoleFilter = filterRole === '' || user.role === filterRole;
+    if (loading.tourGuides) {
+      return <div className="loading-spinner-z">Loading tour guides...</div>;
+    }
     
-    return matchesSearch && matchesRoleFilter;
-  });
+    if (error.tourGuides) {
+      return <div className="error-message-z">{error.tourGuides}</div>;
+    }
+    
+    if (filteredGuides.length === 0) {
+      return <div className="no-data-z">No tour guides found.</div>;
+    }
+    
+    return (
+      <div className="table-responsive-z">
+        <table className="table-z">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Registered Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredGuides.map((guide) => (
+              <tr key={guide._id}>
+                <td>{guide.guideName || 'N/A'}</td>
+                <td>{guide.user?.email || guide.email || 'N/A'}</td>
+                <td>{guide.user?.role || 'Tour Guide'}</td>
+                <td>{formatDate(guide.createdAt)}</td>
+                <td>
+                  {confirmDelete.type === 'tourGuide' && confirmDelete.id === guide._id ? (
+                    <div className="delete-confirm-z">
+                      <button 
+                        className="confirm-yes-z" 
+                        onClick={() => handleDelete('tourGuide', guide._id)}
+                      >
+                        Yes
+                      </button>
+                      <button 
+                        className="confirm-no-z" 
+                        onClick={() => setConfirmDelete({ type: null, id: null })}
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <button 
+                      className="delete-btn-z" 
+                      onClick={() => setConfirmDelete({ type: 'tourGuide', id: guide._id })}
+                    >
+                      <FaTrash /> Delete
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderTouristTable = () => {
+    const filteredTourists = getFilteredUsers();
+    
+    if (loading.tourists) {
+      return <div className="loading-spinner-z">Loading tourists...</div>;
+    }
+    
+    if (error.tourists) {
+      return <div className="error-message-z">{error.tourists}</div>;
+    }
+    
+    if (filteredTourists.length === 0) {
+      return <div className="no-data-z">No tourists found.</div>;
+    }
+    
+    return (
+      <div className="table-responsive-z">
+        <table className="table-z">
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Country</th>
+              <th>Phone Number</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTourists.map((tourist) => (
+              <tr key={tourist._id}>
+                <td>{tourist.fullname || 'N/A'}</td>
+                <td>{tourist.email || 'N/A'}</td>
+                <td>{tourist.country || 'N/A'}</td>
+                <td>{tourist.mobile_number || 'N/A'}</td>
+                <td>
+                  {confirmDelete.type === 'tourist' && confirmDelete.id === tourist._id ? (
+                    <div className="delete-confirm-z">
+                      <button 
+                        className="confirm-yes-z" 
+                        onClick={() => handleDelete('tourist', tourist._id)}
+                      >
+                        Yes
+                      </button>
+                      <button 
+                        className="confirm-no-z" 
+                        onClick={() => setConfirmDelete({ type: null, id: null })}
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <button 
+                      className="delete-btn-z" 
+                      onClick={() => setConfirmDelete({ type: 'tourist', id: tourist._id })}
+                    >
+                      <FaTrash /> Delete
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const counts = getTotalCounts();
 
   return (
-    <div className="user-management-container">
-      <div className="user-manage-content">
-        <h1 className="page-title">User Management</h1>
-        
-        <div className="search-section">
-          <div className="search-box">
-            <input 
-              type="text" 
-              placeholder="Search users..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-            <button className="search-btn">
-              <Search size={18} />
-            </button>
-          </div>
-          <button 
-            className={`filter-btn ${activeFilters ? 'active' : ''}`}
-            onClick={toggleFilters}
-          >
-            <Filter size={18} />
-          </button>
-        </div>
-        
-        {activeFilters && (
-          <div className="filters-container">
-            <div className="filter-group">
-              <label>Role:</label>
-              <select 
-                value={filterRole} 
-                onChange={(e) => setFilterRole(e.target.value)}
-                className="filter-select"
-              >
-                <option value="">All Roles</option>
-                {availableRoles.map((role, index) => (
-                  <option key={index} value={role}>{formatRole(role)}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        )}
-        
-        {isLoading ? (
-          <div className="loading">
-            <div className="spinner"></div>
-            <p>Loading user data...</p>
-          </div>
-        ) : (
-          <div className="user-table-container">
-            <div className="table-stats">
-              Showing {filteredUsers.length} of {users.length} users
-            </div>
-            <table className="user-table">
-              <thead>
-                <tr>
-                  <th onClick={() => requestSort('id')} className="sortable-header">
-                    <div className="header-content">
-                      <span>User ID</span>
-                      {sortConfig.key === 'id' && (
-                        sortConfig.direction === 'ascending' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                      )}
-                    </div>
-                  </th>
-                  <th onClick={() => requestSort('fullName')} className="sortable-header">
-                    <div className="header-content">
-                      <span>Full Name</span>
-                      {sortConfig.key === 'fullName' && (
-                        sortConfig.direction === 'ascending' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                      )}
-                    </div>
-                  </th>
-                  <th onClick={() => requestSort('email')} className="sortable-header">
-                    <div className="header-content">
-                      <span>E-mail Address</span>
-                      {sortConfig.key === 'email' && (
-                        sortConfig.direction === 'ascending' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                      )}
-                    </div>
-                  </th>
-                  <th onClick={() => requestSort('role')} className="sortable-header">
-                    <div className="header-content">
-                      <span>Role</span>
-                      {sortConfig.key === 'role' && (
-                        sortConfig.direction === 'ascending' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                      )}
-                    </div>
-                  </th>
-                  <th onClick={() => requestSort('nic')} className="sortable-header">
-                    <div className="header-content">
-                      <span>NIC</span>
-                      {sortConfig.key === 'nic' && (
-                        sortConfig.direction === 'ascending' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                      )}
-                    </div>
-                  </th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getSortedUsers().length > 0 ? (
-                  getSortedUsers().map((user, index) => (
-                    <tr key={index} className="user-row">
-                      <td>
-                        <div className="cell-with-icon">
-                          <User size={16} className="cell-icon" />
-                          {user.id}
-                        </div>
-                      </td>
-                      <td>{user.fullName}</td>
-                      <td>
-                        <div className="cell-with-icon">
-                          <Mail size={16} className="cell-icon" />
-                          {user.email}
-                        </div>
-                      </td>
-                      <td>
-                        <div className="cell-with-icon">
-                          <User size={16} className="cell-icon" />
-                          {formatRole(user.role)}
-                        </div>
-                      </td>
-                      <td>
-                        <div className="cell-with-icon">
-                          <CreditCard size={16} className="cell-icon" />
-                          {user.nic}
-                        </div>
-                      </td>
-                      <td>
-                        <div className="action-buttons">
-                          <button 
-                            className="delete-btn"
-                            onClick={() => handleDelete(user.id)}
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="no-results">
-                      <div className="no-results-content">
-                        <AlertCircle size={24} />
-                        <p>No users found matching your search criteria</p>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+    <div className="user-management-container-z">
+      <h1 className="dashboard-title-z">User Management</h1>
       
-      {showConfirmModal && (
-        <div className="modal-overlay">
-          <div className="confirm-modal">
-            <div className="modal-header">
-              <AlertCircle size={24} className="warning-icon" />
-              <h3>Confirm Deletion</h3>
-            </div>
-            <p>Are you sure you want to delete this user? This action cannot be undone.</p>
-            <div className="modal-actions">
-              <button className="cancel-btn" onClick={cancelDelete}>Cancel</button>
-              <button className="confirm-btn" onClick={confirmDelete}>Delete</button>
-            </div>
-          </div>
+      {/* Notification */}
+      {notification.show && (
+        <div className={`notification-z ${notification.type}-z`}>
+          {notification.message}
         </div>
       )}
+      
+      {/* Tabs */}
+      <div className="user-tabs-z">
+        <button 
+          className={`tab-button-z ${activeTab === 'tourGuides' ? 'active-z' : ''}`}
+          onClick={() => setActiveTab('tourGuides')}
+        >
+          <FaUserTie className="tab-icon-z" /> Tour Guides
+        </button>
+        <button 
+          className={`tab-button-z ${activeTab === 'tourists' ? 'active-z' : ''}`}
+          onClick={() => setActiveTab('tourists')}
+        >
+          <FaUser className="tab-icon-z" /> Tourists
+        </button>
+      </div>
+      
+      {/* Search and statistics section */}
+      <div className="dashboard-header-z">
+        <div className="search-bar-z">
+          <FaSearch className="search-icon-z" />
+          <input
+            type="text"
+            placeholder={`Search ${activeTab === 'tourGuides' ? 'tour guides' : 'tourists'}...`}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="dashboard-stats-z">
+          <div className="stat-card-z">
+            <h3>{counts.total}</h3>
+            <p>Total Users</p>
+          </div>
+          <div className="stat-card-z">
+            <h3>{counts.tourGuides}</h3>
+            <p>Tour Guides</p>
+          </div>
+          <div className="stat-card-z">
+            <h3>{counts.tourists}</h3>
+            <p>Tourists</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Tables */}
+      {activeTab === 'tourGuides' ? renderTourGuideTable() : renderTouristTable()}
     </div>
   );
 };

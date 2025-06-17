@@ -1,20 +1,21 @@
 const mongoose = require('mongoose');
-
+const { v4: uuidv4 } = require('uuid');
 
 const feedbackSchema = new mongoose.Schema({
-  fullName: {
+  feedbackId: {
+    type: String,
+    default: uuidv4,
+    unique: true,
+    required: true
+  },
+  serviceType: {
     type: String,
     required: true,
-    trim: true
+    enum: ['TourGuide', 'HotelRoom', 'Vehicle'] 
   },
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true
-  },
-  tourPackage: {
-    type: String,
+  touristID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tourist',
     required: true
   },
   rating: {
@@ -23,28 +24,13 @@ const feedbackSchema = new mongoose.Schema({
     min: 1,
     max: 5
   },
-  feedback: {
-    type: String,
-    required: true
-  },
-  recommend: {
-    type: String,
-    enum: ['Yes', 'No'],
-    required: true
-  },
-  visitDate: {
-    type: Date,
-    required: true
-  },
-  location: {
-    type: String,
-    required: true
-  },
-  images: [{
+  comment: {
     type: String
-  }],
-}, {
-  timestamps: true
-});
+  },
+  adminResponse: {    
+    type: String,
+    default: null
+  }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Feedback', feedbackSchema);

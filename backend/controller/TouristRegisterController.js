@@ -65,5 +65,85 @@ const getTouristDetails = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+// Add to TouristRegisterController.js
 
-module.exports = { Touristregister, getTouristDetails };
+// Get all tourists
+const getAllTourists = async (req, res) => {
+    try {
+      // Find all tourists and populate user details
+      const tourists = await Tourist.find().sort({ createdAt: -1 });
+      
+      // Get user details for each tourist
+      const touristsWithUserDetails = await Promise.all(
+        tourists.map(async (tourist) => {
+          const user = await User.findOne({ userID: tourist.userID });
+          return {
+            ...tourist._doc,
+            user: user ? {
+              email: user.email,
+              role: user.role
+            } : null
+          };
+        })
+      );
+      
+      res.status(200).json({
+        success: true,
+        count: touristsWithUserDetails.length,
+        data: touristsWithUserDetails
+      });
+    } catch (error) {
+      console.error('Error fetching tourists:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Server error while fetching tourists', 
+        error: error.message 
+      });
+    }
+  };
+  
+  // Delete a tourist
+  const deleteTourist = async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      // Find the tourist
+      const tourist = await Tourist.findById(id);
+      
+      if (!tourist) {
+        return res.status(404).json({
+          success: false,
+          message: 'Tourist not found'
+        });
+      }
+      
+      // Get the user ID associated with this tourist
+      const userID = tourist.userID;
+      
+      // Delete the tourist
+      await Tourist.findByIdAndDelete(id);
+      
+      // Delete the associated user
+      await User.findOneAndDelete({ userID });
+      
+      res.status(200).json({
+        success: true,
+        message: 'Tourist deleted successfully'
+      });
+    } catch (error) {
+      console.error('Error deleting tourist:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Server error while deleting tourist',
+        error: error.message
+      });
+    }
+  };
+  
+  // Update exports
+  module.exports = { 
+    Touristregister, 
+    getTouristDetails,
+    getAllTourists,
+    deleteTourist
+  };
