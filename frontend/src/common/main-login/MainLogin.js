@@ -34,6 +34,7 @@ const MainLogin = () => {
           localStorage.setItem("userID",response.data.userDetails.userID);
           localStorage.setItem("businessName",response.data.businessDetails.businessName); 
           localStorage.setItem("bussinessType",response.data.businessDetails.bussinessType); 
+          localStorage.setItem("businessID",response.data.businessDetails.B_Id);
         } 
 
         if(response.data.userDetails.role === 'Tourist') {

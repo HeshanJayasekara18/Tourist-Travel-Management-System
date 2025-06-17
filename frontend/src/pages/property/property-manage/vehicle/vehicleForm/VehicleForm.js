@@ -24,7 +24,7 @@ function VehicleForm({ vehicle, type, getAllVehicle }) {
     }, [vehicle, type]);
 
     const [formData, setFormData] = useState({
-        B_Id: "B001",
+        B_Id: localStorage.getItem("businessID"),
         modelName: "",
         seats: 0,
         doors: 0,

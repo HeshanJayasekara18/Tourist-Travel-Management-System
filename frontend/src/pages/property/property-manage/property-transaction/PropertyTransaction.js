@@ -76,13 +76,10 @@ function PropertyTransaction() {
             <div className="transaction-cell">{booking.fullName || "N/A"}</div>
             <div className="transaction-cell">{booking.start_date?.substring(0, 10)}</div>
             <div className="transaction-cell">{booking.end_date?.substring(0, 10)}</div>
-            <div className="transaction-cell">Rs {booking.totalAmount || "0"}</div>
-            <div className="transaction-cell">
-              {booking.paymentStatus === "Paid" ? (
+            <div className="transaction-cell">Rs {booking.payment_amount || "0"}</div>
+            <div className="transaction-cell" style={{ display: 'flex', alignItems: 'center' }}>
+                Paid
                 <img className="paidIcon" src={v20} alt="Paid" />
-              ) : (
-                <span style={{ color: "red", fontWeight: "bold" }}>Pending</span>
-              )}
             </div>
           </div>
         ))}

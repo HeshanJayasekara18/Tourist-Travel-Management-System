@@ -1,22 +1,5 @@
 const HotelRoom = require ("../model/hotelRoom");
 
-// const getAllHotelRoom = async (req,res) => {
-//     try{
-//         const rooms = await HotelRoom.find({});
-//         res.status(200).json(rooms);
-//     }catch(error){
-//         res.status(500).jason({ message: error.message });
-//     }
-// }
-
-// const addHotelRoom = async (req,res) => {
-//     try{
-//         const room = await HotelRoom.create(req.body);
-//         res.status(200).json(room);
-//     }catch(error){
-//         res.status(500).json({message:error.message});
-//     }
-// }
 
 
 const addHotelRoom = async (req, res) => {
@@ -54,6 +37,8 @@ const addHotelRoom = async (req, res) => {
 
 const getAllHotelRoomByUserId = async (req, res) => {
     try {
+
+        console.log("User IDhgfh\:", req.query.userId); 
         const rooms = await HotelRoom.find({userId:req.query.userId});
 
         // Convert image buffer to Base64

@@ -22,7 +22,7 @@ function HotelForm({ hotelRoom, type, getAllHotelRoom }) {
   }, [hotelRoom, type]);
 
   const [formData, setFormData] = useState({
-    B_Id: "B001",
+    B_Id: localStorage.getItem("businessID"),
     name: "",
     bed: 1,
     max_occupancy: 1,
@@ -146,7 +146,7 @@ function HotelForm({ hotelRoom, type, getAllHotelRoom }) {
       </div>
       <div className="HformBody">
         <div className="formInputSet">
-          <label>Hotel Name</label>
+          <label>Property Name</label>
           <input
             className="HInput"
             type="text"

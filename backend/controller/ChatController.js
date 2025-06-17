@@ -1,4 +1,5 @@
 const Chat = require('../model/Chat');
+const Booking = require('../model/Booking');
 
 
 const saveChat = async (req, res) => {
@@ -29,9 +30,6 @@ const saveChat = async (req, res) => {
 const getChatByUserBooking = async (req, res) => {
     try {
         const { userId, senderModel, bookingId } = req.query;
-       console.log("userId", userId);
-       console.log("senderModel", senderModel);
-         console.log("bookingId", bookingId);
 
         if (!userId || !senderModel || !bookingId) {
             return res.status(400).json({ message: "Missing query parameters" });
@@ -39,7 +37,6 @@ const getChatByUserBooking = async (req, res) => {
 
         const chats = await Chat.find({
             sender: userId,
-            senderModel: senderModel,
             bookingId: bookingId
         }).sort({ timestamp: 1 }); // oldest first
 
@@ -50,7 +47,20 @@ const getChatByUserBooking = async (req, res) => {
     }
 };
 
+const getAllBookingByBussinessId = async (req, res) => {
+    try {
+        const { B_Id } = req.body.params;
+        console.log("B_Id", B_Id);
+
+        const bookings = await Booking.find({B_Id:B_Id}); 
+        res.status(200).json(bookings);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     saveChat,
-    getChatByUserBooking
+    getChatByUserBooking,
+    getAllBookingByBussinessId
 };

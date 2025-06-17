@@ -21,7 +21,7 @@ function VehiclePage() {
   }, []);
 
   const getAllVehicle = () => {
-    axios.get(`http://localhost:4000/api/vehicle/getVehicleById?userId=${userId}`)
+    axios.post(`http://localhost:4000/api/vehicle/getVehicleById?userId=${userId}`)
       .then(response => {
         setVehicleData(response.data);
       })
@@ -79,7 +79,7 @@ function VehiclePage() {
       </div>
 
       {/* Vehicle Cards */}
-      <div className="vehicle-card">
+      <div className="vehicle-card-property">
         {filteredVehicles.map(vehicle => (
           <VehicleCard
             key={vehicle.V_Id}

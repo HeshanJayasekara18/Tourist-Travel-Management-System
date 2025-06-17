@@ -15,13 +15,16 @@ function ChatManage() {
   const userType = localStorage.getItem("userType") || "Business"; // or "Tourist"
   const userID = localStorage.getItem("userID") ;
   const touristID = localStorage.getItem("touristID") ; 
+  const businessID = localStorage.getItem("businessID") ;
 
   useEffect(() => {
     // Fetch all bookings with chats
     const fetchBookings = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("http://localhost:4000/api/Booking");
+        const res = await axios.post(`http://localhost:4000/api/chat/bookingByBussinessId`, {
+          params: { B_Id: businessID }
+        });
         setBookings(res.data);
         setLoading(false);
       } catch (err) {
@@ -30,6 +33,7 @@ function ChatManage() {
         setLoading(false);
       }
     };
+    
 
     fetchBookings();
   }, []);
@@ -59,7 +63,7 @@ function ChatManage() {
         params: {
           bookingId: bookingId,
           userId: userID,
-          senderModel: 'Business'
+          senderModel: 'Business',
         }
       });
       setMessages(res.data.chats || []); // it should be res.data.chats not res.data.message

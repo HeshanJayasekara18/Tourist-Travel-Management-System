@@ -2,7 +2,7 @@
     padding: 20px;
 }
 
-.vehicle-card{
+.vehicle-card-property{
     display: flex;
     flex-direction: row;
     gap: 20px;
