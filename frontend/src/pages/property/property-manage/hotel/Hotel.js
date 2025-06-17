@@ -2,49 +2,47 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Hotel.css";
 import HotelRoomCard from "../../../../common/hotel-room-card/HotelRoomCard";
-
-
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import HotelForm from "./HotelForm/HotelForm";
 
 function HotelPage() {
-  const [hotelData, setHotelData] = useState([]);
+  const [hotelData, setHotelData] = useState([]); // Always array initially
   const [open, setOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // <- added
+  const [searchTerm, setSearchTerm] = useState(""); 
 
-  const userId=localStorage.getItem("userID")
+  const userId = localStorage.getItem("userID");
+
   useEffect(() => {
     getAllHotelRoom();
   }, []);
 
   const getAllHotelRoom = () => {
     axios
-      .get(`http://localhost:4000/api/hotelRoom/getHotelRoomById?userId=${userId}`)
+      .post(`http://localhost:4000/api/hotelRoom/getHotelRoomById?userId=${userId}`)
       .then((response) => {
         console.log(response.data);
-        setHotelData(response.data);
+        setHotelData(response.data || []); // if null, set empty array
       })
       .catch((error) => {
         console.error(error);
+        setHotelData([]); // in case of error, set empty array to avoid crash
       });
   };
 
-  // Open & Close Handlers
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
     getAllHotelRoom();
-
   };
 
-    // Filtered data based on search
-    const filteredHotels = hotelData.filter((hotel) =>
-      hotel.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      hotel.availability?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  
+  // Safe check here 👇
+  const filteredHotels = (hotelData || []).filter((hotel) =>
+    hotel?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    hotel?.availability?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
@@ -68,26 +66,25 @@ function HotelPage() {
         </div>
 
         <div className="searchContainer">
-        <input
-          type="text"
-          className="searchInput"
-          placeholder="Search by hotel name, room type, or status..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+          <input
+            type="text"
+            className="searchInput"
+            placeholder="Search by hotel name, room type, or status..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
         <div className="hotel-card">
           {filteredHotels.map((hotel) => (
-            <HotelRoomCard key={hotel.HR_Id} HR_Id={hotel.HR_Id} hotel={hotel} getAllHotelRoom={getAllHotelRoom}/>
+            <HotelRoomCard key={hotel.HR_Id} HR_Id={hotel.HR_Id} hotel={hotel} getAllHotelRoom={getAllHotelRoom} />
           ))}
         </div>
       </div>
 
-      {/* Material UI Dialog Popup */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-        <DialogContent md={{ width: "500px"}}>
-          <HotelForm HR_Id={hotelData.HR_Id} type="Submit" getAllHotelRoom={getAllHotelRoom} />
+        <DialogContent>
+          <HotelForm HR_Id={hotelData?.HR_Id} type="Submit" getAllHotelRoom={getAllHotelRoom} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
