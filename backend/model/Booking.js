@@ -14,6 +14,7 @@ const BookingSchema = mongoose.Schema({
     tourID: { type: String, required: true },
     payment_amount: { type: Number, required: true },
     touristID: { type: String, required: true },
+    B_Id: { type: String, required: true },
 
     // Fields specific to hotel bookings
     hotel_booking: {

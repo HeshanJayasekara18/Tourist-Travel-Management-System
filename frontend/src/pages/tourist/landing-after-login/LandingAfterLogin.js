@@ -3,8 +3,13 @@ import sigiriyaLanding from '../../../images/sigiriya-landing.jpg';
 import deerLanding from '../../../images/deer-landing.jpg';
 import weblogo from '../../../images/logo.png';
 import templeofthtoothLanding from '../../../images/templeofthtooth-landing.jpeg';
-import './Section1.css';
+
 import { useNavigate } from 'react-router-dom';
+
+import './LandingAfterLogin.css';
+import Section2 from '../../landing/section-2/Section2';
+import Section4 from '../../landing/section-4/Section4';
+import Footer from '../../landing/Footer/Footer';
 
 const slides = [
   {
@@ -24,7 +29,7 @@ const slides = [
   }
 ];
 
-const TravelLandingPage1 = () => {
+const LandingAfterLogin = () => {
 
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -41,49 +46,33 @@ const TravelLandingPage1 = () => {
   };
 
   return (
-    <div className="landingLandingPage">
-      <nav className="landingNavigation">
-        <div className="landingLogo"><img src={weblogo} alt="Logo" /></div>
-        <div className="landingNavLinks">
-          <a href="#" className="landingNavLink">Home</a>
-          <a href="#" className="landingNavLink">Plan your tour</a>
-          <a href="#" className="landingNavLink">Our Packages</a>
-          <a href="#" className="landingNavLink">Gallery</a>
-          <a href="#" className="landingNavLink">Contact</a>
-          <a href="#" className="landingNavLink">Join with us</a>
-        </div>
-        <div className="landingRegbutton">
-          <button className="landingsignupbutton" onClick={() => navigate('/tourist-signup')}>Sign Up</button>
-          <button className="landinglogbutton" onClick={() => navigate('/login')}>Login</button>
-        </div>
-      </nav>
-
-      <div className="landingHeroSection">
-        <div className="landingSliderContainer">
+    <div className="home-landingLandingPage">
+      <div className="home-landingHeroSection">
+        <div className="home-landingSliderContainer">
           {slides.map((slide, index) => (
             <div
               key={index}
-              className={`landingSlide ${index === currentSlide ? 'landingActiveSlide' : ''}`}
+              className={`home-landingSlide ${index === currentSlide ? 'home-landingActiveSlide' : ''}`}
             >
-              <img src={slide.image} alt={slide.title} className="landingSlideImage" />
-              <div className="landingOverlay"></div>
+              <img src={slide.image} alt={slide.title} className="home-landingSlideImage" />
+              <div className="home-landingOverlay"></div>
             </div>
           ))}
         </div>
 
-        <div className="landingHeroContent">
-          <h1 className="landingHeroTitle">Your Dream Vacation Awaits</h1>
-          <p className="landingHeroSubtitle">Explore Sri Lanka with us.</p>
-          <button className="landingExploreButton">Explore Now →</button>
+        <div className="home-landingHeroContent">
+          <h1 className="home-landingHeroTitle">Your Dream Vacation Awaits</h1>
+          <p className="home-landingHeroSubtitle">Explore Sri Lanka with us.</p>
+          <button className="home-landingExploreButton">Explore Now →</button>
         </div>
 
-        <div className="landingSlideIndicator">0{currentSlide + 1}</div>
+        <div className="home-landingSlideIndicator">0{currentSlide + 1}</div>
 
-        <div className="landingDestinationCards">
+        <div className="home-landingDestinationCards">
           {slides.map((slide, index) => (
             <div
               key={index}
-              className={`landingDestinationCard ${index === currentSlide ? 'landingActiveCard' : ''}`}
+              className={`home-landingDestinationCard ${index === currentSlide ? 'home-landingActiveCard' : ''}`}
               onClick={() => handleCardClick(index)}
               style={{
                 backgroundImage: `url(${slide.image})`,
@@ -98,9 +87,9 @@ const TravelLandingPage1 = () => {
         </div>
 
         {/* WAVE SVG - Positioned at the bottom */}
-        <div className="landingWaveContainer">
+        <div className="home-landingWaveContainer">
           <svg
-            className="landingWave"
+            className="home-landingWave"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
             preserveAspectRatio="none"
@@ -113,8 +102,11 @@ const TravelLandingPage1 = () => {
           </svg>
         </div>
       </div>
+        <Section2/>
+        <Section4/>
+        <Footer/>
     </div>
   );
 };
 
-export default TravelLandingPage1;
+export default LandingAfterLogin;
