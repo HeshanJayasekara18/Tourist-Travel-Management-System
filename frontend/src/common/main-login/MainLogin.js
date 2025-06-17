@@ -83,7 +83,7 @@ const MainLogin = () => {
         <div className="form-login">
           <label>Email</label>
           <input
-             className="inputLogin"
+            className=".inputLogin"
             type="email"
             placeholder="Enter your email"
             value={email}

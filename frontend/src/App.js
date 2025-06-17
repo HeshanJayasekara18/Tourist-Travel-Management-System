@@ -40,7 +40,8 @@ import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp
 import TourGuide from './pages/tour-guide/TourGuide';
 import ChatManage from './pages/property/chat-manage/Chat';
 
-import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
+import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
+
 function App() {
   return (
     
@@ -64,7 +65,7 @@ function App() {
                 <Route path='PackagePayment' element={<PackagePayment/>}/>
                 <Route path='Receipt' element={<Receipt/>}/>
                 <Route path='PaymentManagement' element={<PaymentManagement/>}/>
-
+                <Route path='feedback-manage' element={<FeedbackManagement/>}/>
 
                
             </Route>
