@@ -34,7 +34,7 @@ import BookingGuideAvailability from './pages/tourist/booking-guide/booking-guid
 import MainLogin from './common/main-login/MainLogin';
 import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
 import LandingPages from './pages/landing/Landing';
-
+import BookingView from './pages/tourist/booking-view/BookingView';
 
 import TourGuideDashboard from './pages/tour-guide/tourguide-dashboard/TourGuideDashboard';
 import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProfile';
