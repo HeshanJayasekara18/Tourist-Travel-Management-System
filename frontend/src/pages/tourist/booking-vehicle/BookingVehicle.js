@@ -5,6 +5,7 @@ import "./BookingVehicle.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BookingFooter from "../booking-footer/BookingFooter";
 import BookingVehicleForm from "./BookingVehicleForm";
+import TourProgressSteps from "../tour-progress-steps/TourProgressSteps"; // Import the TourProgressSteps component
 import { 
   faUserGroup, 
   faGasPump, 
@@ -13,11 +14,17 @@ import {
   faSearch,
   faFilter,
   faArrowDown,
-  faArrowUp
+  faArrowUp,
+  faArrowLeft,
+  faArrowRight
 } from "@fortawesome/free-solid-svg-icons";
 import BannerSectionvehicle from "./BannerSectionvehicle";
-
+import { useLocation } from 'react-router-dom';
 function BookingVehicle() {
+
+  const location = useLocation();
+  const { tourID, startDate, endDate, destinations, totalDistance, totalDays } = location.state || {};
+
   const navigate = useNavigate();
   const [vehicles, setVehicles] = useState([]);
   const [filteredVehicles, setFilteredVehicles] = useState([]);
@@ -35,19 +42,30 @@ function BookingVehicle() {
   // Add new state variables for the form
   const [openBookingForm, setOpenBookingForm] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  
+  // Business ID state
+  const [businessId, setBusinessId] = useState(null);
 
-  // Fetch vehicles
+  // Track if a vehicle has been selected for navigation purposes
+  const [vehicleSelected, setVehicleSelected] = useState(false);
+
+  // Fetch business ID and vehicles
   useEffect(() => {
-    const fetchVehicles = async () => {
+    const fetchBusinessAndVehicles = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/vehicle");
-        setVehicles(response.data);
-        setFilteredVehicles(response.data);
+        // Option 2: Hardcode for testing (replace this with actual logic)
+        setBusinessId("business-123");
+        
+        // Fetch vehicles
+        const vehiclesResponse = await axios.get("http://localhost:4000/api/vehicle");
+        setVehicles(vehiclesResponse.data);
+        setFilteredVehicles(vehiclesResponse.data);
       } catch (error) {
-        console.error("Error fetching vehicles:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    fetchVehicles();
+    
+    fetchBusinessAndVehicles();
   }, []);
 
   // Apply filters and search
@@ -120,6 +138,7 @@ function BookingVehicle() {
   const handleOpenBookingForm = (vehicle) => {
     setSelectedVehicle(vehicle);
     setOpenBookingForm(true);
+    setVehicleSelected(true); // Mark that a vehicle has been selected
   };
   
   // Add function to handle closing the booking form
@@ -132,15 +151,35 @@ function BookingVehicle() {
     // You can implement this if you need to refresh a booking list
     console.log("Booking successful - refreshing bookings if needed");
   };
+  
+  // Handle previous step navigation
+  const handlePreviousStep = () => {
+    navigate('/Tourist/Tourist');
+  };
+  
+  // Handle next step navigation
+  const handleNextStep = () => {
+    // Optionally, you can check if a vehicle has been selected before proceeding
+    if (!vehicleSelected && !selectedVehicle) {
+      alert("Please select a vehicle before proceeding to the next step.");
+      return;
+    }
+    
+    // Navigate to the next step
+    navigate('/Tourist/hotel-book');
+  };
 
   return (
     <div className="booking-vehicle-page">
       <BannerSectionvehicle />
       
+      {/* Add the TourProgressSteps component here with the current step */}
+      <TourProgressSteps currentStep={2} />
+      
       <div className="booking-container">
         {/* Breadcrumb */}
         <div className="breadcrumb">
-          <span onClick={() => navigate('/')} className="breadcrumb-link">Plan Your Tour</span> &gt; 
+          <span onClick={() => navigate('/Tourist/Tourist')} className="breadcrumb-link">Plan Your Tour</span> &gt; 
           <span className="current"> Vehicle Booking</span>
         </div>
         
@@ -293,7 +332,7 @@ function BookingVehicle() {
                     <div className="feature">
                       <FontAwesomeIcon icon={faGasPump} />
                       <span>{vehicle.fuelType}</span>
-                    </div>
+                      </div>
                     <div className="feature">
                       <FontAwesomeIcon icon={faCarSide} />
                       <span>{vehicle.doors} Doors</span>
@@ -324,14 +363,26 @@ function BookingVehicle() {
             </div>
           )}
         </div>
+        
+        {/* Navigation buttons */}
+        <div className="navigation-buttons">
+          <button onClick={handlePreviousStep} className="nav-button prev-button">
+            <FontAwesomeIcon icon={faArrowLeft} /> Back to Plan
+          </button>
+          <button onClick={handleNextStep} className="nav-button next-button">
+            Continue to Hotels <FontAwesomeIcon icon={faArrowRight} />
+          </button>
+        </div>
       </div>
       
-      {/* Add the BookingVehicleForm component */}
+      {/* Pass the businessId to the BookingVehicleForm component */}
       <BookingVehicleForm 
         open={openBookingForm}
         handleClose={handleCloseBookingForm}
         getAllBooking={getAllBooking}
         selectedVehicle={selectedVehicle}
+        businessId={businessId} // Pass the business ID here
+        tourID={tourID} // Pass the tour ID here
       />
       
       <BookingFooter />
