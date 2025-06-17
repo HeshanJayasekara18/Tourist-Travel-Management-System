@@ -1,28 +1,36 @@
 const Feedback = require('../model/Feedback');
 const Tourist = require('../model/Tourist');
+const mongoose = require('mongoose');
 
 // Create feedback
 exports.submitFeedback = async (req, res) => {
   try {
     const { serviceType, touristID, rating, comment } = req.body;
-
-    const touristExists = await Tourist.findById(touristID);
-    if (!touristExists) {
-      return res.status(404).json({ message: 'Tourist not found' });
+    
+    try {
+      // Check if tourist exists - Look up by touristID field, not by _id
+      const touristExists = await Tourist.findOne({ touristID: touristID });
+      if (!touristExists) {
+        return res.status(404).json({ message: 'Tourist not found' });
+      }
+      
+      // Create new feedback
+      const newFeedback = new Feedback({
+        serviceType,
+        touristID: touristExists._id, // Use the MongoDB _id from the found tourist
+        rating,
+        comment
+      });
+  
+      await newFeedback.save();
+      return res.status(201).json({ message: 'Feedback submitted successfully', feedback: newFeedback });
+    } catch (dbError) {
+      console.error('Database operation error:', dbError);
+      return res.status(500).json({ message: 'Database operation failed', error: dbError.message });
     }
-
-    const newFeedback = new Feedback({
-      serviceType,
-      touristID,
-      rating,
-      comment
-    });
-
-    await newFeedback.save();
-    return res.status(201).json({ message: 'Feedback submitted successfully', feedback: newFeedback });
   } catch (error) {
     console.error('Error submitting feedback:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
@@ -135,5 +143,27 @@ exports.getFeedbackResponse = async (req, res) => {
   } catch (error) {
     console.error('Error getting feedback response:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Get all feedbacks for a specific tourist
+exports.getTouristFeedbacks = async (req, res) => {
+  try {
+    const { touristId } = req.params;
+    
+    // Find the tourist by touristID (not MongoDB _id)
+    const tourist = await Tourist.findOne({ touristID: touristId });
+    
+    if (!tourist) {
+      return res.status(404).json({ message: 'Tourist not found' });
+    }
+    
+    // Find all feedbacks where touristID matches the MongoDB _id of the found tourist
+    const feedbacks = await Feedback.find({ touristID: tourist._id }).sort({ date: -1 });
+    
+    return res.status(200).json({ feedbacks });
+  } catch (error) {
+    console.error('Error fetching tourist feedbacks:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };

@@ -34,6 +34,7 @@ import BookingGuideAvailability from './pages/tourist/booking-guide/booking-guid
 import MainLogin from './common/main-login/MainLogin';
 import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
 import LandingPages from './pages/landing/Landing';
+import BookingView from './pages/tourist/booking-view/BookingView';
 
 import TourGuideDashboard from './pages/tour-guide/tourguide-dashboard/TourGuideDashboard';
 import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProfile';
@@ -41,7 +42,7 @@ import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp
 import TourGuide from './pages/tour-guide/TourGuide';
 import ChatManage from './pages/property/chat-manage/Chat';
 
-import FeedbackSection from './pages/tourist/feedback-section/FeedbackSection';
+
 import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
 import TouristFeedbackDisplay from './common/feedback-rating/feedback-display/TouristFeedbackDisplay';
 
@@ -56,8 +57,8 @@ function App() {
             <Route path="/" element={<LandingPages/>}/>
             <Route path='/tourguide-signup' element={<TourGuideSignUp/>}/>
 
-            <Route path='/feedback' element={<FeedbackForm/>}/>
-            <Route path='/feedback-display' element={<TouristFeedbackDisplay/>}/>
+            
+            
             
             <Route
                path='/admin'
@@ -95,6 +96,10 @@ function App() {
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
                 <Route path='package' element={<TourPackagesLanding/>}/>
+                <Route path='booking-view' element={<BookingView/>}/>
+                <Route path='feedback' element={<FeedbackForm/>}/>
+                <Route path='feedback-display' element={<TouristFeedbackDisplay/>}/>
+                
             </Route>
 
              <Route

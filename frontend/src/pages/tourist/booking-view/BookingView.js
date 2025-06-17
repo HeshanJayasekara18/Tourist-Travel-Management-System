@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import "./BookingView.css";
 import Footer from '../../landing/Footer/Footer';
-import FeedbackSection from '../feedback-section/FeedbackSection';
+
 import BannerSectionBookingView from './BannerSectionBookingView';
+import FeedbackSection  from '../feedback-section/FeedbackSection'
+
 // Import React Icons
 import { 
   FaSearch, FaCalendarAlt, FaFlag, FaEdit, 
