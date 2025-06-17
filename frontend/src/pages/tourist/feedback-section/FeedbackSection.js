@@ -7,7 +7,7 @@ const FeedbackSection = () => {
 
   const handleFeedbackClick = () => {
     // Navigate to the feedback form page
-    navigate('/Tourist/feedback');
+    navigate('/feedback');
   };
 
   return (

@@ -23,7 +23,7 @@ function BookingGuide() {
   const fetchGuides = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:4000/api/GuideDetails/profiles');
+      const response = await axios.get('http://localhost:4000/api/GuideDetails/all-profiles');
       console.log('Fetched guides:', response.data);
 
       if (Array.isArray(response.data.profiles)) {
@@ -60,7 +60,7 @@ function BookingGuide() {
   };
 
   const proceedToConfirmation = () => {
-    navigate('/Tourist/tour-confirmation');
+    navigate('/Tourist/tour-payment');
   };
 
   const defaultImage = "/placeholder-guide-image.jpg";

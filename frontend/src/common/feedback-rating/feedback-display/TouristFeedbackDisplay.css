@@ -1,218 +1,138 @@
-/* TouristFeedbackView.css */
-.tourist-feedback-container-t {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.feedback-title-t {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #2c3e50;
-  font-weight: 600;
-}
-
-.feedback-count-t {
-  font-size: 1rem;
-  color: #7f8c8d;
-  margin-bottom: 2rem;
-}
-
-.loading-container-t, .error-container-t {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-  font-size: 1.1rem;
-  color: #7f8c8d;
-}
-
-.error-container-t {
-  color: #e74c3c;
-}
-
-.no-feedback-t {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3rem 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.no-feedback-icon-t {
-  color: #bdc3c7;
-  margin-bottom: 1rem;
-}
-
-.no-feedback-t h3 {
-  margin: 0.5rem 0;
-  font-size: 1.5rem;
-  color: #2c3e50;
-}
-
-.no-feedback-t p {
-  color: #7f8c8d;
-  max-width: 400px;
-}
-
-.feedback-list-t {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.feedback-header-row-t {
-  display: flex;
-  background-color: #f8f9fa;
-  font-weight: 600;
-  border-bottom: 2px solid #e0e0e0;
-}
-
-.feedback-header-cell-t {
-  padding: 1rem;
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-
-.sortable-t {
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.sortable-t:hover {
-  background-color: #e9ecef;
-}
-
-.feedback-item-t {
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.feedback-item-t:last-child {
-  border-bottom: none;
-}
-
-.feedback-row-t {
-  display: flex;
-  padding: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.feedback-row-t:hover {
-  background-color: #f5f5f5;
-}
-
-.feedback-cell-t {
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-
-.rating-cell-t {
-  display: flex;
-  align-items: center;
-}
-
-.stars-display-t {
-  color: #f1c40f;
-  letter-spacing: 2px;
-  margin-right: 5px;
-}
-
-.rating-number-t {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-}
-
-.expand-cell-t {
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  color: #7f8c8d;
-}
-
-/* Service type badges */
-.service-badge-t {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.tourguide-t {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.hotelroom-t {
-  background-color: #cce5ff;
-  color: #004085;
-}
-
-.vehicle-t {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-/* Status indicators */
-.status-responded-t {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.status-pending-t {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-/* Expanded feedback details */
-.feedback-detail-t {
-  background-color: #f8f9fa;
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #e0e0e0;
-}
-
-.detail-section-t {
-  margin-bottom: 1.5rem;
-}
-
-.detail-section-t:last-child {
-  margin-bottom: 0;
-}
-
-.detail-section-t h4 {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
-}
-
-.comment-content-t, .response-content-t {
-  background-color: #ffffff;
-  padding: 1rem;
-  border-radius: 4px;
-  border-left: 4px solid #3498db;
-}
-
-.response-content-t {
-  border-left-color: #2ecc71;
-}
-
-.no-response-t {
-  padding: 1rem;
-  background-color: #ffffff;
-  border-radius: 4px;
-  border-left: 4px solid #e74c3c;
-  color: #7f8c8d;
-}
+/* FeedbackDisplay.css */
+.feedback-display-container-r {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .feedback-display-title-r {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+  }
+  
+  .loading-r, .error-r, .no-feedbacks-r {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin: 20px 0;
+  }
+  
+  .error-r {
+    color: #d9534f;
+    border: 1px solid #f5c6cb;
+    background-color: #f8d7da;
+  }
+  
+  .no-feedbacks-r {
+    color: #666;
+    font-style: italic;
+  }
+  
+  .feedback-card-r {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+  }
+  
+  .feedback-card-r:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .feedback-header-r {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .service-type-r {
+    font-size: 20px;
+    color: #3498db;
+    margin: 0;
+  }
+  
+  .feedback-date-r {
+    color: #7f8c8d;
+    font-size: 14px;
+  }
+  
+  .rating-display-r {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .star-r {
+    font-size: 24px;
+    margin-right: 2px;
+  }
+  
+  .filled-r {
+    color: #f1c40f;
+  }
+  
+  .empty-r {
+    color: #e0e0e0;
+  }
+  
+  .rating-text-r {
+    margin-left: 10px;
+    color: #555;
+    font-size: 16px;
+  }
+  
+  .section-title-r {
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+  
+  .comment-section-r, .response-section-r {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eaeaea;
+  }
+  
+  .comment-text-r, .response-text-r {
+    color: #333;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+  
+  .pending-response-r {
+    color: #95a5a6;
+    font-style: italic;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .feedback-display-container-r {
+      padding: 15px;
+    }
+    
+    .feedback-card-r {
+      padding: 15px;
+    }
+    
+    .feedback-display-title-r {
+      font-size: 24px;
+    }
+    
+    .service-type-r {
+      font-size: 18px;
+    }
+    
+    .star-r {
+      font-size: 20px;
+    }
+  }

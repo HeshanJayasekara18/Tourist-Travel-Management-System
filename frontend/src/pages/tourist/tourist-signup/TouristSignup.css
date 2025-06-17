@@ -19,7 +19,7 @@
   .signup-right-h {
     flex: 1;
     overflow: hidden;
-    display: none; /* Hidden on mobile */
+    display: none;
   }
   
   @media (min-width: 768px) {
@@ -35,7 +35,7 @@
     object-position: center;
   }
   
-  /* Logo styling */
+  
   .logo-container-h {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -46,7 +46,7 @@
     height: auto;
   }
   
-  /* Form styling */
+  
   .signup-title-h {
     font-size: 1.8rem;
     font-weight: 600;
@@ -105,7 +105,7 @@
     margin-top: 0.3rem;
   }
   
-  /* Phone input styling */
+
   .phone-group-h {
     margin-bottom: 1.2rem;
   }
@@ -132,7 +132,7 @@
     margin-right: 5px;
   }
   
-  /* Buttons styling */
+
   .signup-button-h {
     width: 100%;
     padding: 0.75rem;

@@ -41,7 +41,7 @@ const BookingNavAfterLog = () => {
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Plan your tour</span>
 
           <span className="landingNavLink-h" onClick={() => navigate('./package')}>Our Packages</span>
-          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Gallery</span>
+          <span className="landingNavLink-h" onClick={() => navigate('./gallary')}>Gallery</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Contact</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Join with us</span>
           <span className="landingNavLink-h" onClick={() => navigate('./booking-view')}>Your Bookings</span>

@@ -37,7 +37,7 @@ import {
   SettingsOutlined
 } from "@mui/icons-material";
 
-const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle }) => {
+const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle,tourID }) => {
   const [formData, setFormData] = useState({
     bookingID: "",
     name: "",
@@ -48,8 +48,8 @@ const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle 
     end_date: dayjs().add(1, 'day'),
     mobile_number: "",
     payID: "",
-    tourID: "",
-    touristID: "",
+    tourID: tourID || "",
+    touristID: localStorage.getItem("touristID") || "",
     payment_amount: "",
     vehicle_booking: {
       vehicle_type: "",
@@ -75,7 +75,8 @@ const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle 
         vehicle_booking: {
           ...prevData.vehicle_booking,
           vehicle_type: selectedVehicle ? selectedVehicle.modelName : ""
-        }
+        },
+        touristID: localStorage.getItem("touristID") || ""
       }));
       
       if (selectedVehicle) {
@@ -192,11 +193,8 @@ const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle 
   };
 
   const handleSubmit = async (e) => {
+   
     e.preventDefault();
-    
-    if (!validate()) {
-      return;
-    }
     
     try {
       // Format data according to your MongoDB schema
@@ -210,9 +208,10 @@ const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle 
         end_date: dayjs(formData.end_date).toDate(),
         mobile_number: Number(formData.mobile_number),
         payID: formData.payID,
-        tourID: formData.tourID,
-        touristID: formData.touristID,
+        tourID: tourID,
+        touristID: localStorage.getItem("touristID"), 
         payment_amount: Number(formData.payment_amount),
+        B_Id:selectedVehicle.B_Id,
         
         // Add the vehicle_booking object with proper structure
         vehicle_booking: {
@@ -510,7 +509,21 @@ const BookingVehicleForm = ({ open, handleClose, getAllBooking, selectedVehicle 
                 helperText={errors.touristID}
                 required
               />
+              
+              {/* business id */}
+              <TextField
+                fullWidth
+                margin="dense"
+                label="Business ID"
+                name="B_Id"
+                value={formData.touristID}
+                onChange={handleChange}
+                error={!!errors.touristID}
+                helperText={errors.touristID}
+                required
+              />
 
+              
               <TextField
                 fullWidth
                 margin="dense"

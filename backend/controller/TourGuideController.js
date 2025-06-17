@@ -95,3 +95,64 @@ exports.loginTourGuide = async (req, res) => {
     res.status(500).json({ message: 'Server error during login', error: err.message });
   }
 }
+// Add to TourGuideController.js
+
+// Get all tour guides
+exports.getAllTourGuides = async (req, res) => {
+  try {
+    const tourGuides = await TourGuide.find()
+      .populate('user', 'email role')
+      .sort({ createdAt: -1 });
+    
+    res.status(200).json({
+      success: true,
+      count: tourGuides.length,
+      data: tourGuides
+    });
+  } catch (err) {
+    console.error('Error fetching tour guides:', err);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error while fetching tour guides', 
+      error: err.message 
+    });
+  }
+};
+
+// Delete a tour guide
+exports.deleteTourGuide = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Find the tour guide
+    const tourGuide = await TourGuide.findById(id);
+    
+    if (!tourGuide) {
+      return res.status(404).json({
+        success: false,
+        message: 'Tour guide not found'
+      });
+    }
+    
+    // Get the user ID associated with this tour guide
+    const userId = tourGuide.user;
+    
+    // Delete the tour guide
+    await TourGuide.findByIdAndDelete(id);
+    
+    // Delete the associated user
+    await User.findByIdAndDelete(userId);
+    
+    res.status(200).json({
+      success: true,
+      message: 'Tour guide deleted successfully'
+    });
+  } catch (err) {
+    console.error('Error deleting tour guide:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while deleting tour guide',
+      error: err.message
+    });
+  }
+};
