@@ -11,6 +11,7 @@ import PropertyDashboard from './pages/property/property-manage/property-dashboa
 import PropertyTransaction from './pages/property/property-manage/property-transaction/PropertyTransaction';
 import BussinessProfile from './pages/property/property-manage/bussiness-profile/BussinessProfile';
 import Admin from './pages/Admin/Admin';
+import TourPackagesLanding from './pages/tourist/packageInBuild/InBuildPackageLanding'
 import SimpleDashboard from './pages/Admin/InBuildpackage/Dashboard/Dashboard';
 import UserManagement from './pages/Admin/InBuildpackage/adminUsermanage/AdminUserManagement';
 import DisplayDetails from './pages/Admin/InBuildpackage/packagedisplaydetails/DisplayDetails';
@@ -24,8 +25,8 @@ import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
 import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
 import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
-
-import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
+import BookingView from './pages/tourist/booking-view/BookingView';
+import CustomerFeedback from './pages/tourist/feedback-section/FeedbackSection';
 import Tourist from './pages/tourist/Tourist';
 import TouristDetailsHeader from './pages/tourist/user-detail-nav/TouristDetailsHeader';
 import TouristProfile from './pages/tourist/tourist-profile/TouristProfile';
@@ -39,8 +40,9 @@ import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProf
 import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp';
 import TourGuide from './pages/tour-guide/TourGuide';
 import ChatManage from './pages/property/chat-manage/Chat';
-
+import Gallary from './pages/landing/gallary/Gallary'
 import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
+import LandingAfterLogin from './pages/tourist/landing-after-login/LandingAfterLogin';
 function App() {
   return (
     
@@ -91,7 +93,14 @@ function App() {
                 <Route path='feedback' element={<CustomerFeedback/>}/>
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
+                <Route path='booking-view' element={<BookingView/>}/>
+                <Route path='Home' element={<LandingAfterLogin/>}/>
+                <Route path='tour-payment' element={<BookingPayment/>}/>
+                <Route path='package' element={<TourPackagesLanding/>}/>
+                <Route path='gallary' element={<Gallary/>}/>
             </Route>
+            
+            
 
              <Route
                 path='/TourGuide'

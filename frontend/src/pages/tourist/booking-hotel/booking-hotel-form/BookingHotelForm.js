@@ -48,7 +48,7 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
     mobile_number: "",
     payID: "",
     tourID: "",
-    touristID: "",
+    touristID: localStorage.getItem("touristID"), 
     payment_amount: "",
     hotel_booking: {
       room_type: "AC", // Default to AC
@@ -215,9 +215,7 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validate()) {
-      return;
-    }
+
     
     try {
       // Format data according to your MongoDB schema
@@ -232,8 +230,9 @@ const BookingHotelForm = ({ open, handleClose, getAllBooking, selectedHotel }) =
         mobile_number: Number(formData.mobile_number),
         payID: formData.payID,
         tourID: formData.tourID,
-        touristID: formData.touristID,
+        touristID: localStorage.getItem("touristID"),
         payment_amount: Number(formData.payment_amount),
+        B_Id:selectedHotel.B_Id,
         
         // Add the hotel_booking object with proper structure
         hotel_booking: {

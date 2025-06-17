@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import './FeedbackSection.css';
 
@@ -26,6 +27,18 @@ const FeedbackSection = () => {
         closeModal();
       }, 3000);
     }
+=======
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './FeedbackSection.css';
+
+const FeedbackSection = () => {
+  const navigate = useNavigate();
+
+  const handleFeedbackClick = () => {
+    // Navigate to the feedback form page
+    navigate('/feedback');
+>>>>>>> 47594b1bbefcd5aac04942da455a62b108f425a4
   };
 
   return (
@@ -34,6 +47,7 @@ const FeedbackSection = () => {
         <h2>We Value Your Feedback</h2>
         <p>Share your thoughts with us and help us improve our services!</p>
         
+<<<<<<< HEAD
         <button className="feedback-button" onClick={openModal}>
           Give Feedback
         </button>
@@ -65,6 +79,12 @@ const FeedbackSection = () => {
           </div>
         </div>
       )}
+=======
+        <button className="feedback-button" onClick={handleFeedbackClick}>
+          Give Feedback
+        </button>
+      </div>
+>>>>>>> 47594b1bbefcd5aac04942da455a62b108f425a4
     </div>
   );
 };
