@@ -16,6 +16,6 @@ router.get('/:id', getHotelRoom);
 router.post('/', upload.single("image") ,addHotelRoom);      
 router.put('/:id',upload.single("image"),updateHotelRoom); 
 router.delete('/:id', deleteHotelRoom); 
-router.get('/getHotelRoomById', getAllHotelRoomByUserId); 
+router.post('/getHotelRoomById', getAllHotelRoomByUserId); 
 
 module.exports = router;

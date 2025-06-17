@@ -1,12 +1,17 @@
+// PropertyDashboard.js
 import React, { useState, useEffect } from 'react';
-import { Users, Building, Map, DollarSign, Calendar, Clock } from 'lucide-react';
+import { Home, Clock, CheckCircle2, CalendarCheck2 } from 'lucide-react';
+import { Dialog, DialogContent } from '@mui/material';
+import PropertyDashboardCharts from './PropertyDashboardCharts';
 import './PropertyDashboard.css';
 
 function PropertyDashboard() {
   const [loading, setLoading] = useState(true);
+  const [openCharts, setOpenCharts] = useState(false);
+
+  const bussinessType = localStorage.getItem("bussinessType");
 
   useEffect(() => {
-    // Simulate data loading
     setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -14,77 +19,114 @@ function PropertyDashboard() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <p className="loading-text">Loading dashboard data...</p>
+      <div className="t-loading">
+        <p className="t-loading-text">Fetching your hotel data...</p>
       </div>
     );
   }
 
+  const handleOpenCharts = () => {
+    setOpenCharts(true);
+  };
+
+  const handleCloseCharts = () => {
+    setOpenCharts(false);
+  };
+
   return (
-    <div className="dashboard-container">
+    <div className="t-dashboard">
       {/* Header */}
-      <div className="dashboard-header">
-        <h1 className="dashboard-title">Platform Prperty Dashboard</h1>
-        <p className="dashboard-date">
-          {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+      <header className="t-dashboard-header">
+      <h1 className="t-dashboard-title">{bussinessType=='Hotel'? 'Hotel':'Vehicle'} Manager Dashboard</h1>
+        <p className="t-dashboard-subtitle">
+          {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}
         </p>
-      </div>
+      </header>
 
-      {/* Stats Cards */}
-      <div className="stats-grid">
-        <div className="stat-card stat-card-green">
-          <div className="stat-icon-container">
-            <div className="stat-icon stat-icon-green">
-              <Users size={24} className="icon-color-green" />
-            </div>
-          </div>
-          <div className="stat-content">
-            <h3 className="stat-label">Active Vehicle</h3>
-            <p className="stat-value">12k</p>
+      {/* Cards */}
+      <section className="t-card-grid">
+        <div className="t-card t-card-total" onClick={handleOpenCharts}>
+          <div className="t-card-icon"><Home size={32} /></div>
+          <div className="t-card-info">
+            <h3>Total Properties</h3>
+            <p>24</p>
           </div>
         </div>
 
-        <div className="stat-card stat-card-red">
-          <div className="stat-icon-container">
-            <div className="stat-icon stat-icon-red">
-              <Building size={24} className="icon-color-red" />
-            </div>
-          </div>
-          <div className="stat-content">
-            <h3 className="stat-label">Active Hotels</h3>
-            <p className="stat-value">150</p>
+        <div className="t-card t-card-pending" onClick={handleOpenCharts}>
+          <div className="t-card-icon"><Clock size={32} /></div>
+          <div className="t-card-info">
+            <h3>Pending Approvals</h3>
+            <p>5</p>
           </div>
         </div>
 
-        <div className="stat-card stat-card-blue">
-          <div className="stat-icon-container">
-            <div className="stat-icon stat-icon-blue">
-              <Map size={24} className="icon-color-blue" />
-            </div>
-          </div>
-          <div className="stat-content">
-            <h3 className="stat-label">Daily Income</h3>
-            <p className="stat-value">$345</p>
+        <div className="t-card t-card-active" onClick={handleOpenCharts}>
+          <div className="t-card-icon"><CheckCircle2 size={32} /></div>
+          <div className="t-card-info">
+            <h3>Active Properties</h3>
+            <p>19</p>
           </div>
         </div>
 
-        <div className="stat-card stat-card-purple">
-          <div className="stat-icon-container">
-            <div className="stat-icon stat-icon-purple">
-              <DollarSign size={24} className="icon-color-purple" />
-            </div>
-          </div>
-          <div className="stat-content">
-            <h3 className="stat-label">Total InCome</h3>
-            <p className="stat-value">$650k</p>
+        <div className="t-card t-card-bookings" onClick={handleOpenCharts}>
+          <div className="t-card-icon"><CalendarCheck2 size={32} /></div>
+          <div className="t-card-info">
+            <h3>Bookings This Month</h3>
+            <p>32</p>
           </div>
         </div>
-      </div>
+      </section>
 
+      {/* Table */}
+      <section className="t-table-section">
+        <h2 className="t-section-heading">Recent Properties</h2>
+        <div className="t-table-wrapper">
+          <table className="t-table">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ocean Breeze Resort</td>
+                <td>Resort</td>
+                <td><span className="t-badge t-badge-active">Active</span></td>
+                <td>April 25, 2025</td>
+                <td><button className="t-btn-view">View</button></td>
+              </tr>
+              <tr>
+                <td>Hilltop Hotel</td>
+                <td>Hotel</td>
+                <td><span className="t-badge t-badge-pending">Pending</span></td>
+                <td>April 24, 2025</td>
+                <td><button className="t-btn-view">View</button></td>
+              </tr>
+              <tr>
+                <td>Sunshine Apartments</td>
+                <td>Apartment</td>
+                <td><span className="t-badge t-badge-active">Active</span></td>
+                <td>April 23, 2025</td>
+                <td><button className="t-btn-view">View</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-  
+      {/* Chart Dialog */}
+      <Dialog open={openCharts} onClose={handleCloseCharts} fullWidth maxWidth="md">
+        <DialogContent>
+          <PropertyDashboardCharts onClose={handleCloseCharts} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
-};
+}
 
 export default PropertyDashboard;

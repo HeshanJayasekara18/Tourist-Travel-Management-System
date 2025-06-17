@@ -3,13 +3,13 @@
 .chat-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 5px;
     font-family: Arial, sans-serif;
   }
   
   .chat-container h1 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: #333;
   }
   
@@ -175,7 +175,7 @@
     background-color: #1976d2;
     color: white;
     border: none;
-    border-radius: 24px;
+    border-radius: 15px;
     cursor: pointer;
     transition: background-color 0.2s;
   }
