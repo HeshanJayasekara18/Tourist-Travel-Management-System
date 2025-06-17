@@ -1,14 +1,9 @@
 // FeedbackManagement.js
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
+
+
 import { Search, Filter, ChevronDown, ChevronUp, Download, MessageSquare, Trash2, Eye, X, Send } from 'lucide-react';
-=======
-<<<<<<< HEAD
-import { Search, Filter, ChevronDown, ChevronUp, Download } from 'lucide-react';
-=======
-import { Search, Filter, ChevronDown, ChevronUp, Download, MessageSquare, Trash2, Eye, X, Send } from 'lucide-react';
->>>>>>> fc9d0a807f8f49c65c89de5017acc973802e9095
->>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
+
 import './FeedbackManagement.css';
 
 const FeedbackManagement = () => {
@@ -424,16 +419,15 @@ const FeedbackManagement = () => {
               : 'N/A'}
           </span>
         </div>
-<<<<<<< HEAD
+
         <div className="stat-box-r">
           <span className="stat-label-r">Responded</span>
           <span className="stat-value-r">
             {feedbacks.filter(item => item.adminResponse && item.adminResponse.trim() !== '').length}
           </span>
         </div>
-=======
-<<<<<<< HEAD
->>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
+
+
       </div>
       
       <div className="feedback-table-container-r">         
@@ -494,8 +488,6 @@ const FeedbackManagement = () => {
                     {feedback.comment || <span className="no-comment-r">No comment provided</span>}         
                   </td>         
                   <td>{formatDate(feedback.date)}</td>
-<<<<<<< HEAD
-=======
                 </tr>
               ))
             ) : (
@@ -574,7 +566,6 @@ const FeedbackManagement = () => {
                     {feedback.comment || <span className="no-comment-r">No comment provided</span>}         
                   </td>         
                   <td>{formatDate(feedback.date)}</td>
->>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
                   <td>
                     <div className="feedback-status-r">
                       {feedback.adminResponse && <span className="status-responded-r">Responded</span>}
@@ -615,10 +606,7 @@ const FeedbackManagement = () => {
             )} 
           </tbody>   
         </table>       
-<<<<<<< HEAD
-=======
->>>>>>> fc9d0a807f8f49c65c89de5017acc973802e9095
->>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
+
       </div>
       
       {filteredFeedbacks.length > 0 && (
@@ -675,11 +663,9 @@ const FeedbackManagement = () => {
           </button>
         </div>
       )}
-<<<<<<< HEAD
+
 =======
-<<<<<<< HEAD
-=======
->>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
+
 
       {/* Detailed Feedback View Modal */}
       {detailViewOpen && selectedFeedback && (
@@ -763,10 +749,7 @@ const FeedbackManagement = () => {
           </div>
         </div>
       )}
-<<<<<<< HEAD
-=======
->>>>>>> fc9d0a807f8f49c65c89de5017acc973802e9095
->>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
+
     </div>
   );
 };

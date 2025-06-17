@@ -34,7 +34,7 @@ import BookingGuideAvailability from './pages/tourist/booking-guide/booking-guid
 import MainLogin from './common/main-login/MainLogin';
 import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
 import LandingPages from './pages/landing/Landing';
-import BookingView from './pages/tourist/booking-view/BookingView';
+
 
 import TourGuideDashboard from './pages/tour-guide/tourguide-dashboard/TourGuideDashboard';
 import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProfile';
@@ -46,10 +46,10 @@ import ChatManage from './pages/property/chat-manage/Chat';
 import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
 import TouristFeedbackDisplay from './common/feedback-rating/feedback-display/TouristFeedbackDisplay';
 
-import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
+
 
 import Gallary from './pages/landing/gallary/Gallary'
-import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
+
 import LandingAfterLogin from './pages/tourist/landing-after-login/LandingAfterLogin';
 function App() {
   return (

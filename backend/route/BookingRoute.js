@@ -11,14 +11,6 @@ const {
 
 // GET all bookings
 router.get('/', getAllBooking);
-<<<<<<< HEAD
-router.get('/:id', getBooking);    
-router.post('/', addBooking);      
-router.put('/:id', updateBooking); 
-router.delete('/:id', deleteBooking); 
-router.post('/report', generateReport); 
-=======
->>>>>>> 47594b1bbefcd5aac04942da455a62b108f425a4
 
 // GET a booking by ID
 router.get('/:id', getBooking);
