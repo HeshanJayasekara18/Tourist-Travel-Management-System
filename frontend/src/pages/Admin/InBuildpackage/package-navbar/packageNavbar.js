@@ -37,10 +37,7 @@ function PackageSideNav() {
             navigate('/admin/feedback-manage');
         }
 
-        const onClickFeedbackManage=()=>{
-            navigate('/admin/feedback-manage');
-        }
-
+        
     return (
         <div class="mainSideNav">
 
@@ -69,10 +66,7 @@ function PackageSideNav() {
                         <img src={j3} className="icons" />
                         <button onClick={onClickPaymentManage}>payment manage</button>
                     </div>
-<<<<<<< HEAD
-=======
      
->>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
                     <div class="sideNavbtn">
                         <img src={r1} className="icons" />
                         <button onClick={onClickFeedbackManage}>Feedback Manage</button>
