@@ -25,9 +25,7 @@ import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
 import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
 import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
-import TourPackagesLanding from './pages/tourist/packageInBuild/InBuildPackageLanding';
 
-import BookingView from './pages/tourist/booking-view/BookingView';
 import CustomerFeedback from './pages/tourist/feedback-section/FeedbackSection';
 import Tourist from './pages/tourist/Tourist';
 import TouristDetailsHeader from './pages/tourist/user-detail-nav/TouristDetailsHeader';
