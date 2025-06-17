@@ -4,7 +4,7 @@ import deerLanding from '../../../images/deer-landing.jpg';
 import weblogo from '../../../images/logo.png';
 import templeofthtoothLanding from '../../../images/templeofthtooth-landing.jpeg';
 import './Section1.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const slides = [
   {
@@ -25,6 +25,7 @@ const slides = [
 ];
 
 const TravelLandingPage1 = () => {
+
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 

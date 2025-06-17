@@ -10,6 +10,7 @@ import { MdDateRange, MdLocationOn } from 'react-icons/md';
 import { AiFillStar, AiFillHeart } from 'react-icons/ai';
 import { BiSolidCategory } from 'react-icons/bi';
 import BookingFooter from "../booking-footer/BookingFooter";
+import { Star, ChevronLeft, ChevronRight, User } from 'lucide-react';
 
 import './InBuildPackageLanding.css'; // Import your CSS file
 
@@ -25,6 +26,13 @@ const TourPackagesLanding = () => {
   const [selectedPackageId, setSelectedPackageId] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  
+  // Feedback section states
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoadingFeedback, setIsLoadingFeedback] = useState(true);
+  const [feedbackError, setFeedbackError] = useState(null);
+  const [filteredCategory, setFilteredCategory] = useState('All');
   
   // Initialize useNavigate hook
   const navigate = useNavigate();
@@ -71,6 +79,28 @@ const TourPackagesLanding = () => {
     if (storedFavorites) {
       setFavorites(JSON.parse(storedFavorites));
     }
+  }, []);
+
+  // Fetch feedback data
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      setIsLoadingFeedback(true);
+      try {
+        const response = await axios.get('http://localhost:4000/api/feedback');
+        if (response.data && response.data.feedbacks) {
+          setFeedbacks(response.data.feedbacks);
+        } else {
+          throw new Error('Invalid feedback data format');
+        }
+      } catch (err) {
+        console.error('Error fetching feedback:', err);
+        setFeedbackError(err.message || 'Failed to fetch feedback data');
+      } finally {
+        setIsLoadingFeedback(false);
+      }
+    };
+
+    fetchFeedbacks();
   }, []);
 
   const handleView = (pkg) => {
@@ -127,6 +157,47 @@ const TourPackagesLanding = () => {
       
       return matchesSearch && matchesCategory;
     });
+
+  // Filter feedbacks by category
+  const filteredFeedbacks = filteredCategory === 'All' 
+    ? feedbacks 
+    : feedbacks.filter(feedback => feedback.serviceType === filteredCategory);
+
+  // Feedback navigation handlers
+  const goToPrevious = () => {
+    setCurrentIndex(prev => 
+      prev === 0 ? filteredFeedbacks.length - 1 : prev - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentIndex(prev => 
+      prev === filteredFeedbacks.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  // Render star rating
+  const renderStarRating = (rating) => {
+    return Array(5).fill(0).map((_, i) => (
+      <Star 
+        key={i}
+        size={18}
+        className={`star-icon-j ${i < rating ? 'filled-j' : 'empty-j'}`}
+        fill={i < rating ? '#FFD700' : 'none'}
+        stroke={i < rating ? '#FFD700' : '#D1D5DB'}
+      />
+    ));
+  };
+
+  // Get the service type name
+  const getServiceTypeName = (type) => {
+    const types = {
+      'TourGuide': 'Tour Guide',
+      'HotelRoom': 'Hotel Room',
+      'Vehicle': 'Vehicle'
+    };
+    return types[type] || type;
+  };
 
   return (
     <div className="tour-landing-container-j">
@@ -333,77 +404,144 @@ const TourPackagesLanding = () => {
             </div>
           </div>
           
-          {/* Testimonials Section */}
-          <div className="testimonials-section-j">
-            <h2>What Our Travelers Say</h2>
-            <div className="testimonials-container-j">
-              <div className="testimonial-card-j">
-                <div className="testimonial-stars-j">
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
+          {/* Testimonials Section - REPLACED WITH FEEDBACK COMPONENT */}
+          <section className="feedback-section-j bg-gradient-to-b-j from-white-j to-blue-50-j py-16-j">
+            <div className="container-j mx-auto-j px-4-j">
+              <div className="text-center-j mb-12-j">
+                <h2 className="text-3xl-j font-bold-j text-gray-900-j mb-2-j">What Our Users Say</h2>
+                <p className="text-lg-j text-gray-600-j max-w-2xl-j mx-auto-j">
+                  Real experiences from travelers who have used our services
+                </p>
+                
+                {/* Category Filter */}
+                <div className="category-filter-j mt-8-j flex-j justify-center-j gap-3-j">
+                  {['All', 'TourGuide', 'HotelRoom', 'Vehicle'].map(category => (
+                    <button
+                      key={category}
+                      className={`px-4-j py-2-j rounded-full-j text-sm-j font-medium-j transition-colors-j 
+                        ${filteredCategory === category 
+                          ? 'bg-blue-600-j text-white-j' 
+                          : 'bg-gray-100-j text-gray-700-j hover:bg-gray-200-j'}`}
+                      onClick={() => {
+                        setFilteredCategory(category);
+                        setCurrentIndex(0);
+                      }}
+                    >
+                      {category === 'All' ? 'All Services' : getServiceTypeName(category)}
+                    </button>
+                  ))}
                 </div>
-                <div className="testimonial-content-j">
-                  <p>"Amazing experience! The tour guide was knowledgeable and the destinations were breathtaking."</p>
+              </div>
+
+              {isLoadingFeedback ? (
+                <div className="feedback-loading-j text-center-j">Loading testimonials...</div>
+              ) : feedbackError ? (
+                <div className="feedback-error-j text-center-j">Unable to load testimonials at this time.</div>
+              ) : filteredFeedbacks.length > 0 ? (
+                <div className="feedback-carousel-j relative-j max-w-4xl-j mx-auto-j">
+                  <div className="feedback-card-j bg-white-j rounded-lg-j shadow-lg-j p-8-j mb-6-j">
+                    {filteredFeedbacks[currentIndex] && (
+                      <>
+                        <div className="flex-j items-center-j gap-3-j mb-4-j">
+                          <div className="avatar-j bg-blue-100-j text-blue-600-j rounded-full-j p-2-j">
+                            <User size={24} />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold-j text-gray-900-j">
+                              {filteredFeedbacks[currentIndex].touristID?.name || 'Anonymous User'}
+                            </h4>
+                            <div className="text-sm-j text-gray-500-j">
+                              {formatDate(filteredFeedbacks[currentIndex].date)}
+                            </div>
+                          </div>
+                          <div className="ml-auto-j">
+                            <span className="service-badge-j px-3-j py-1-j rounded-full-j text-xs-j font-semibold-j bg-blue-100-j text-blue-800-j">
+                              {getServiceTypeName(filteredFeedbacks[currentIndex].serviceType)}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="rating-j flex-j mb-4-j">
+                          {renderStarRating(filteredFeedbacks[currentIndex].rating)}
+                        </div>
+                        
+                        <blockquote className="text-gray-700-j text-lg-j italic-j mb-4-j">
+                          "{filteredFeedbacks[currentIndex].comment || 'Great experience overall!'}"
+                        </blockquote>
+                      </>
+                    )}
+                  </div>
+                  
+                  {/* Navigation */}
+                  <div className="carousel-controls-j flex-j justify-between-j">
+                    <button 
+                      onClick={goToPrevious}
+                      className="navigation-button-j bg-white-j rounded-full-j shadow-md-j p-2-j hover:bg-gray-50-j transition-colors-j"
+                      aria-label="Previous testimonial"
+                    >
+                      <ChevronLeft size={24} />
+                    </button>
+                    
+                    <div className="feedback-indicators-j flex-j gap-2-j items-center-j">
+                      {filteredFeedbacks.map((_, index) => (
+                        <button
+                          key={index}
+                          className={`indicator-dot-j h-2-j w-2-j rounded-full-j transition-all-j 
+                            ${currentIndex === index ? 'bg-blue-600-j w-4-j' : 'bg-gray-300-j'}`}
+                          onClick={() => setCurrentIndex(index)}
+                          aria-label={`Go to testimonial ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    
+                    <button 
+                      onClick={goToNext}
+                      className="navigation-button-j bg-white-j rounded-full-j shadow-md-j p-2-j hover:bg-gray-50-j transition-colors-j"
+                      aria-label="Next testimonial"
+                    >
+                      <ChevronRight size={24} />
+                    </button>
+                  </div>
                 </div>
-                <div className="testimonial-author-j">
-                  <div className="author-avatar-j">
-                    <FaUser />
+              ) : (
+                <div className="text-center-j text-gray-500-j">
+                  No testimonials available for this category yet.
+                </div>
+              )}
+              
+              {/* Summary stats */}
+              <div className="feedback-stats-j mt-16-j grid-j grid-cols-1-j md:grid-cols-3-j gap-8-j max-w-4xl-j mx-auto-j text-center-j">
+                <div className="stat-card-j bg-white-j rounded-lg-j shadow-j p-6-j">
+                  <div className="text-4xl-j font-bold-j text-blue-600-j mb-2-j">
+                    {feedbacks.length}+
                   </div>
-                  <div className="author-info-j">
-                    <h4>Sarah Johnson</h4>
-                    <p>Adventure Tour to Bali</p>
+                  <div className="text-gray-600-j">Happy Customers</div>
+                </div>
+                
+                <div className="stat-card-j bg-white-j rounded-lg-j shadow-j p-6-j">
+                  <div className="text-4xl-j font-bold-j text-blue-600-j mb-2-j">
+                    {feedbacks.length > 0 
+                      ? (feedbacks.reduce((sum, item) => sum + item.rating, 0) / feedbacks.length).toFixed(1)
+                      : 'N/A'}
                   </div>
+                  <div className="text-gray-600-j">Average Rating</div>
+                </div>
+                
+                <div className="stat-card-j bg-white-j rounded-lg-j shadow-j p-6-j">
+                  <div className="text-4xl-j font-bold-j text-blue-600-j mb-2-j">
+                    {feedbacks.filter(feedback => feedback.rating >= 4).length}
+                  </div>
+                  <div className="text-gray-600-j">4+ Star Reviews</div>
                 </div>
               </div>
               
-              <div className="testimonial-card-j">
-                <div className="testimonial-stars-j">
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                </div>
-                <div className="testimonial-content-j">
-                  <p>"Perfectly organized trip. Everything from accommodation to activities exceeded our expectations."</p>
-                </div>
-                <div className="testimonial-author-j">
-                  <div className="author-avatar-j">
-                    <FaUser />
-                  </div>
-                  <div className="author-info-j">
-                    <h4>Michael Brown</h4>
-                    <p>Cultural Tour in Japan</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="testimonial-card-j">
-                <div className="testimonial-stars-j">
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                </div>
-                <div className="testimonial-content-j">
-                  <p>"Worth every penny! Our family had the time of our lives exploring these wonderful destinations."</p>
-                </div>
-                <div className="testimonial-author-j">
-                  <div className="author-avatar-j">
-                    <FaUser />
-                  </div>
-                  <div className="author-info-j">
-                    <h4>Emily Wilson</h4>
-                    <p>Family Package to Greece</p>
-                  </div>
-                </div>
+              <div className="text-center-j mt-12-j">
+                <button className="px-6-j py-3-j bg-blue-600-j text-white-j font-medium-j rounded-lg-j hover:bg-blue-700-j transition-colors-j">
+                  Start Your Journey Today
+                </button>
               </div>
             </div>
-          </div>
+          </section>
 
           {/* Newsletter Section */}
           <div className="newsletter-section-j">

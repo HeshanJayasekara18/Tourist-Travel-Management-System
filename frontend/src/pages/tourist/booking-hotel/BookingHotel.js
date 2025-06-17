@@ -3,9 +3,11 @@ import "./BookingHotel.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BookingHotelCard from "./BookingHotelCard";
+
 import BookingHotelForm from "./booking-hotel-form/BookingHotelForm";
 import BannerSectionHotelBook from "./BannerSectionHotelBook";
 import BookingFooter from "../booking-footer/BookingFooter";
+import TourProgressSteps from "../tour-progress-steps/TourProgressSteps";
 import { Typography, Box, Button, Container, Fade, Skeleton } from "@mui/material";
 import { 
   Search as SearchIcon, 
@@ -15,7 +17,8 @@ import {
   People as PeopleIcon, 
   AttachMoney as MoneyIcon,
   AcUnit as AcIcon,
-  Refresh as RefreshIcon
+  Refresh as RefreshIcon,
+  LocationOn as LocationIcon
 } from "@mui/icons-material";
 
 function BookingHotel() {
@@ -29,10 +32,12 @@ function BookingHotel() {
     minPrice: "",
     maxPrice: "",
     beds: "",
-    occupancy: ""
+    occupancy: "",
+    location: ""
   });
   const [sortOption, setSortOption] = useState("default");
   const [loading, setLoading] = useState(true);
+  const [locations, setLocations] = useState([]);
 
   // Open & Close Handlers for booking form
   const handleClickOpen = () => {
@@ -44,6 +49,25 @@ function BookingHotel() {
     getAllHotelRoom();
   };
 
+  // Extract locations from hotel names
+  const extractLocations = (hotels) => {
+    const locationSet = new Set();
+    
+    hotels.forEach(hotel => {
+      // Try to extract location from hotel name
+      // Assuming format like "Hotel Name - Location" or similar patterns
+      const nameParts = hotel.name.split(/[-–—|,]/);
+      if (nameParts.length > 1) {
+        const possibleLocation = nameParts[nameParts.length - 1].trim();
+        if (possibleLocation) {
+          locationSet.add(possibleLocation);
+        }
+      }
+    });
+    
+    return Array.from(locationSet).sort();
+  };
+
   // Fetch all hotel rooms
   const getAllHotelRoom = () => {
     setLoading(true);
@@ -53,6 +77,11 @@ function BookingHotel() {
         console.log(response.data);
         setHotelData(response.data);
         setFilteredData(response.data);
+        
+        // Extract available locations from hotel names
+        const extractedLocations = extractLocations(response.data);
+        setLocations(extractedLocations);
+        
         setLoading(false);
       })
       .catch((error) => {
@@ -77,7 +106,14 @@ function BookingHotel() {
       );
     }
     
-    // Apply filters
+    // Apply location filter
+    if (filters.location) {
+      results = results.filter(hotel => 
+        hotel.name.toLowerCase().includes(filters.location.toLowerCase())
+      );
+    }
+    
+    // Apply price filters
     if (filters.minPrice) {
       results = results.filter(hotel => hotel.price_day >= Number(filters.minPrice));
     }
@@ -127,9 +163,19 @@ function BookingHotel() {
       minPrice: "",
       maxPrice: "",
       beds: "",
-      occupancy: ""
+      occupancy: "",
+      location: ""
     });
     setSortOption("default");
+  };
+
+  // Navigation handlers for tour booking flow
+  const goBackToVehicles = () => {
+    navigate('/Tourist/vehicle-book');
+  };
+  
+  const proceedToGuides = () => {
+    navigate('/Tourist/guide-book');
   };
 
   // Skeleton loader for hotel cards
@@ -176,9 +222,16 @@ function BookingHotel() {
   return (
     <>
       <BannerSectionHotelBook />
+      
+      {/* Tour Progress Steps - Set currentStep to 3 for "Select Hotels" */}
+      <div className="tour-progress-container">
+        <TourProgressSteps currentStep={3} />
+      </div>
+      
       <Container maxWidth="xl" sx={{ py: 4 }}>
         <div className="breadcrumb-h">
           <span onClick={() => navigate('/')} className="breadcrumb-link">Plan Your Tour</span> &gt; 
+          <span className="breadcrumb-link" onClick={goBackToVehicles}>Select Vehicle</span> &gt;
           <span className="current"> Hotel Booking</span>
         </div>
         
@@ -198,6 +251,22 @@ function BookingHotel() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
+                </div>
+                
+                {/* Location Filter Dropdown */}
+                <div className="location-filter">
+                  <LocationIcon className="location-icon" />
+                  <select
+                    name="location"
+                    value={filters.location}
+                    onChange={handleFilterChange}
+                    className="location-select"
+                  >
+                    <option value="">All Locations</option>
+                    {locations.map((location, index) => (
+                      <option key={index} value={location}>{location}</option>
+                    ))}
+                  </select>
                 </div>
                 
                 <div className="control-buttons">
@@ -322,6 +391,17 @@ function BookingHotel() {
               </div>
             )}
           </div>
+          
+          {/* Navigation buttons for booking flow */}
+          <div className="booking-navigation-buttons">
+            <button className="back-button" onClick={goBackToVehicles}>
+              &larr; Back to Vehicles
+            </button>
+            <button className="next-button" onClick={proceedToGuides}>
+              Continue to Guides &rarr;
+            </button>
+          </div>
+          
           <BookingFooter/>
         </div>
       </Container>

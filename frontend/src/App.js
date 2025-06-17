@@ -11,6 +11,7 @@ import PropertyDashboard from './pages/property/property-manage/property-dashboa
 import PropertyTransaction from './pages/property/property-manage/property-transaction/PropertyTransaction';
 import BussinessProfile from './pages/property/property-manage/bussiness-profile/BussinessProfile';
 import Admin from './pages/Admin/Admin';
+import TourPackagesLanding from './pages/tourist/packageInBuild/InBuildPackageLanding'
 import SimpleDashboard from './pages/Admin/InBuildpackage/Dashboard/Dashboard';
 import UserManagement from './pages/Admin/InBuildpackage/adminUsermanage/AdminUserManagement';
 import DisplayDetails from './pages/Admin/InBuildpackage/packagedisplaydetails/DisplayDetails';
@@ -24,8 +25,10 @@ import BookingVehicle from './pages/tourist/booking-vehicle/BookingVehicle';
 import TourPlan from './pages/tourist/tour-plan/TourPlan';
 import Receipt from'./pages/Admin/InBuildpackage/receipt/Receipt';
 import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
+import TourPackagesLanding from './pages/tourist/packageInBuild/InBuildPackageLanding';
 
-import CustomerFeedback from './pages/tourist/customer-feedback/CustomerFeedback';
+import BookingView from './pages/tourist/booking-view/BookingView';
+import CustomerFeedback from './pages/tourist/feedback-section/FeedbackSection';
 import Tourist from './pages/tourist/Tourist';
 import TouristDetailsHeader from './pages/tourist/user-detail-nav/TouristDetailsHeader';
 import TouristProfile from './pages/tourist/tourist-profile/TouristProfile';
@@ -33,6 +36,7 @@ import BookingGuideAvailability from './pages/tourist/booking-guide/booking-guid
 import MainLogin from './common/main-login/MainLogin';
 import TouristSignup from './pages/tourist/tourist-signup/TouristSignup';
 import LandingPages from './pages/landing/Landing';
+import BookingView from './pages/tourist/booking-view/BookingView';
 
 import TourGuideDashboard from './pages/tour-guide/tourguide-dashboard/TourGuideDashboard';
 import TourGuideProfile from './pages/tour-guide/tourguide-profile/TourGuideProfile';
@@ -40,7 +44,15 @@ import TourGuideSignUp from './pages/tour-guide/tourguide-signup/TourGuideSignUp
 import TourGuide from './pages/tour-guide/TourGuide';
 import ChatManage from './pages/property/chat-manage/Chat';
 
+
 import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
+import TouristFeedbackDisplay from './common/feedback-rating/feedback-display/TouristFeedbackDisplay';
+
+import FeedbackManagement from './pages/Admin/feedback-manage/feedback-management/FeedbackManagement';
+
+import Gallary from './pages/landing/gallary/Gallary'
+import FeedbackForm from './common/feedback-rating/feedback-page/FeedbackForm';
+import LandingAfterLogin from './pages/tourist/landing-after-login/LandingAfterLogin';
 function App() {
   return (
     
@@ -52,9 +64,9 @@ function App() {
             <Route path="/" element={<LandingPages/>}/>
             <Route path='/tourguide-signup' element={<TourGuideSignUp/>}/>
 
-            <Route path='/feedback' element={<FeedbackForm/>}/>
-
-
+            
+            
+            
             <Route
                path='/admin'
                element={<Admin/>}>
@@ -64,7 +76,7 @@ function App() {
                 <Route path='PackagePayment' element={<PackagePayment/>}/>
                 <Route path='Receipt' element={<Receipt/>}/>
                 <Route path='PaymentManagement' element={<PaymentManagement/>}/>
-
+                <Route path='feedback-manage' element={<FeedbackManagement/>}/>
 
                
             </Route>
@@ -88,10 +100,21 @@ function App() {
                 <Route path='vehicle-book' element={<BookingVehicle/>}/>
                 <Route path='guide-book' element={<BookingGuide/>}/>
                 <Route path='Profile' element={<TouristProfile/>}/>
-                <Route path='feedback' element={<CustomerFeedback/>}/>
                 <Route path='guide-availability' element={<BookingGuideAvailability/>}/>
                 <Route path='guide-booking' element={<BookingGuideBooking/>}/>
+                <Route path='package' element={<TourPackagesLanding/>}/>
+                <Route path='booking-view' element={<BookingView/>}/>
+                <Route path='feedback' element={<FeedbackForm/>}/>
+                <Route path='feedback-display' element={<TouristFeedbackDisplay/>}/>
+                
+                <Route path='booking-view' element={<BookingView/>}/>
+                <Route path='Home' element={<LandingAfterLogin/>}/>
+                <Route path='tour-payment' element={<BookingPayment/>}/>
+                <Route path='package' element={<TourPackagesLanding/>}/>
+                <Route path='gallary' element={<Gallary/>}/>
             </Route>
+            
+            
 
              <Route
                 path='/TourGuide'

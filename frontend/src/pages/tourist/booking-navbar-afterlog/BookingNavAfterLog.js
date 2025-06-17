@@ -37,14 +37,14 @@ const BookingNavAfterLog = () => {
       <nav className="landingNavigation-h">
         <div className="landingLogo-h"><img src={weblogo} alt="Logo" /></div>
         <div className="landingNavLinks-h">
-          <span href="#" className="landingNavLink-h" onClick={() => navigate('/#')}>Home</span>
+          <span href="#" className="landingNavLink-h" onClick={() => navigate('./Home')}>Home</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Plan your tour</span>
 
-          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Our Packages</span>
-          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Gallery</span>
+          <span className="landingNavLink-h" onClick={() => navigate('./package')}>Our Packages</span>
+          <span className="landingNavLink-h" onClick={() => navigate('./gallary')}>Gallery</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Contact</span>
           <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Join with us</span>
-          <span className="landingNavLink-h" onClick={() => navigate('/tourist')}>Your Bookings</span>
+          <span className="landingNavLink-h" onClick={() => navigate('./booking-view')}>Your Bookings</span>
         </div>
         <div className="landingRegbutton-h">
           
@@ -54,8 +54,8 @@ const BookingNavAfterLog = () => {
              </button>
         {isOpen && (
             <div className="dropdown-menu-h">
-            <a href="#"onClick={() => navigate('./tourist-profile')}>Your Profile</a>
-            <a href="#">Your Bookings</a>
+            <a href="#"onClick={() => navigate('./Profile')}>Your Profile</a>
+            <a href="#" onClick={() => navigate('./booking-view')}>Your Bookings</a>
             <a href="#">Your Payments</a>
             <a href="#" onClick={() => navigate('/#')}>Sign Out</a>
             </div>

@@ -1,6 +1,14 @@
 // FeedbackManagement.js
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
+import { Search, Filter, ChevronDown, ChevronUp, Download, MessageSquare, Trash2, Eye, X, Send } from 'lucide-react';
+=======
+<<<<<<< HEAD
 import { Search, Filter, ChevronDown, ChevronUp, Download } from 'lucide-react';
+=======
+import { Search, Filter, ChevronDown, ChevronUp, Download, MessageSquare, Trash2, Eye, X, Send } from 'lucide-react';
+>>>>>>> fc9d0a807f8f49c65c89de5017acc973802e9095
+>>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
 import './FeedbackManagement.css';
 
 const FeedbackManagement = () => {
@@ -31,18 +39,29 @@ const FeedbackManagement = () => {
   // Filter menu state
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
+  // Detailed view state
+  const [selectedFeedback, setSelectedFeedback] = useState(null);
+  const [detailViewOpen, setDetailViewOpen] = useState(false);
+
+  // Response state
+  const [responseText, setResponseText] = useState('');
+  
+  // Confirmation modal state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [feedbackToDelete, setFeedbackToDelete] = useState(null);
+
   // Fetch feedback data
   useEffect(() => {
     const fetchFeedbacks = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('/api/feedbacks');
+        const response = await fetch('http://localhost:4000/api/feedback');
         if (!response.ok) {
           throw new Error('Failed to fetch feedbacks');
         }
         const data = await response.json();
-        setFeedbacks(data);
-        setFilteredFeedbacks(data);
+        setFeedbacks(data.feedbacks);
+        setFilteredFeedbacks(data.feedbacks);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -61,7 +80,7 @@ const FeedbackManagement = () => {
     if (searchTerm) {
       const lowercasedSearch = searchTerm.toLowerCase();
       result = result.filter(feedback => 
-        feedback.touristID?.toLowerCase().includes(lowercasedSearch) || 
+        feedback.touristID.email?.toLowerCase().includes(lowercasedSearch) || 
         feedback.comment?.toLowerCase().includes(lowercasedSearch)
       );
     }
@@ -153,15 +172,16 @@ const FeedbackManagement = () => {
   // Export feedback data as CSV
   const exportToCSV = () => {
     // Headers for CSV
-    const headers = ['Tourist ID', 'Service Type', 'Rating', 'Comment', 'Date'];
+    const headers = ['Tourist Email', 'Service Type', 'Rating', 'Comment', 'Date', 'Admin Response'];
     
     // Format the data for CSV
     const csvData = filteredFeedbacks.map(feedback => [
-      feedback.touristID,
+      feedback.touristID.email,
       feedback.serviceType,
       feedback.rating,
       `"${feedback.comment?.replace(/"/g, '""') || ''}"`, // Handle quotes in comments
-      new Date(feedback.date).toLocaleDateString()
+      new Date(feedback.date).toLocaleDateString(),
+      `"${feedback.adminResponse?.replace(/"/g, '""') || ''}"`
     ]);
     
     // Create CSV content
@@ -184,7 +204,12 @@ const FeedbackManagement = () => {
 
   // Format date for display
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', { 
+    if (!dateString) return 'No date available';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid date';
+    
+    return date.toLocaleDateString('en-US', { 
       year: 'numeric', 
       month: 'short', 
       day: 'numeric',
@@ -196,6 +221,90 @@ const FeedbackManagement = () => {
   // Render star rating
   const renderStarRating = (rating) => {
     return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  };
+
+  // Open detailed view of feedback
+  const openDetailView = (feedback) => {
+    setSelectedFeedback(feedback);
+    setDetailViewOpen(true);
+    setResponseText(feedback.adminResponse || '');
+  };
+
+  // Close detailed view
+  const closeDetailView = () => {
+    setDetailViewOpen(false);
+    setSelectedFeedback(null);
+    setResponseText('');
+  };
+
+  // Submit admin response
+  const submitResponse = async () => {
+    if (!selectedFeedback) return;
+    
+    try {
+      const response = await fetch(`http://localhost:4000/api/feedback/${selectedFeedback._id}/respond`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ adminResponse: responseText }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit response');
+      }
+      
+      // Update local state
+      setFeedbacks(prevFeedbacks => 
+        prevFeedbacks.map(item => 
+          item._id === selectedFeedback._id 
+            ? { ...item, adminResponse: responseText } 
+            : item
+        )
+      );
+      
+      // Show success message or toast notification here
+      alert('Response submitted successfully');
+      closeDetailView();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // Confirm delete dialog
+  const confirmDelete = (feedback) => {
+    setFeedbackToDelete(feedback);
+    setShowDeleteConfirm(true);
+  };
+
+  // Delete feedback
+  const deleteFeedback = async () => {
+    if (!feedbackToDelete) return;
+    
+    try {
+      const response = await fetch(`http://localhost:4000/api/feedback/${feedbackToDelete._id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete feedback');
+      }
+      
+      // Update local state
+      setFeedbacks(prevFeedbacks => 
+        prevFeedbacks.filter(item => item._id !== feedbackToDelete._id)
+      );
+      
+      setShowDeleteConfirm(false);
+      setFeedbackToDelete(null);
+      
+      // Close detail view if open
+      if (detailViewOpen && selectedFeedback?._id === feedbackToDelete._id) {
+        closeDetailView();
+      }
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   if (isLoading) {
@@ -315,56 +424,78 @@ const FeedbackManagement = () => {
               : 'N/A'}
           </span>
         </div>
+<<<<<<< HEAD
+        <div className="stat-box-r">
+          <span className="stat-label-r">Responded</span>
+          <span className="stat-value-r">
+            {feedbacks.filter(item => item.adminResponse && item.adminResponse.trim() !== '').length}
+          </span>
+        </div>
+=======
+<<<<<<< HEAD
+>>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
       </div>
       
-      <div className="feedback-table-container-r">
-        <table className="feedback-table-r">
-          <thead>
-            <tr>
-              <th onClick={() => handleSort('touristID')} className="sortable-header-r">
-                Tourist ID
-                {sortConfig.key === 'touristID' && (
-                  sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                )}
+      <div className="feedback-table-container-r">         
+        <table className="feedback-table-r">           
+          <thead>             
+            <tr>               
+              <th className="sortable-header-r" onClick={() => handleSort('touristID')}>
+                <div className="header-content-r">
+                  Tourist Email               
+                  {sortConfig.key === 'touristID' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
+              </th>               
+              <th className="sortable-header-r" onClick={() => handleSort('serviceType')}>
+                <div className="header-content-r">
+                  Service Type                 
+                  {sortConfig.key === 'serviceType' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
+              </th>               
+              <th className="sortable-header-r" onClick={() => handleSort('rating')}>
+                <div className="header-content-r">
+                  Rating                 
+                  {sortConfig.key === 'rating' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
+              </th>               
+              <th>Comment</th>               
+              <th className="sortable-header-r" onClick={() => handleSort('date')}>
+                <div className="header-content-r">
+                  Date                 
+                  {sortConfig.key === 'date' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
               </th>
-              <th onClick={() => handleSort('serviceType')} className="sortable-header-r">
-                Service Type
-                {sortConfig.key === 'serviceType' && (
-                  sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                )}
-              </th>
-              <th onClick={() => handleSort('rating')} className="sortable-header-r">
-                Rating
-                {sortConfig.key === 'rating' && (
-                  sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                )}
-              </th>
-              <th>Comment</th>
-              <th onClick={() => handleSort('date')} className="sortable-header-r">
-                Date
-                {sortConfig.key === 'date' && (
-                  sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                )}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.length > 0 ? (
-              currentItems.map((feedback, index) => (
-                <tr key={index}>
-                  <td>{feedback.touristID}</td>
-                  <td>
-                    <span className={`service-badge-r ${feedback.serviceType.toLowerCase()}-r`}>
-                      {feedback.serviceType}
-                    </span>
-                  </td>
-                  <td className="rating-cell-r">
-                    <span className="stars-display-r">{renderStarRating(feedback.rating)}</span>
-                  </td>
-                  <td className="comment-cell-r">
-                    {feedback.comment || <span className="no-comment-r">No comment provided</span>}
-                  </td>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>           
+          </thead>           
+          <tbody>   
+            {currentItems.length > 0 ? (     
+              currentItems.map((feedback, index) => (       
+                <tr key={index}>         
+                  <td>{feedback.touristID.email}</td>         
+                  <td>           
+                    <span className={`service-badge-r ${feedback.serviceType.toLowerCase()}-r`}>             
+                      {feedback.serviceType}           
+                    </span>         
+                  </td>         
+                  <td className="rating-cell-r">           
+                    <span className="stars-display-r">{renderStarRating(feedback.rating)}</span>         
+                  </td>         
+                  <td className="comment-cell-r">           
+                    {feedback.comment || <span className="no-comment-r">No comment provided</span>}         
+                  </td>         
                   <td>{formatDate(feedback.date)}</td>
+<<<<<<< HEAD
+=======
                 </tr>
               ))
             ) : (
@@ -376,6 +507,118 @@ const FeedbackManagement = () => {
             )}
           </tbody>
         </table>
+=======
+        <div className="stat-box-r">
+          <span className="stat-label-r">Responded</span>
+          <span className="stat-value-r">
+            {feedbacks.filter(item => item.adminResponse && item.adminResponse.trim() !== '').length}
+          </span>
+        </div>
+      </div>
+      
+      <div className="feedback-table-container-r">         
+        <table className="feedback-table-r">           
+          <thead>             
+            <tr>               
+              <th className="sortable-header-r" onClick={() => handleSort('touristID')}>
+                <div className="header-content-r">
+                  Tourist Email               
+                  {sortConfig.key === 'touristID' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
+              </th>               
+              <th className="sortable-header-r" onClick={() => handleSort('serviceType')}>
+                <div className="header-content-r">
+                  Service Type                 
+                  {sortConfig.key === 'serviceType' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
+              </th>               
+              <th className="sortable-header-r" onClick={() => handleSort('rating')}>
+                <div className="header-content-r">
+                  Rating                 
+                  {sortConfig.key === 'rating' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
+              </th>               
+              <th>Comment</th>               
+              <th className="sortable-header-r" onClick={() => handleSort('date')}>
+                <div className="header-content-r">
+                  Date                 
+                  {sortConfig.key === 'date' && (
+                    sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                  )}
+                </div>
+              </th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>           
+          </thead>           
+          <tbody>   
+            {currentItems.length > 0 ? (     
+              currentItems.map((feedback, index) => (       
+                <tr key={index}>         
+                  <td>{feedback.touristID.email}</td>         
+                  <td>           
+                    <span className={`service-badge-r ${feedback.serviceType.toLowerCase()}-r`}>             
+                      {feedback.serviceType}           
+                    </span>         
+                  </td>         
+                  <td className="rating-cell-r">           
+                    <span className="stars-display-r">{renderStarRating(feedback.rating)}</span>         
+                  </td>         
+                  <td className="comment-cell-r">           
+                    {feedback.comment || <span className="no-comment-r">No comment provided</span>}         
+                  </td>         
+                  <td>{formatDate(feedback.date)}</td>
+>>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
+                  <td>
+                    <div className="feedback-status-r">
+                      {feedback.adminResponse && <span className="status-responded-r">Responded</span>}
+                      {!feedback.adminResponse && <span className="status-pending-r">Pending</span>}
+                    </div>
+                  </td>       
+                  <td className="actions-cell-r">
+                    <button 
+                      className="action-button-r view-button-r" 
+                      title="View Details"
+                      onClick={() => openDetailView(feedback)}
+                    >
+                      <Eye size={16} />
+                    </button>
+                    <button 
+                      className="action-button-r respond-button-r" 
+                      title="Respond to Feedback"
+                      onClick={() => openDetailView(feedback)}
+                    >
+                      <MessageSquare size={16} />
+                    </button>
+                    <button 
+                      className="action-button-r delete-button-r" 
+                      title="Delete Feedback"
+                      onClick={() => confirmDelete(feedback)}
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </td>
+                </tr>     
+              ))   
+            ) : (     
+              <tr>       
+                <td colSpan="7" className="no-results-r">         
+                  No feedback found matching your criteria.       
+                </td>     
+              </tr>   
+            )} 
+          </tbody>   
+        </table>       
+<<<<<<< HEAD
+=======
+>>>>>>> fc9d0a807f8f49c65c89de5017acc973802e9095
+>>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
       </div>
       
       {filteredFeedbacks.length > 0 && (
@@ -432,6 +675,98 @@ const FeedbackManagement = () => {
           </button>
         </div>
       )}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
+
+      {/* Detailed Feedback View Modal */}
+      {detailViewOpen && selectedFeedback && (
+        <div className="modal-overlay-r">
+          <div className="feedback-detail-modal-r">
+            <div className="modal-header-r">
+              <h2>Feedback Details</h2>
+              <button className="close-modal-button-r" onClick={closeDetailView}>
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="modal-content-r">
+              <div className="detail-section-r">
+                <h3>Tourist Information</h3>
+                <p><strong>Email:</strong> {selectedFeedback.touristID.email}</p>
+                {selectedFeedback.touristID.name && (
+                  <p><strong>Name:</strong> {selectedFeedback.touristID.name}</p>
+                )}
+              </div>
+              
+              <div className="detail-section-r">
+                <h3>Feedback Information</h3>
+                <p><strong>Service Type:</strong> {selectedFeedback.serviceType}</p>
+                <p><strong>Rating:</strong> {renderStarRating(selectedFeedback.rating)} ({selectedFeedback.rating}/5)</p>
+                <p><strong>Submitted:</strong> {formatDate(selectedFeedback.date)}</p>
+                <div className="detail-comment-r">
+                  <strong>Comment:</strong>
+                  <p>{selectedFeedback.comment || 'No comment provided'}</p>
+                </div>
+              </div>
+              
+              <div className="detail-section-r">
+                <h3>Admin Response</h3>
+                <textarea
+                  className="response-textarea-r"
+                  value={responseText}
+                  onChange={(e) => setResponseText(e.target.value)}
+                  placeholder="Enter your response to this feedback..."
+                  rows={5}
+                ></textarea>
+                
+                <div className="response-buttons-r">
+                  <button className="submit-response-button-r" onClick={submitResponse}>
+                    <Send size={16} />
+                    Submit Response
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div className="modal-footer-r">
+              <button className="delete-feedback-button-r" onClick={() => confirmDelete(selectedFeedback)}>
+                <Trash2 size={16} />
+                Delete Feedback
+              </button>
+              <button className="close-button-r" onClick={closeDetailView}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="modal-overlay-r">
+          <div className="confirm-modal-r">
+            <div className="confirm-content-r">
+              <h3>Delete Feedback</h3>
+              <p>Are you sure you want to delete this feedback? This action cannot be undone.</p>
+              
+              <div className="confirm-buttons-r">
+                <button className="cancel-button-r" onClick={() => setShowDeleteConfirm(false)}>
+                  Cancel
+                </button>
+                <button className="confirm-delete-button-r" onClick={deleteFeedback}>
+                  <Trash2 size={16} />
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+<<<<<<< HEAD
+=======
+>>>>>>> fc9d0a807f8f49c65c89de5017acc973802e9095
+>>>>>>> 020cf7f6ef952b6ad519534b6e7c9bea341fa179
     </div>
   );
 };

@@ -1,15 +1,32 @@
-// TouristFeedbackForm.js
-import React, { useState } from 'react';
+// FRONTEND: FeedbackForm.jsx
+
+import React, { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
 import './FeedbackForm.css';
 
-const FeedbackForm = ({ touristID }) => {
+const FeedbackForm = () => {
+  // Get IDs from localStorage on component mount
+  const [touristID, setTouristID] = useState('');
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [comment, setComment] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  // Get touristID from localStorage when component mounts
+  useEffect(() => {
+    const storedTouristID = localStorage.getItem('touristID');
+    
+    if (storedTouristID) {
+      setTouristID(storedTouristID);
+    } else {
+      setSubmitStatus({ 
+        success: false, 
+        message: 'Tourist ID not found. Please log in again.' 
+      });
+    }
+  }, []);
 
   const handleRatingClick = (selectedRating) => setRating(selectedRating);
   const handleRatingHover = (hoveredValue) => setHoveredRating(hoveredValue);
@@ -30,19 +47,27 @@ const FeedbackForm = ({ touristID }) => {
       return;
     }
 
+    // Check if we have the touristID from localStorage
+    if (!touristID) {
+      setSubmitStatus({ success: false, message: 'Tourist ID not found. Please log in again.' });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/feedback', {
+      const response = await fetch('http://localhost:4000/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           serviceType,
-          touristID,
+          touristID, // Sending the ID from localStorage directly
           rating,
           comment
         })
       });
+
+      const responseData = await response.json();
 
       if (response.ok) {
         setSubmitStatus({ success: true, message: 'Thank you for your feedback!' });
@@ -50,11 +75,14 @@ const FeedbackForm = ({ touristID }) => {
         setServiceType('');
         setComment('');
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to submit feedback');
+        throw new Error(responseData.message || 'Failed to submit feedback');
       }
     } catch (error) {
-      setSubmitStatus({ success: false, message: error.message });
+      console.error('Feedback submission error:', error);
+      setSubmitStatus({ 
+        success: false, 
+        message: error.message || 'An error occurred while submitting feedback' 
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -91,7 +119,7 @@ const FeedbackForm = ({ touristID }) => {
                 size={32}
                 onClick={() => handleRatingClick(value)}
                 onMouseEnter={() => handleRatingHover(value)}
-                className={`star-icon-r ${ (hoveredRating || rating) >= value ? 'star-filled-r' : 'star-empty-r' }`}
+                className={`star-icon-r ${(hoveredRating || rating) >= value ? 'star-filled-r' : 'star-empty-r'}`}
               />
             ))}
           </div>
@@ -116,7 +144,11 @@ const FeedbackForm = ({ touristID }) => {
           </div>
         )}
 
-        <button type="submit" className="submit-button-r" disabled={isSubmitting}>
+        <button 
+          type="submit" 
+          className="submit-button-r" 
+          disabled={isSubmitting || !touristID}
+        >
           {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
         </button>
       </form>
